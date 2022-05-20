@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 Solutions to Chapter 5 - Neural Networks | Classical approaches to Machine Learning</title>
+  <meta name="description" content="Course materials for Classical approaches to Machine Learning" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 Solutions to Chapter 5 - Neural Networks | Classical approaches to Machine Learning" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="figures/cover_image.png" />
+  <meta property="og:description" content="Course materials for Classical approaches to Machine Learning" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Solutions to Chapter 5 - Neural Networks | Classical approaches to Machine Learning" />
+  
+  <meta name="twitter:description" content="Course materials for Classical approaches to Machine Learning" />
+  <meta name="twitter:image" content="figures/cover_image.png" />
+
+<meta name="author" content="Chris Penfold" />
+
+
+<meta name="date" content="2022-05-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="solutions-logistic-regression.html"/>
+
+<script src="libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About the course</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#schedule"><i class="fa fa-check"></i><b>1.2</b> Schedule</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#github"><i class="fa fa-check"></i><b>1.3</b> Github</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.4</b> License</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#colophon"><i class="fa fa-check"></i><b>1.6</b> Colophon</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>3</b> Installation</a></li>
+<li class="chapter" data-level="4" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>4</b> Linear regression and logistic regression</a><ul>
+<li class="chapter" data-level="4.1" data-path="logistic-regression.html"><a href="logistic-regression.html#regression"><i class="fa fa-check"></i><b>4.1</b> Regression</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="logistic-regression.html"><a href="logistic-regression.html#linear-regression"><i class="fa fa-check"></i><b>4.1.1</b> Linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="logistic-regression.html"><a href="logistic-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>4.1.2</b> Polynomial regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="logistic-regression.html"><a href="logistic-regression.html#logistic-regression1"><i class="fa fa-check"></i><b>4.1.3</b> Logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="logistic-regression.html"><a href="logistic-regression.html#using-regression-approaches-to-infer-3d-gene-expression-patterns-in-marmoset-embryos"><i class="fa fa-check"></i><b>4.2</b> Using regression approaches to infer 3D gene expression patterns in marmoset embryos</a></li>
+<li class="chapter" data-level="4.3" data-path="logistic-regression.html"><a href="logistic-regression.html#resources"><i class="fa fa-check"></i><b>4.3</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="mlnn.html"><a href="mlnn.html"><i class="fa fa-check"></i><b>5</b> Deep Learning</a><ul>
+<li class="chapter" data-level="5.1" data-path="mlnn.html"><a href="mlnn.html#multilayer-neural-networks"><i class="fa fa-check"></i><b>5.1</b> Multilayer Neural Networks</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="mlnn.html"><a href="mlnn.html#installing-the-r-wrapper-for-keras"><i class="fa fa-check"></i><b>5.1.1</b> Installing the R wrapper for Keras</a></li>
+<li class="chapter" data-level="5.1.2" data-path="mlnn.html"><a href="mlnn.html#regression-with-keras"><i class="fa fa-check"></i><b>5.1.2</b> Regression with Keras</a></li>
+<li class="chapter" data-level="5.1.3" data-path="mlnn.html"><a href="mlnn.html#image-classification-with-rick-and-morty"><i class="fa fa-check"></i><b>5.1.3</b> Image classification with Rick and Morty</a></li>
+<li class="chapter" data-level="5.1.4" data-path="mlnn.html"><a href="mlnn.html#rick-and-morty-classifier-using-deep-learning"><i class="fa fa-check"></i><b>5.1.4</b> Rick and Morty classifier using Deep Learning</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="mlnn.html"><a href="mlnn.html#convolutional-neural-networks"><i class="fa fa-check"></i><b>5.2</b> Convolutional neural networks</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="mlnn.html"><a href="mlnn.html#checking-the-models"><i class="fa fa-check"></i><b>5.2.1</b> Checking the models</a></li>
+<li class="chapter" data-level="5.2.2" data-path="mlnn.html"><a href="mlnn.html#data-augmentation"><i class="fa fa-check"></i><b>5.2.2</b> Data augmentation</a></li>
+<li class="chapter" data-level="5.2.3" data-path="mlnn.html"><a href="mlnn.html#asking-more-precise-questions"><i class="fa fa-check"></i><b>5.2.3</b> Asking more precise questions</a></li>
+<li class="chapter" data-level="5.2.4" data-path="mlnn.html"><a href="mlnn.html#more-complex-networks"><i class="fa fa-check"></i><b>5.2.4</b> More complex networks</a></li>
+<li class="chapter" data-level="5.2.5" data-path="mlnn.html"><a href="mlnn.html#autoencoders"><i class="fa fa-check"></i><b>5.2.5</b> Autoencoders</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="mlnn.html"><a href="mlnn.html#further-reading"><i class="fa fa-check"></i><b>5.3</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html"><i class="fa fa-check"></i><b>6</b> Solutions to Chapter 4 - Linear regression and logistic regression</a></li>
+<li class="chapter" data-level="7" data-path="solutions-to-chapter-5-neural-networks.html"><a href="solutions-to-chapter-5-neural-networks.html"><i class="fa fa-check"></i><b>7</b> Solutions to Chapter 5 - Neural Networks</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Classical approaches to Machine Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="solutions-to-chapter-5---neural-networks" class="section level1">
+<h1><span class="header-section-number">7</span> Solutions to Chapter 5 - Neural Networks</h1>
+<p>Excersie 2.1: We increase the training size and tweak network structure in various ways.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tdims &lt;-<span class="st"> </span><span class="dv">5000</span> <span class="co">#Number of samples to generate</span>
+x &lt;-<span class="st">  </span><span class="kw">runif</span>(tdims, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">100</span>) <span class="co">#Generate random x in range 0 to 100</span>
+y &lt;-<span class="st"> </span><span class="kw">sqrt</span>(x) <span class="co">#Calculate square root of x</span>
+
+trainingX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>)) <span class="co">#Store data as an array (required by Keras)</span>
+trainingX[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>x
+trainingY  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>))
+trainingY[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>y
+
+<span class="co">#Now do the same but for a independently generated test set</span>
+x &lt;-<span class="st">  </span><span class="kw">runif</span>(tdims, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">100</span>)
+y &lt;-<span class="st"> </span><span class="kw">sqrt</span>(x)
+
+testingX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>)) <span class="co">#Store as arrays</span>
+testingX[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>x
+testingY  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>))
+testingY[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>y
+
+
+model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">10</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">20</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;linear&quot;</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;mse&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/densemodel.h5&#39;</span>, <span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_mse&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainingX, <span class="dt">y =</span> trainingY, <span class="dt">validation_data =</span> <span class="kw">list</span>(testingX, testingY), <span class="dt">epochs =</span> <span class="dv">100</span>, <span class="dt">verbose =</span> <span class="dv">2</span>,  <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))
+
+model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/densemodel.h5&#39;</span>)
+
+
+xstar &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">200</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+forecastY &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(xstar)
+<span class="kw">plot</span>(xstar,forecastY,<span class="st">&#39;l&#39;</span>)
+<span class="kw">lines</span>(xstar,<span class="kw">sqrt</span>(xstar),<span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p>For comparison we can also use linear regression to compare our predictions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(trainingX) &lt;-<span class="st"> &quot;x&quot;</span>
+<span class="kw">colnames</span>(trainingY) &lt;-<span class="st"> &quot;y&quot;</span>
+lrfit &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x)
+newd &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>newX)
+predictedValues&lt;-<span class="kw">predict.lm</span>(lrfit, <span class="dt">newdata =</span> newd)
+<span class="kw">lines</span>(newX,predictedValues, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p>Excercsie 2.1: The network architecture should be fine for this task. However a noisy version of the input data will have to be generated (e.g., by setting a random set of pixels to zero) to be passed in to the AE. A clean version of the data should be retained and passed to the AE as the output.</p>
+<p>As a final model I have included a modification of a variational autoencoder on the Rick and Morty dataset based on the one <a href="https://tensorflow.rstudio.com/guide/keras/examples/variational_autoencoder_deconv/">here</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">K &lt;-<span class="st"> </span>keras<span class="op">::</span><span class="kw">backend</span>()
+
+<span class="co"># input image dimensions and other parameters</span>
+img_rows &lt;-<span class="st"> </span>90L
+img_cols &lt;-<span class="st"> </span>160L
+img_chns &lt;-<span class="st"> </span>3L
+filters &lt;-<span class="st"> </span>64L
+num_conv &lt;-<span class="st"> </span>3L
+latent_dim &lt;-<span class="st"> </span>2L
+intermediate_dim &lt;-<span class="st"> </span>128L
+epsilon_std &lt;-<span class="st"> </span><span class="fl">1.0</span>
+batch_size &lt;-<span class="st"> </span>100L
+epochs &lt;-<span class="st"> </span>5L
+
+
+original_img_size &lt;-<span class="st"> </span><span class="kw">c</span>(img_rows, img_cols, img_chns)
+x &lt;-<span class="st"> </span><span class="kw">layer_input</span>(<span class="dt">shape =</span> <span class="kw">c</span>(original_img_size))
+conv_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">layer_conv_2d</span>(x, <span class="dt">filters =</span> img_chns, <span class="dt">kernel_size =</span> <span class="kw">c</span>(2L, 2L), <span class="dt">strides =</span> <span class="kw">c</span>(1L, 1L), <span class="dt">padding =</span> <span class="st">&quot;same&quot;</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+conv_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">layer_conv_2d</span>(conv_<span class="dv">1</span>, <span class="dt">filters =</span> filters, <span class="dt">kernel_size =</span> <span class="kw">c</span>(2L, 2L), <span class="dt">strides =</span> <span class="kw">c</span>(2L, 2L), <span class="dt">padding =</span> <span class="st">&quot;same&quot;</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+conv_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">layer_conv_2d</span>(conv_<span class="dv">2</span>, <span class="dt">filters =</span> filters, <span class="dt">kernel_size =</span> <span class="kw">c</span>(num_conv, num_conv), <span class="dt">strides =</span> <span class="kw">c</span>(1L, 1L), <span class="dt">padding =</span> <span class="st">&quot;same&quot;</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+conv_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">layer_conv_2d</span>(conv_<span class="dv">3</span>, <span class="dt">filters =</span> filters, <span class="dt">kernel_size =</span> <span class="kw">c</span>(num_conv, num_conv), <span class="dt">strides =</span> <span class="kw">c</span>(1L, 1L), <span class="dt">padding =</span> <span class="st">&quot;same&quot;</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+flat &lt;-<span class="st"> </span><span class="kw">layer_flatten</span>(conv_<span class="dv">4</span>)
+hidden &lt;-<span class="st"> </span><span class="kw">layer_dense</span>(flat, <span class="dt">units =</span> intermediate_dim, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+z_mean &lt;-<span class="st"> </span><span class="kw">layer_dense</span>(hidden, <span class="dt">units =</span> latent_dim)
+z_log_var &lt;-<span class="st"> </span><span class="kw">layer_dense</span>(hidden, <span class="dt">units =</span> latent_dim)
+
+sampling &lt;-<span class="st"> </span><span class="cf">function</span>(args) {
+  z_mean &lt;-<span class="st"> </span>args[, <span class="dv">1</span><span class="op">:</span>(latent_dim)]
+  z_log_var &lt;-<span class="st"> </span>args[, (latent_dim <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>latent_dim)]
+  epsilon &lt;-<span class="st"> </span><span class="kw">k_random_normal</span>(
+    <span class="dt">shape =</span> <span class="kw">c</span>(<span class="kw">k_shape</span>(z_mean)[[<span class="dv">1</span>]]),
+    <span class="dt">mean =</span> <span class="dv">0</span>.,
+    <span class="dt">stddev =</span> epsilon_std
+  )
+  z_mean <span class="op">+</span><span class="st"> </span><span class="kw">k_exp</span>(z_log_var) <span class="op">*</span><span class="st"> </span>epsilon
+}
+
+z &lt;-<span class="st"> </span><span class="kw">layer_concatenate</span>(<span class="kw">list</span>(z_mean, z_log_var)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">layer_lambda</span>(sampling)
+
+output_shape &lt;-<span class="st"> </span><span class="kw">c</span>(batch_size, 45L, 80L, filters)
+
+decoder_hidden &lt;-<span class="st"> </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> intermediate_dim, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+decoder_upsample &lt;-<span class="st"> </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="kw">prod</span>(output_shape[<span class="op">-</span><span class="dv">1</span>]), <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+
+decoder_reshape &lt;-<span class="st"> </span><span class="kw">layer_reshape</span>(<span class="dt">target_shape =</span> output_shape[<span class="op">-</span><span class="dv">1</span>])
+decoder_deconv_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> filters,<span class="dt">kernel_size =</span> <span class="kw">c</span>(num_conv, num_conv),<span class="dt">strides =</span> <span class="kw">c</span>(1L, 1L),<span class="dt">padding =</span> <span class="st">&quot;same&quot;</span>,<span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+decoder_deconv_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> filters,<span class="dt">kernel_size =</span> <span class="kw">c</span>(num_conv, num_conv),<span class="dt">strides =</span> <span class="kw">c</span>(1L, 1L),<span class="dt">padding =</span> <span class="st">&quot;same&quot;</span>,<span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+decoder_deconv_3_upsample &lt;-<span class="st"> </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> filters,<span class="dt">kernel_size =</span> <span class="kw">c</span>(3L, 3L),<span class="dt">strides =</span> <span class="kw">c</span>(2L, 2L),<span class="dt">padding =</span> <span class="st">&quot;valid&quot;</span>,<span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)
+decoder_mean_squash &lt;-<span class="st"> </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> img_chns,<span class="dt">kernel_size =</span> <span class="kw">c</span>(2L, 2L),<span class="dt">strides =</span> <span class="kw">c</span>(1L, 1L),<span class="dt">padding =</span> <span class="st">&quot;valid&quot;</span>,<span class="dt">activation =</span> <span class="st">&quot;sigmoid&quot;</span>)
+
+hidden_decoded &lt;-<span class="st"> </span><span class="kw">decoder_hidden</span>(z)
+up_decoded &lt;-<span class="st"> </span><span class="kw">decoder_upsample</span>(hidden_decoded)
+reshape_decoded &lt;-<span class="st"> </span><span class="kw">decoder_reshape</span>(up_decoded)
+deconv_1_decoded &lt;-<span class="st"> </span><span class="kw">decoder_deconv_1</span>(reshape_decoded)
+deconv_2_decoded &lt;-<span class="st"> </span><span class="kw">decoder_deconv_2</span>(deconv_1_decoded)
+x_decoded_relu &lt;-<span class="st"> </span><span class="kw">decoder_deconv_3_upsample</span>(deconv_2_decoded)
+x_decoded_mean_squash &lt;-<span class="st"> </span><span class="kw">decoder_mean_squash</span>(x_decoded_relu)
+
+<span class="co"># custom loss function</span>
+vae_loss &lt;-<span class="st"> </span><span class="cf">function</span>(x, x_decoded_mean_squash) {
+  x &lt;-<span class="st"> </span><span class="kw">k_flatten</span>(x)
+  x_decoded_mean_squash &lt;-<span class="st"> </span><span class="kw">k_flatten</span>(x_decoded_mean_squash)
+  xent_loss &lt;-<span class="st"> </span><span class="fl">1.0</span> <span class="op">*</span><span class="st"> </span>img_rows <span class="op">*</span><span class="st"> </span>img_cols <span class="op">*</span>
+<span class="st">    </span><span class="kw">loss_binary_crossentropy</span>(x, x_decoded_mean_squash)
+  kl_loss &lt;-<span class="st"> </span><span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span><span class="kw">k_mean</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>z_log_var <span class="op">-</span><span class="st"> </span><span class="kw">k_square</span>(z_mean) <span class="op">-</span>
+<span class="st">                           </span><span class="kw">k_exp</span>(z_log_var), <span class="dt">axis =</span> <span class="op">-</span>1L)
+  <span class="kw">k_mean</span>(xent_loss <span class="op">+</span><span class="st"> </span>kl_loss)
+}
+
+## variational autoencoder
+vae &lt;-<span class="st"> </span><span class="kw">keras_model</span>(x, x_decoded_mean_squash)
+vae <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">optimizer =</span> <span class="st">&quot;rmsprop&quot;</span>, <span class="dt">loss =</span> vae_loss)
+<span class="kw">summary</span>(vae)
+
+## encoder: model to project inputs on the latent space
+encoder &lt;-<span class="st"> </span><span class="kw">keras_model</span>(x, z_mean)
+
+## build a digit generator that can sample from the learned distribution
+gen_decoder_input &lt;-<span class="st"> </span><span class="kw">layer_input</span>(<span class="dt">shape =</span> latent_dim)
+gen_hidden_decoded &lt;-<span class="st"> </span><span class="kw">decoder_hidden</span>(gen_decoder_input)
+gen_up_decoded &lt;-<span class="st"> </span><span class="kw">decoder_upsample</span>(gen_hidden_decoded)
+gen_reshape_decoded &lt;-<span class="st"> </span><span class="kw">decoder_reshape</span>(gen_up_decoded)
+gen_deconv_1_decoded &lt;-<span class="st"> </span><span class="kw">decoder_deconv_1</span>(gen_reshape_decoded)
+gen_deconv_2_decoded &lt;-<span class="st"> </span><span class="kw">decoder_deconv_2</span>(gen_deconv_1_decoded)
+gen_x_decoded_relu &lt;-<span class="st"> </span><span class="kw">decoder_deconv_3_upsample</span>(gen_deconv_2_decoded)
+gen_x_decoded_mean_squash &lt;-<span class="st"> </span><span class="kw">decoder_mean_squash</span>(gen_x_decoded_relu)
+generator &lt;-<span class="st"> </span><span class="kw">keras_model</span>(gen_decoder_input, gen_x_decoded_mean_squash)
+
+vae <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(trainX, trainX, <span class="dt">shuffle =</span> <span class="ot">TRUE</span>, <span class="dt">epochs =</span> epochs, <span class="dt">batch_size =</span> batch_size, <span class="dt">validation_data =</span> <span class="kw">list</span>(valX, valX))</code></pre></div>
+<p>Which we can visualise:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## display a 2D plot of the digit classes in the latent space
+x_test_encoded &lt;-<span class="st"> </span><span class="kw">predict</span>(encoder, x_test, <span class="dt">batch_size =</span> batch_size)
+x_test_encoded <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_data_frame</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">class =</span> <span class="kw">as.factor</span>(mnist<span class="op">$</span>test<span class="op">$</span>y)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> V1, <span class="dt">y =</span> V2, <span class="dt">colour =</span> class)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
+
+## display a 2D manifold of the digits
+n &lt;-<span class="st"> </span><span class="dv">15</span>  <span class="co"># figure with 15x15 digits</span>
+digit_size &lt;-<span class="st"> </span><span class="dv">28</span>
+
+<span class="co"># we will sample n points within [-4, 4] standard deviations</span>
+grid_x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dt">length.out =</span> n)
+grid_y &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dt">length.out =</span> n)
+
+rows &lt;-<span class="st"> </span><span class="ot">NULL</span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(grid_x)){
+  column &lt;-<span class="st"> </span><span class="ot">NULL</span>
+  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(grid_y)){
+    z_sample &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(grid_x[i], grid_y[j]), <span class="dt">ncol =</span> <span class="dv">2</span>)
+    column &lt;-<span class="st"> </span><span class="kw">rbind</span>(column, <span class="kw">predict</span>(generator, z_sample) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">matrix</span>(<span class="dt">ncol =</span> digit_size))
+  }
+  rows &lt;-<span class="st"> </span><span class="kw">cbind</span>(rows, column)
+}
+rows <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.raster</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot</span>()</code></pre></div>
+
+<div id="refs" class="references">
+<div>
+<p>Angermueller, Tanel Pärnamaa, Christof, and Oliver Stegle. 2016. “Deep Learning for Computational Biology.” <em>Molecular Systems Biology</em> 12 (7): 878.</p>
+</div>
+<div>
+<p>M. Ancona, C. Oztireli, E. Ceolini, and M. Grosss. 2018. “Towards Better ¨ Understanding of Gradient-Based Attribution Methods for Deep Neural Networks.” <em>International Conference of Learning Representations</em>.</p>
+</div>
+<div>
+<p>Mohammad Lotfollahi, Fabian J. Theis, F. Alexander Wolf. 2019. “ScGen Predicts Single-Cell Perturbation Responses.” <em>Nat. Methods</em> 16 (8): 715–21.</p>
+</div>
+<div>
+<p>Prabhu, Vinay Uday, and Abeba Birhane. 2020. “Large Image Datasets: A Pyrrhic Win for Computer Vision?” <em>CoRR</em> abs/2006.16923. <a href="https://arxiv.org/abs/2006.16923" class="uri">https://arxiv.org/abs/2006.16923</a>.</p>
+</div>
+<div>
+<p>Windram, Oliver, Priyadharshini Madhou, Stuart McHattie, Claire Hill, Richard Hickman, Emma Cooke, Dafyd J Jenkins, et al. 2012. “Arabidopsis Defense Against Botrytis Cinerea: Chronology and Regulation Deciphered by High-Resolution Temporal Transcriptomic Analysis.” <em>The Plant Cell</em> 24 (9). Am Soc Plant Biol: 3530–57.</p>
+</div>
+<div>
+<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.name/knitr/" class="uri">http://yihui.name/knitr/</a>.</p>
+</div>
+<div>
+<p>———. 2017. <em>Bookdown: Authoring Books and Technical Documents with R Markdown</em>. <a href="https://github.com/rstudio/bookdown" class="uri">https://github.com/rstudio/bookdown</a>.</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="solutions-logistic-regression.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
