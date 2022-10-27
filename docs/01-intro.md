@@ -7,9 +7,9 @@ output:
 
 In this workbook, we cover two themes. 
 
-We begin in chapter \@ref(logistic-regression) with linear regression and logistic regression. Here we will explore how to use these statistical methods in the context of machine learning. The excercises are based on a plant infection dataset. We will see how regression models of different complexity can be fit to the dataset, and how held out data can be used to choose the best model. After this, we will see how logistic regression approaches can be used to pick out marker genes that indicate infected status.   
+We begin in chapter \@ref(logistic-regression) with linear regression and logistic regression. Here we will explore how to use these statistical methods in the context of machine learning. The majority of the excercises are based on a plant infection dataset. We will see how regression models of different complexity can be fit to the dataset, and how held out data can be used to choose the best model. After this, we will see how logistic regression approaches can be used to pick out marker genes that indicate infected status. Finally, we explore how regression approaches can be used in the context of more recent datasets: inference of spatially-resolved gene expression patterns in a developing embryo.
 
-In chapter \@ref(mlnn) we introduce the concepts of neural networks. We demonstrate how neural networks can be built using the {kerasR} package for regression applications. Later we introduce Convolutional Neural Networks (CNN) and see how they can be used for image recognition applications. In this chapter we attempt to build an algorithm capable of recognising a well known cartoon characer in a se of images. Finally, we briefly discuss how these basic approaches can be built into more complex algorithms.
+In chapter \@ref(mlnn) we introduce the concepts of multilayer neural networks. We demonstrate how neural networks can be built for regression applications. Later we introduce Convolutional Neural Networks (CNN) and see how they can be used for image recognition. In this chapter we build an algorithm capable of recognising a well known cartoon characer in a set of images. Finally, we briefly discuss how these basic approaches can be built into more complex algorithms.
 
 # Installation
 
@@ -73,7 +73,7 @@ Finally, we will open Rstudio, install reticulate, set the version of Python to 
 install.packages("reticulate")
 library(reticulate)
 use_python("Python3.9")
-install.packages("keras")
+#install.packages("keras")
 ```
 
 At this stage you should now be ready to run Keras in R.

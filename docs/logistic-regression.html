@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Linear regression and logistic regression | Classical approaches to Machine Learning</title>
+  <meta name="description" content="Course materials for Classical approaches to Machine Learning" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Linear regression and logistic regression | Classical approaches to Machine Learning" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="figures/cover_image.png" />
+  <meta property="og:description" content="Course materials for Classical approaches to Machine Learning" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Linear regression and logistic regression | Classical approaches to Machine Learning" />
+  
+  <meta name="twitter:description" content="Course materials for Classical approaches to Machine Learning" />
+  <meta name="twitter:image" content="figures/cover_image.png" />
+
+<meta name="author" content="Chris Penfold" />
+
+
+<meta name="date" content="2022-10-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="installation.html"/>
+<link rel="next" href="mlnn.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About the course</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#schedule"><i class="fa fa-check"></i><b>1.2</b> Schedule</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#github"><i class="fa fa-check"></i><b>1.3</b> Github</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.4</b> License</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#colophon"><i class="fa fa-check"></i><b>1.6</b> Colophon</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>3</b> Installation</a></li>
+<li class="chapter" data-level="4" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>4</b> Linear regression and logistic regression</a><ul>
+<li class="chapter" data-level="4.1" data-path="logistic-regression.html"><a href="logistic-regression.html#regression"><i class="fa fa-check"></i><b>4.1</b> Regression</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="logistic-regression.html"><a href="logistic-regression.html#linear-regression"><i class="fa fa-check"></i><b>4.1.1</b> Linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="logistic-regression.html"><a href="logistic-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>4.1.2</b> Polynomial regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="logistic-regression.html"><a href="logistic-regression.html#logistic-regression1"><i class="fa fa-check"></i><b>4.1.3</b> Logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="logistic-regression.html"><a href="logistic-regression.html#using-regression-approaches-to-infer-3d-gene-expression-patterns-in-marmoset-embryos"><i class="fa fa-check"></i><b>4.2</b> Using regression approaches to infer 3D gene expression patterns in marmoset embryos</a></li>
+<li class="chapter" data-level="4.3" data-path="logistic-regression.html"><a href="logistic-regression.html#resources"><i class="fa fa-check"></i><b>4.3</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="mlnn.html"><a href="mlnn.html"><i class="fa fa-check"></i><b>5</b> Deep Learning</a><ul>
+<li class="chapter" data-level="5.1" data-path="mlnn.html"><a href="mlnn.html#multilayer-neural-networks"><i class="fa fa-check"></i><b>5.1</b> Multilayer Neural Networks</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="mlnn.html"><a href="mlnn.html#regression-with-keras"><i class="fa fa-check"></i><b>5.1.1</b> Regression with Keras</a></li>
+<li class="chapter" data-level="5.1.2" data-path="mlnn.html"><a href="mlnn.html#image-classification-with-rick-and-morty"><i class="fa fa-check"></i><b>5.1.2</b> Image classification with Rick and Morty</a></li>
+<li class="chapter" data-level="5.1.3" data-path="mlnn.html"><a href="mlnn.html#rick-and-morty-classifier-using-deep-learning"><i class="fa fa-check"></i><b>5.1.3</b> Rick and Morty classifier using Deep Learning</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="mlnn.html"><a href="mlnn.html#convolutional-neural-networks"><i class="fa fa-check"></i><b>5.2</b> Convolutional neural networks</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="mlnn.html"><a href="mlnn.html#checking-the-models"><i class="fa fa-check"></i><b>5.2.1</b> Checking the models</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="mlnn.html"><a href="mlnn.html#multiclass-prediction"><i class="fa fa-check"></i><b>5.3</b> Multiclass prediction</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="mlnn.html"><a href="mlnn.html#categorical-data"><i class="fa fa-check"></i><b>5.3.1</b> Categorical data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="mlnn.html"><a href="mlnn.html#intepreting-cnn"><i class="fa fa-check"></i><b>5.3.2</b> Intepreting CNN</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="mlnn.html"><a href="mlnn.html#cnns-for-motif-analysis"><i class="fa fa-check"></i><b>5.4</b> CNNs for Motif analysis</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="mlnn.html"><a href="mlnn.html#data-augmentation"><i class="fa fa-check"></i><b>5.4.1</b> Data augmentation</a></li>
+<li class="chapter" data-level="5.4.2" data-path="mlnn.html"><a href="mlnn.html#transfer-learning"><i class="fa fa-check"></i><b>5.4.2</b> Transfer learning</a></li>
+<li class="chapter" data-level="5.4.3" data-path="mlnn.html"><a href="mlnn.html#more-complex-networks"><i class="fa fa-check"></i><b>5.4.3</b> More complex networks</a></li>
+<li class="chapter" data-level="5.4.4" data-path="mlnn.html"><a href="mlnn.html#autoencoders"><i class="fa fa-check"></i><b>5.4.4</b> Autoencoders</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="mlnn.html"><a href="mlnn.html#further-reading"><i class="fa fa-check"></i><b>5.5</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html"><i class="fa fa-check"></i><b>6</b> Solutions to Chapter 4 - Linear regression and logistic regression</a><ul>
+<li class="chapter" data-level="6.0.1" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html#distributions-of-fits"><i class="fa fa-check"></i><b>6.0.1</b> Distributions of fits</a></li>
+<li class="chapter" data-level="6.0.2" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html#gaussian-process-regression"><i class="fa fa-check"></i><b>6.0.2</b> Gaussian process regression</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="solutions-to-chapter-5-neural-networks.html"><a href="solutions-to-chapter-5-neural-networks.html"><i class="fa fa-check"></i><b>7</b> Solutions to Chapter 5 - Neural Networks</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Classical approaches to Machine Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="logistic-regression" class="section level1">
+<h1><span class="header-section-number">4</span> Linear regression and logistic regression</h1>
+<p>In section <a href="logistic-regression.html#regression">4.1</a> we briefly recap linear regression. As a real-world example we demonstrate the use of linear regression to predict gene expression values as a function of time. In this section we also demonstrate how, by breaking data into <em>training and test sets</em>, we can choose between models of increasing complexity in order to select one that is optimal in terms of predictive accuracy. Such <em>models</em> can be used to make predictions about the future (or at intermediate points lacking data) which may form the basis for automated decision making.</p>
+<p>In section <a href="logistic-regression.html#logistic-regression1">4.1.3</a> we recap logistic regression (section <a href="logistic-regression.html#logistic-regression">4</a>), and demonstrate how such approaches can be used to predict pathogen infection status in <em>Arabidopsis thaliana</em>. By doing so we identify key marker genes indicative of pathogen growth.</p>
+<div id="regression" class="section level2">
+<h2><span class="header-section-number">4.1</span> Regression</h2>
+<p>To recap our understanding of regression we will make use of an existing dataset which captures the gene expression levels in the model plant <em>Arabidopsis thaliana</em> following inoculation with <em>Botrytis cinerea</em> <span class="citation">(Windram et al. <a href="#ref-windram2012arabidopsis">2012</a>)</span>, a necrotrophic pathogen considered to be one of the most important fungal plant pathogens due to its ability to cause disease in a range of plants. Specifically this dataset is a time series measuring the gene expression in <em>Arabidopsis</em> leaves following inoculation with <em>Botrytis cinerea</em> over a <span class="math inline">\(48\)</span> hour time window, with observations taken at <span class="math inline">\(2\)</span> hour intervals. Whilst this example is biological in motivation the methods we discuss should be general and applicable to other collections of time series data, and it may be helpful to instead think of things in terms of <em>input variables</em> and <em>output variables</em>.</p>
+<p>The dataset is available from GEO (GSE39597) but a pre-processed version has been deposited in the data folder. This pre-processed data contains the expression levels of a set of <span class="math inline">\(163\)</span> marker genes in tab delimited format. The fist row contains gene IDs for the marker genes (the individual input variables). Column <span class="math inline">\(2\)</span> contains the time points of observations, with column <span class="math inline">\(3\)</span> containing a binary indication of infection status evalutated as <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span> according to wether there was a detectable presence of <em>Botrytis cinerea</em> tubulin protein. All subsequent columns indicate (<span class="math inline">\(\log_2\)</span>) normalised <em>Arabidopsis</em> gene expression values from microarrays (V4 TAIR V9 spotted cDNA array). The expression dataset itself contains two time series: the first set of observations represent measurements of <em>Arabidopsis</em> gene expression in a control time series (uninfected), from <span class="math inline">\(2h\)</span> through <span class="math inline">\(48h\)</span> at <span class="math inline">\(2\)</span>-hourly intervals, and therefore capture dynamic aspects natural plant processes, including circadian rhythms; the second set of observations represents an infected dataset, again commencing <span class="math inline">\(2h\)</span> after inoculation with <em>Botyris cinerea</em> through to <span class="math inline">\(48h\)</span>. Both conditions are replicated a number of times.</p>
+<p>Within this section our question is usually framed in the form of &quot;how does this gene's expression change over time.&quot; The output variable will typically be the expression level of a gene of interest, denoted <span class="math inline">\(\mathbf{y} =(y_1,\ldots,y_n)^\top\)</span>, with the explanatory variable being time, <span class="math inline">\(\mathbf{X} =(t_1,\ldots,t_n)^\top\)</span>. We can read the dataset into {R} as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">D &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/Arabidopsis/Arabidopsis_Botrytis_pred_transpose_3.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre></div>
+<p>To take a look at the data in the R environment simply type the name of the variable:</p>
+<p>From this we can see for ourself that the data consists of several variables measured over a time course. In fact, this experiment consists of several time series, with measurements of Arabidopsis leaves in response to infection with a necrotophic fungus , and a second set of experiments containing gene expression in an uninfected (control) conditions. Each condition has 4 replicates, so <span class="math inline">\(8\)</span> time-series in total. The variables are represented columnwise, including time and gene experssion, all of which are continuous variables. Two variables, labeled as <code>Class' and</code>Infec' appear to be binary - we will make use of these later. We can extract out the names of the variables (mostly gene names) as a new variable in R, by taking the column names:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">genenames &lt;-<span class="st"> </span><span class="kw">colnames</span>(D)</code></pre></div>
+<p>We can also pull out the time variables of the control time series. From the structure of the data we know that the first <span class="math inline">\(96\)</span> rows correspond to control (<span class="math inline">\(4\)</span> sets of <span class="math inline">\(24\)</span>), with the second <span class="math inline">\(96\)</span> corresponding to infection.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Xs &lt;-<span class="st"> </span>D<span class="op">$</span>Time[<span class="dv">1</span><span class="op">:</span><span class="dv">96</span>]</code></pre></div>
+<p>whilst for the treatment the times would be:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Xs2 &lt;-<span class="st"> </span>D<span class="op">$</span>Time[<span class="dv">97</span><span class="op">:</span><span class="kw">nrow</span>(D)]</code></pre></div>
+<p>Another way we can pull out data is to rely on indexing. For example if we did:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">timeind &lt;-<span class="st"> </span><span class="kw">which</span>(genenames<span class="op">==</span><span class="st">&quot;Time&quot;</span>)</code></pre></div>
+<p>This would tell us which colum contains the variable `Time'. We could then pull out the data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">genenames &lt;-<span class="st"> </span><span class="kw">colnames</span>(D)
+Xs2 &lt;-<span class="st"> </span>D[<span class="dv">97</span><span class="op">:</span><span class="kw">nrow</span>(D),timeind]</code></pre></div>
+<p>which is exactly the same as line 41.</p>
+<p>Before we get down to doing any real Machine Learning we first need to familiarise ourself with the data. In fact, it helps a lot if we come armed with a well thought out question: this will help us generate optimal datasets to begin with (or at the very least steer which datasets we will use), and will guide what methods we use to analyse the dataset. As previously suggested, our question going forward will be something like `how does gene expression change over time and in response to infection'.</p>
+<p>Let's start by plotting one of the gene expression variables (AT2G28890) as a function of time. The standard plotting we used throughout this course will be ggplot. It makes for very nice plotting, but can be sometimes be a little obscure in syntax, so the code below is probably more opaque than is necessary.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">ggplot</span>(D, <span class="kw">aes</span>(<span class="dt">x =</span> Time, <span class="dt">y =</span> AT2G28890, <span class="dt">colour =</span> <span class="kw">factor</span>(Class)) ) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>So here <code>Time' is our explanatory variable, the variable that is generally easy to measure, and</code>AT2G28890' represents our output variable, the one we're actually interested in. In the above plot we can see both a change in the variable over time, and a striking difference between the control versus infected time series. Depending on the number of variables we could do this for each variable in turn, but this would be tedious for larger datasets when we have thousands or even tens of thousands of variables. A heatmap is a good way to visualise many variables simultaneously. In fact, let's take a look at the heatmap of the infected time series minus the control using the `pheatmap' function. For ease of interpretation we will do this for replicate one only:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pheatmap)
+DeltaVals &lt;-<span class="st"> </span><span class="kw">t</span>(D[<span class="dv">97</span><span class="op">:</span><span class="dv">120</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">164</span>] <span class="op">-</span><span class="st"> </span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">164</span>]) <span class="co">#Here we subtract the expression of the control from infected for replicate 1</span>
+<span class="kw">pheatmap</span>(DeltaVals, <span class="dt">cluster_cols =</span> <span class="ot">FALSE</span>, <span class="dt">cluster_rows =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>In the above snippet we have additionally clustered the values to bring out the signal even more. We can clerly see strong patterns in the data that show both up-regulation and down-regulation of genes over time. This is the beginning of an exploratory analysis we might do to gauge wether the dataset contains useful information - only then might we begin to use ML to ask questions of it. In the next section we will undertake a very simple task: we will focus on the gene AT2G28890 and in either the control or infection time series we will try to identify the functional nature of the expression pattern.</p>
+<div id="linear-regression" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Linear regression</h3>
+<p>Now that we have an idea about what our dataset is, and are sure of its quality, we can start to do something with it. Here we have a time series (a number of time-series, in fact), and want to develop an understanding of how specific genes are changing over time: this would allow us to predict what gene expression might be doing at some point in the future (forecasting) or uncover something about the physical nature of the system i.e., what kind of function best describes the behavior. To do so we first need a <em>model</em> for how we expect the variable to behave. One of the simplest models we could assume is linear regression, which assumes that the variable of interest, denoted <span class="math inline">\(y\)</span>, depends on an explanatory variable, <span class="math inline">\(x\)</span>, via:</p>
+<p><span class="math inline">\(y = m x + c.\)</span></p>
+<p>For a typical set of data, we have a vector of observations, <span class="math inline">\(\mathbf{y} = (y_1,y_2,\ldots,y_n)\)</span> with a corresponding set of explanatory variables. For now we can assume that the explanatory variable is scalar, for example time (in hours), such that we have a set of observations, <span class="math inline">\(\mathbf{X} = (t_1,t_2,\ldots,t_n)\)</span>. Using linear regression we aim to infer the parameters <span class="math inline">\(m\)</span> and <span class="math inline">\(c\)</span>, which will tell us something about the relationship between the two variables, and allow us to make predictions at a new set of locations, <span class="math inline">\(\mathbf{X}*\)</span>.</p>
+<p>But how do we infer these parameters? The answer is we do so by empirically minimising/maximising some <em>objective function</em>, for example the sum squared error. Specifically, for a given value of <span class="math inline">\(m\)</span> and <span class="math inline">\(c\)</span> we can make predictions about what the value of <span class="math inline">\(y\)</span> is for any given vallue of <span class="math inline">\(x\)</span>, which we can then compare to a measured value. We therefore split that data into two: a training set, <span class="math inline">\(\{ \mathbf{X}_{train}, \mathbf{y}_{train}\}\)</span>, and a test set, <span class="math inline">\(\{ \mathbf{X}_{test}, \mathbf{y}_{test}\}\)</span>. Using the training set we can can we can find a value of <span class="math inline">\(m\)</span> and <span class="math inline">\(c\)</span> such that the sum of the squared difference between predictions of the model at locations <span class="math inline">\(\mathbf{X}_{train}\)</span>, denoted <span class="math inline">\(\mathbf{y}^\prime\)</span>, and the actual observed values <span class="math inline">\(\mathbf{y}_{train}\)</span> are in some way minimal. A number of other <em>objective functions</em> exist, each of which comes with their own set nuances. A key benefit of using the sum squared error in this case is that optimisation is mathematically tractable: that is we can directly solve the equation rather than having to do iterative searches.</p>
+<p>Within R, all linear regression can be implemented via the lm function. In the example below, we perform linear regression for the gene expression of AT2G28890 as a function of time, using <span class="math inline">\(3\)</span> of the <span class="math inline">\(4\)</span> infection time series (saving the fourth for validation):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">linmod &lt;-<span class="st"> </span><span class="kw">lm</span>(AT2G28890<span class="op">~</span>Time, <span class="dt">data =</span> D[<span class="dv">4</span><span class="op">*</span><span class="dv">24</span> <span class="op">+</span><span class="dv">1</span><span class="op">:</span><span class="dv">8</span><span class="op">*</span><span class="dv">24</span>,])</code></pre></div>
+<p>Here the {lm} function has analytically identified the gradient and offset (<span class="math inline">\(m\)</span> and <span class="math inline">\(c\)</span> parameters) based upon all 24 time points (4 replicates), and we can take a look at those parameters via {linmod$oefficients}. In general, it is not a very good idea to infer parameters using all of the data. Doing so would leave no way to choose betwee different models and evaluate for overfitting. Ideally, we wish to partition the dataset into a training set, and an evaluation set, with parameters evaluated on the training set, and model performance summarised over the evaluation set. We can of course partition this dataset manually, or use a package to do so. The {caret} package is a machine learning wrapper that allows easy partitions of the dataset. Linear regression is implemented within the {caret} package, allowing us to make use of these utilities. In fact, within caret, linear regression is performed by calling the function lm.</p>
+<p>In the example, below, we perform linear regression for gene AT2G28890, and predict the expression pattern for that gene using the {predict} function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)</code></pre></div>
+<pre><code>## Warning: package &#39;caret&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Warning: package &#39;lattice&#39; was built under R version 3.5.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<span class="kw">library</span>(ggplot2)
+
+<span class="kw">set.seed</span>(<span class="dv">1</span>)
+
+geneindex &lt;-<span class="st"> </span><span class="kw">which</span>(genenames<span class="op">==</span><span class="st">&quot;AT2G28890&quot;</span>)
+
+startind &lt;-<span class="st"> </span>(<span class="dv">4</span><span class="op">*</span><span class="dv">24</span>)<span class="op">+</span><span class="dv">1</span>
+endind &lt;-<span class="st"> </span><span class="dv">7</span><span class="op">*</span><span class="dv">24</span>
+xtrain =<span class="st"> </span>D[startind<span class="op">:</span>endind,<span class="dv">1</span>]
+ytrain =<span class="st"> </span>D[startind<span class="op">:</span>endind,geneindex]
+
+lrfit &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain ), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+predictedValues&lt;-<span class="kw">predict</span>(lrfit)</code></pre></div>
+<p>Note that here we have again manually selected the first three replicates from the infection time series (indexed by rows <span class="math inline">\(97-168\)</span>) and thus have saved replicate <span class="math inline">\(4\)</span> for evaluating performance. As an alternative, we could have instead randomly partitioned the data into a training set and test set, although there is no exact prescirption for doing so, and anthing between a <span class="math inline">\(60/40\)</span> and <span class="math inline">\(80/20\)</span> split is common. If we went donwn this route, our code would look something like:</p>
+<p>and voila, we have our training and test sets. Alternative way we could split the data is via the createDataPartition function:</p>
+<p>An important side note is that here is that, on lines 101 we have set the random number generator to help ensure our code is repeatable. Another thing we will need to do to help make things more repeatable is to take note of what package numbers we used. We can do so by printing the session info:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">sessionInfo</span>())</code></pre></div>
+<pre><code>## R version 3.5.1 (2018-07-02)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS  10.14.6
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] mlbench_2.1-1   caret_6.0-86    lattice_0.20-40 ggplot2_3.2.1  
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.4           lubridate_1.7.4      listenv_0.8.0       
+##  [4] class_7.3-15         digest_0.6.25        ipred_0.9-12        
+##  [7] foreach_1.5.1        utf8_1.1.4           parallelly_1.23.0   
+## [10] R6_2.5.0             plyr_1.8.6           stats4_3.5.1        
+## [13] evaluate_0.14        pillar_1.6.0         rlang_0.4.10        
+## [16] lazyeval_0.2.2       data.table_1.12.8    jquerylib_0.1.3     
+## [19] rpart_4.1-15         Matrix_1.2-18        rmarkdown_2.7       
+## [22] labeling_0.4.2       splines_3.5.1        gower_0.2.1         
+## [25] stringr_1.4.0        munsell_0.5.0        compiler_3.5.1      
+## [28] xfun_0.12            pkgconfig_2.0.3      globals_0.14.0      
+## [31] htmltools_0.5.1.1    nnet_7.3-13          tidyselect_1.1.1    
+## [34] tibble_3.1.1         prodlim_2019.11.13   bookdown_0.20       
+## [37] codetools_0.2-18     fansi_0.4.1          future_1.21.0       
+## [40] crayon_1.4.1         dplyr_1.0.5          withr_2.4.1         
+## [43] ModelMetrics_1.2.2.2 MASS_7.3-51.5        recipes_0.1.17      
+## [46] grid_3.5.1           nlme_3.1-145         jsonlite_1.6.1      
+## [49] gtable_0.3.0         lifecycle_1.0.0      DBI_1.1.1           
+## [52] magrittr_1.5         pROC_1.16.2          scales_1.1.1        
+## [55] future.apply_1.7.0   stringi_1.4.6        reshape2_1.4.3      
+## [58] farver_2.0.3         timeDate_3043.102    bslib_0.2.5.1       
+## [61] ellipsis_0.3.0       generics_0.1.0       vctrs_0.3.8         
+## [64] lava_1.6.10          iterators_1.0.13     tools_3.5.1         
+## [67] glue_1.3.2           purrr_0.3.3          parallel_3.5.1      
+## [70] survival_3.1-11      colorspace_1.4-1     knitr_1.28          
+## [73] sass_0.4.0</code></pre>
+<p>Or look at a specific package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">packageVersion</span>(<span class="st">&quot;ggplot2&quot;</span>)</code></pre></div>
+<pre><code>## [1] &#39;3.2.1&#39;</code></pre>
+<p>A summary of the model, including parameters, can be printed out to screen using the {summary} function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lrfit)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.3862 -0.3787  0.0814  0.4267  1.7164 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 10.380430   0.201695  51.466  &lt; 2e-16 ***
+## x           -0.062616   0.007058  -8.872 4.54e-13 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8291 on 70 degrees of freedom
+## Multiple R-squared:  0.5293, Adjusted R-squared:  0.5226 
+## F-statistic: 78.71 on 1 and 70 DF,  p-value: 4.543e-13</code></pre>
+<p>Returning to our task, we might ask how well the model has fitted the data. Conveniently, in cases where we do not specify otherwise, {caret} will perform <span class="math inline">\(k\)</span>-fold cross validation on the training set, and we can look at various metrics on the held out data in {lrfit$results}. We can also make predictions at new points (for example if we are interested in forecasting at some time in the future) by specifying a new set of time points over which to make a prediction:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newX &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">48</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+forecastValues&lt;-<span class="kw">predict</span>(lrfit,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX) )
+
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain ), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>)  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>forecastValues), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>In general the fit seems to capture a general downward trend. We can also take a look at predictions in the held-out <span class="math inline">\(4\)</span>th replicate:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newX &lt;-<span class="st"> </span>D[<span class="dv">169</span><span class="op">:</span><span class="dv">192</span>,<span class="dv">1</span>]
+forecastValues&lt;-<span class="kw">predict</span>(lrfit,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX) )
+residuals &lt;-<span class="st"> </span>forecastValues <span class="op">-</span><span class="st"> </span>D[<span class="dv">169</span><span class="op">:</span><span class="dv">192</span>,geneindex]
+<span class="kw">plot</span>(residuals, <span class="dt">type=</span><span class="st">&quot;p&quot;</span>,<span class="dt">col=</span><span class="st">&quot;black&quot;</span>,<span class="dt">main=</span>genenames[geneindex])</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>residuals ), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>)  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p>By and large, for a good model, we would expect the residuals to look roughly random centred on <span class="math inline">\(0\)</span>. If we see structure, this may be a clue that our model is not as useful as it could be. We can also summarise performence by e.g., calculating the root mean squared error on the held out data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RMSE &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (forecastValues <span class="op">-</span><span class="st"> </span>D[<span class="dv">169</span><span class="op">:</span><span class="dv">192</span>,geneindex])<span class="op">^</span><span class="dv">2</span> ) )</code></pre></div>
+<p>The error on held out data comes into its own when looking to compare models, as we shall see in the next section.</p>
+<p>Finally, let's also fit a linear model to the control dataset (again only using 3 replicates), and plot the inferred results alongside the observation data for both fitted models:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newX &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">48</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+lrfit2 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+lrfit &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+predictedValues2 &lt;-<span class="st"> </span><span class="kw">predict</span>(lrfit2, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX))
+predictedValues&lt;-<span class="kw">predict</span>(lrfit,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX) )
+
+<span class="kw">ggplot</span>(D, <span class="kw">aes</span>(<span class="dt">x =</span> Time, <span class="dt">y =</span> AT2G28890, <span class="dt">colour =</span> <span class="kw">factor</span>(Class))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues2), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Whilst the above model appeared to do reasonably well at capturing the general trends in the dataset, if we take a closer look at the control data (in red), you may notice that, visually, there appears to be more structure to the data than indicated by the model fit. One thing we can do is take a look at the residuals fo each model: if there is structure in the residuals, it would suggest the model is not capturing the full richness of the model. Indeed, if we look AT2G28890 up on <a href="http://viridiplantae.ibvf.csic.es/circadiaNet/genes/atha/AT2G28890.html">CircadianNET</a>, we will see it is likely circadian in nature (<span class="math inline">\(p&lt;5\times10^{-5}\)</span>) suggesting there may be some rhythmicity to it. To better accommodate the complex nature of this data we may need something more complicated.</p>
+</div>
+<div id="polynomial-regression" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Polynomial regression</h3>
+<p>In general, linear models will not be appropriate for a large variety of datasets, particularly when the variables of interest are nonlinear. We can instead try to fit more complex models, such as a quadratic function, which has the following form:</p>
+<p><span class="math inline">\(y = m_1 x + m_2 x^2 + c,\)</span></p>
+<p>where <span class="math inline">\(m = [m_1,m_2,c]\)</span> represent the parameters we're interested in inferring. An <span class="math inline">\(n\)</span>th-order polynomial has the form:</p>
+<p><span class="math inline">\(y = \sum_{i=1}^{n} m_i x^i + c.\)</span></p>
+<p>where <span class="math inline">\(m = [m_1,\ldots,m_n,c]\)</span> are the free parameters. As before, the goal is to try to find values for these parameters such that we maximise/minimise some objective function. Within R we can infer more complex polynomials from the data using the {lm} package by calling the {poly} function when specifying the symbolic model. In the example below we fit a <span class="math inline">\(3\)</span>rd order polynomial (the order of the polynomial is specified via the {degree} variable):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">3</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,geneindex]))</code></pre></div>
+<p>We can agin do this in caret: in the snippet, below, we fit <span class="math inline">\(3\)</span>rd order polynomials to the control and infected datasets, and plot the fits alongside the data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit3 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">3</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+lrfit4 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">3</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+
+newX &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">48</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+
+predictedValues&lt;-<span class="kw">predict</span>(lrfit3,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX) )
+predictedValues2 &lt;-<span class="st"> </span><span class="kw">predict</span>(lrfit4, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX))
+
+<span class="kw">ggplot</span>(D, <span class="kw">aes</span>(<span class="dt">x =</span> Time, <span class="dt">y =</span> AT2G28890, <span class="dt">colour =</span> <span class="kw">factor</span>(Class))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues2), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Note that, by eye, the fit appears to be a little better than for the linear regression model. Well, maybe! We can quantify the accuracy of the models by looking at the root-mean-square error (RMSE) on the hold-out data (test-set), defined as:</p>
+<p><span class="math inline">\(\mbox{RMSE} = \sqrt{\sum_{i=1}^n (\hat{y_i}-y_i)^2/n}\)</span></p>
+<p>where <span class="math inline">\(\hat{y_i}\)</span> is the predicted value (model prediction) and <span class="math inline">\(y_i\)</span> the observed value of the <span class="math inline">\(i\)</span>th (held out) datapoint.</p>
+<p>What happens if we fit a much higher order polynomial? Try fitting a polynomial with degree up to <span class="math inline">\(d = 10\)</span> and plotting the result.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit3 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">12</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+lrfit4 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">12</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+
+newX &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">48</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+
+predictedValues&lt;-<span class="kw">predict</span>(lrfit3,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX) )
+predictedValues2 &lt;-<span class="st"> </span><span class="kw">predict</span>(lrfit4, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX))
+
+<span class="kw">ggplot</span>(D, <span class="kw">aes</span>(<span class="dt">x =</span> Time, <span class="dt">y =</span> AT2G28890, <span class="dt">colour =</span> <span class="kw">factor</span>(Class))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues2), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>As we increase the model complexity the fit may <em>appear</em> to match perfectly well to the training set. However, such models become completely useless for prediction purposes. We are overfitting! This is why we use held out data, so that we can evaluate, empirically, when a model is useful, or when it is simply memorising the training set (noise and nuance and all).</p>
+<p>Using our gene of interest explore the model complexity i.e., try fitting polynomial models of increasing complexity. Plot the RMSE on the test set as a function of degree. Which model fits best?</p>
+<p>In the code below we systematically fit a model with increasing degree and evaluate/plot the RMSE on the held out data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xtrain &lt;-<span class="st"> </span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">1</span>]
+ytrain &lt;-<span class="st"> </span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,geneindex]
+xtest &lt;-<span class="st"> </span>D[<span class="dv">73</span><span class="op">:</span><span class="dv">96</span>,<span class="dv">1</span>]
+ytest &lt;-<span class="st"> </span>D[<span class="dv">73</span><span class="op">:</span><span class="dv">96</span>,geneindex]
+
+RMSE &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> <span class="dv">10</span>, <span class="dt">ncol =</span> <span class="dv">2</span>) ) <span class="co">#rep(NULL, c(10,2))</span>
+lrfit1 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">1</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">1</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit1<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues1&lt;-<span class="kw">predict</span>(lrfit1, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>ytest) )
+RMSE[<span class="dv">1</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues1<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit2 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">2</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit2<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues2&lt;-<span class="kw">predict</span>(lrfit2, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues2<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit3 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">3</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">3</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit3<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues3&lt;-<span class="kw">predict</span>(lrfit3, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">3</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues3<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit4 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">4</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">4</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit4<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues4&lt;-<span class="kw">predict</span>(lrfit4, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">4</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues4<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit5 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">5</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">5</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit5<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues5&lt;-<span class="kw">predict</span>(lrfit5, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">5</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues5<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit6 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">6</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">6</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit6<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues6&lt;-<span class="kw">predict</span>(lrfit6, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">6</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues6<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit7 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">7</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">7</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit7<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues7&lt;-<span class="kw">predict</span>(lrfit7, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">7</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues7<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit8 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">8</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">8</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit8<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues8&lt;-<span class="kw">predict</span>(lrfit8, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">8</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues8<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit9 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">9</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">9</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit9<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues9&lt;-<span class="kw">predict</span>(lrfit9, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">9</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues9<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit10 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">15</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">10</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit10<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues10&lt;-<span class="kw">predict</span>(lrfit10, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">10</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues10<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )</code></pre></div>
+<p>We can now look at the RMSE in the held-out data as a function of polynomial degree:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>RMSE, <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>), <span class="dt">y=</span>V2)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="dt">stat=</span><span class="st">&quot;identity&quot;</span>, <span class="dt">fill=</span><span class="st">&quot;steelblue&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p>Let's plot the supposed best model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit3 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">8</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+lrfit4 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">8</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+
+newX &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">48</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+
+predictedValues&lt;-<span class="kw">predict</span>(lrfit3,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX) )
+predictedValues2 &lt;-<span class="st"> </span><span class="kw">predict</span>(lrfit4, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX))
+
+<span class="kw">ggplot</span>(D, <span class="kw">aes</span>(<span class="dt">x =</span> Time, <span class="dt">y =</span> AT2G28890, <span class="dt">colour =</span> <span class="kw">factor</span>(Class))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues2), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>In the above plots, we can see the decrease in RMSE as model complexity increases, and get a hint that it's beginning to increase as models become too complex, but it's not exactly obvious. One issue is that we chose our test set as being one of the four time series (trained on the first <span class="math inline">\(3\)</span>), our test locations were at the same points as the input training time series, making it harder to distinguish between models. An alternative approach would be to make a training/test set split over particular time points, for example we might want to pick the last <span class="math inline">\(3\)</span> time points to be our test set.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xtrain &lt;-<span class="st"> </span>D[<span class="op">-</span><span class="kw">which</span>(D<span class="op">$</span>Time <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">44</span>,<span class="dv">46</span>,<span class="dv">48</span>) ),<span class="dv">1</span>]
+ytrain &lt;-<span class="st"> </span>D[<span class="op">-</span><span class="kw">which</span>(D<span class="op">$</span>Time <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">44</span>,<span class="dv">46</span>,<span class="dv">48</span>) ),geneindex]
+xtest &lt;-<span class="st"> </span>D[<span class="kw">which</span>(D<span class="op">$</span>Time <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">44</span>,<span class="dv">46</span>,<span class="dv">48</span>) ),<span class="dv">1</span>]
+ytest &lt;-<span class="st"> </span>D[<span class="kw">which</span>(D<span class="op">$</span>Time <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">44</span>,<span class="dv">46</span>,<span class="dv">48</span>) ),geneindex]
+
+RMSE &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> <span class="dv">10</span>, <span class="dt">ncol =</span> <span class="dv">2</span>) ) <span class="co">#rep(NULL, c(10,2))</span>
+lrfit1 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">1</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">1</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit1<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues1&lt;-<span class="kw">predict</span>(lrfit1, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>ytest) )
+RMSE[<span class="dv">1</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues1<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit2 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">2</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit2<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues2&lt;-<span class="kw">predict</span>(lrfit2, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">2</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues2<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit3 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">3</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">3</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit3<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues3&lt;-<span class="kw">predict</span>(lrfit3, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">3</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues3<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit4 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">4</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">4</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit4<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues4&lt;-<span class="kw">predict</span>(lrfit4, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">4</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues4<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit5 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">5</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">5</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit5<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues5&lt;-<span class="kw">predict</span>(lrfit5, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">5</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues5<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit6 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">6</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">6</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit6<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues6&lt;-<span class="kw">predict</span>(lrfit6, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">6</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues6<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit7 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">7</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">7</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit7<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues7&lt;-<span class="kw">predict</span>(lrfit7, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">7</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues7<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit8 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">8</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">8</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit8<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues8&lt;-<span class="kw">predict</span>(lrfit8, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">8</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues8<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit9 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">9</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">9</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit9<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues9&lt;-<span class="kw">predict</span>(lrfit9, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">9</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues9<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+lrfit10 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">15</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>xtrain,<span class="dt">y=</span>ytrain), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+RMSE[<span class="dv">10</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>lrfit10<span class="op">$</span>results<span class="op">$</span>RMSE
+predictedValues10&lt;-<span class="kw">predict</span>(lrfit10, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xtest) )
+RMSE[<span class="dv">10</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">mean</span>( (predictedValues10<span class="op">-</span>ytest)<span class="op">^</span><span class="dv">2</span> ) )
+
+<span class="kw">ggplot</span>(<span class="dt">data=</span>RMSE, <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>), <span class="dt">y=</span>V2)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="dt">stat=</span><span class="st">&quot;identity&quot;</span>, <span class="dt">fill=</span><span class="st">&quot;steelblue&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p>Now things become a little more obvious. In this example polynomial of degree <span class="math inline">\(4\)</span> is the best fit. We can plot the best models:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit3 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">4</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+lrfit4 &lt;-<span class="st"> </span><span class="kw">train</span>(y<span class="op">~</span><span class="kw">poly</span>(x,<span class="dt">degree=</span><span class="dv">4</span>), <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,<span class="dv">1</span>],<span class="dt">y=</span>D[<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>,geneindex]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+
+newX &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">48</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+
+predictedValues&lt;-<span class="kw">predict</span>(lrfit3,<span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX) )
+predictedValues2 &lt;-<span class="st"> </span><span class="kw">predict</span>(lrfit4, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX))
+
+<span class="kw">ggplot</span>(D, <span class="kw">aes</span>(<span class="dt">x =</span> Time, <span class="dt">y =</span> AT2G28890, <span class="dt">colour =</span> <span class="kw">factor</span>(Class))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues2), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>newX,<span class="dt">y=</span>predictedValues), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Which seems to suggest that, for this dataset, a more complex model is better than the simple linear regression we began with, which is in line with our intuition of this gene being a circadian one. In practice, high-order polynomials are not ideal models for real world data, and we will instead move to more flexible approaches to regression including decision trees, neural networks. Nevertheless, the principle of using held out data to select a good model remains true in these cases. And now that we have a understanding of regression in the context of machine learning, we can easily incroporate more complex models (including nonlineaar regression) into our toolbox, and use these diverse approaches for a variey of means: for making predictions of continuous variables, for making decisions about future, and for extracing understanding about the nature of the dataset itself (model selection).</p>
+</div>
+<div id="logistic-regression1" class="section level3">
+<h3><span class="header-section-number">4.1.3</span> Logistic regression</h3>
+<p>The type of linear regression models we've been using up to this point deal with real-valued observation data, <span class="math inline">\(\mathbf{y}\)</span>, and are therefore not appropriate for classification. To deal with cases where <span class="math inline">\(\mathbf{y}\)</span> is a binary outcome, we instead have to think of different <em>models</em>, use different <em>objective functions</em> to optimise, and use different <em>metrics</em> to choose between competing models. Fortunately, however, much of the framework used for regression remains the same.</p>
+<p>Logistic regression is a model which can be used for data in which there is a general transition from one state to another as a function of the input variable e.g., where gene expression levels might predict a binary disease state, with lower levels indicating disease-free, and higher-levels indicating a diseased state. Logistic regression does not perform classification <em>per se</em>, but instead models the probability of a successful event (e.g., the probability that for a given expression the observation was in the diseased free state, <span class="math inline">\(0\)</span>, or diseased state <span class="math inline">\(1\)</span>). As probability is a real-valued number (between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>), technically this remains a form of regression. However, we can use logistic regression to make classifications by setting thresholds on those probabilities i.e., for prediction purposes we decide everything with <span class="math inline">\(p\ge 0.5\)</span> is a success (<span class="math inline">\(1\)</span>), and everything below is a <span class="math inline">\(0\)</span>.</p>
+<p>Another way to think about linear regression is that we are fitting a linear model to the logit (natural log) of the log-odds ratio:</p>
+<p><span class="math inline">\(\ln \biggl{(}\frac{p(x)}{1-p(x)}\biggr{)} = c + m_1 x_1.\)</span></p>
+<p>Although this model is not immediately intuitive, if we solve for <span class="math inline">\(p(x)\)</span> we get:</p>
+<p><span class="math inline">\(p(x) = \frac{1}{1+\exp(-c - m_1 x_1)}\)</span>.</p>
+<p>We have thus specified a function that indicates the probability of success for a given value of <span class="math inline">\(x\)</span> e.g., <span class="math inline">\(P(y=1|x)\)</span>. In general can think of our data as a being a sample from a Bernoulli trial, and can therefore write down the likelihood for a set of observations <span class="math inline">\({\mathbf{X},\mathbf{y}}\)</span>:</p>
+<p><span class="math inline">\(\mathcal{L}(c,m_1) = \prod_{i=1}^n p(x_i)^{y_i} (1-p(x_i)^{1-y_i})\)</span>.</p>
+<p>This is our <em>objective function</em> that we seek to maximise. Unlike linear regression, these models do not admit a closed form solution, but can be solved iteratively. The end result is the same, we find values <span class="math inline">\((c,m_1)\)</span> that return the greatest value of <span class="math inline">\(\mathcal{L}(c,m_1)\)</span>. Within {caret}, logistic regression can applied using the {glm} function.</p>
+<p>To illustate this we will again make use of our plant dataset. Recall that the third column represents a binary variable indicative of infection status. That is, indicating the population of the <em>Botrytis cinerea</em> pathogen based on detectable <em>Botrytis</em> tubulin. Thus, the value of this variable is <span class="math inline">\(0\)</span> for the entirety of the control time series, and <span class="math inline">\(0\)</span> for the earliest few time points of the infected time series, since Botrytis takes some time to proliferate and breach the plant cell walls.</p>
+<p>In the codde, below, we will use logistic regression to learn a set of markers capable of predicting infection status. To begin with, let's see if <em>time</em> is informative of infection status:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pROC)</code></pre></div>
+<pre><code>## Warning: package &#39;pROC&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;pROC&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ROCR)</code></pre></div>
+<pre><code>## Loading required package: gplots</code></pre>
+<pre><code>## 
+## Attaching package: &#39;gplots&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     lowess</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">warn=</span><span class="op">-</span><span class="dv">1</span>)
+
+Dtrain =<span class="st"> </span>D[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">72</span>,<span class="dv">97</span><span class="op">:</span><span class="dv">168</span>),]
+Dtest =<span class="st"> </span>D[<span class="kw">c</span>(<span class="dv">73</span><span class="op">:</span><span class="dv">96</span>,<span class="dv">169</span><span class="op">:</span><span class="dv">192</span>),]
+
+mod_fit &lt;-<span class="st"> </span><span class="kw">train</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtrain<span class="op">$</span>Time, <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtrain<span class="op">$</span>Infec)), <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)</code></pre></div>
+<p>Here we have again split the data into a training and test set. We can calulate the probability that each datapoint in the test set belongs to class <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prob &lt;-<span class="st"> </span><span class="kw">predict</span>(mod_fit, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtest<span class="op">$</span>Time, <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec)), <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)
+pred &lt;-<span class="st"> </span><span class="kw">prediction</span>(prob<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>, <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec))</code></pre></div>
+<p>In the above snippet we calculate the probability of each data point belonging to class 0 vs class 1, and using an incremented set of cutoffs use these to make a binary classification. To evaluate how well the algorithm has done, we can calculate a variety of summary statistics. For example for a given cutoff (say 0.5) we can calculate the number of true positives, true negatives, false positives, and false negatives. A useful summary is to plot the ROC curve (false positive rate versus true positive rate for all cutoffs) and calculate the area under that curve. For a perfect algorithm the area under this curve (AUC) will be equal to <span class="math inline">\(1\)</span>, whereas random assignment would give an area of <span class="math inline">\(0.5\)</span>. In the example below, we will calculate the AUC for a logistic regression model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">perf &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="dt">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)
+<span class="kw">plot</span>(perf)</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">auc &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;auc&quot;</span>)
+auc &lt;-<span class="st"> </span>auc<span class="op">@</span>y.values[[<span class="dv">1</span>]]
+auc</code></pre></div>
+<pre><code>## [1] 0.6111111</code></pre>
+<p>Okay, so a score of <span class="math inline">\(0.61\)</span> is certainly better than random, but not particularly good. This is perhaps not surprising, as half the time series (the control) is uninfected over the entirety of the time series, whilst in the second times series <em>Botrytis</em> is able to infect from around <span class="math inline">\(8h\)</span> onward. The slightly better than random performance therefore arises due the slight bias in the number of instances of each class. Indeed, if we plot infection status vs time, we should be able to see why the model fails to be predictive.</p>
+<p>Let us see if AT2G28890 expression is informative:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod_fit &lt;-<span class="st"> </span><span class="kw">train</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtrain<span class="op">$</span>AT2G28890, <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtrain<span class="op">$</span>Infec)), <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)
+prob &lt;-<span class="st"> </span><span class="kw">predict</span>(mod_fit, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtest<span class="op">$</span>AT2G28890, <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec)), <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)
+pred &lt;-<span class="st"> </span><span class="kw">prediction</span>(prob<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>, <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec))
+perf &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="dt">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)
+<span class="kw">plot</span>(perf)</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">auc &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;auc&quot;</span>)
+auc &lt;-<span class="st"> </span>auc<span class="op">@</span>y.values[[<span class="dv">1</span>]]
+auc</code></pre></div>
+<pre><code>## [1] 0.7795414</code></pre>
+<p>Both the ROC curve and the AUC score are much better. In the example below, we now regress infection status against individual gene expression levels for all genes in our set. The idea is to identify genes that have expression values indicative of <em>Botrytis</em> infection: marker genes.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">aucscore &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">165</span>)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">4</span>,<span class="dv">165</span>)){
+mod_fit &lt;-<span class="st"> </span><span class="kw">train</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtrain[,i], <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtrain<span class="op">$</span>Infec)), <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)
+prob &lt;-<span class="st"> </span><span class="kw">predict</span>(mod_fit, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtest[,i], <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec)), <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)
+pred &lt;-<span class="st"> </span><span class="kw">prediction</span>(prob<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>, <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec))
+perf &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="dt">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)
+auc &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;auc&quot;</span>)
+aucscore[i] &lt;-<span class="st"> </span>auc<span class="op">@</span>y.values[[<span class="dv">1</span>]]
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">4</span>,<span class="dv">165</span>,<span class="dv">1</span>),<span class="dt">y=</span>aucscore[<span class="dv">4</span><span class="op">:</span><span class="dv">165</span>]), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>)  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="fl">0.8</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>We note that, several genes in the list appear to have AUC scores much greater than <span class="math inline">\(0.6\)</span>. We can take a look at some of the genes with high predictive power:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">genenames[<span class="kw">which</span>(aucscore<span class="op">&gt;</span><span class="fl">0.8</span>)]</code></pre></div>
+<pre><code>##  [1] &quot;AT1G13030&quot; &quot;AT1G32230&quot; &quot;AT1G45145&quot; &quot;AT1G67170&quot; &quot;AT2G21380&quot; &quot;AT2G27480&quot;
+##  [7] &quot;AT2G35500&quot; &quot;AT2G44950&quot; &quot;AT3G02150&quot; &quot;AT3G09980&quot; &quot;AT3G11590&quot; &quot;AT3G13720&quot;
+## [13] &quot;AT3G44720&quot; &quot;AT3G48150&quot; &quot;AT3G49570&quot; &quot;AT3G54170&quot; &quot;AT4G00710&quot; &quot;AT4G00980&quot;
+## [19] &quot;AT4G01090&quot; &quot;AT4G02150&quot; &quot;AT4G19700&quot; &quot;AT4G26110&quot; &quot;AT4G26450&quot; &quot;AT4G28640&quot;
+## [25] &quot;AT4G34710&quot; &quot;AT4G36970&quot; &quot;AT4G39050&quot; &quot;AT5G11980&quot; &quot;AT5G22630&quot; &quot;AT5G25070&quot;
+## [31] &quot;AT5G50010&quot; &quot;AT5G56290&quot; &quot;AT5G57210&quot; &quot;AT5G59670&quot; &quot;AT5G66560&quot;</code></pre>
+<p>Unsurprisingly, among these genes we see a variety whose proteins are known to be targeted by various pathogen effectors, and are therefore directly implicated in the immune response (Table 1).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Gene</th>
+<th>Effector</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AT3G25710</td>
+<td>ATR1_ASWA1</td>
+</tr>
+<tr class="even">
+<td>AT4G19700</td>
+<td>ATR13_NOKS1</td>
+</tr>
+<tr class="odd">
+<td>AT4G34710</td>
+<td>ATR13_NOKS1</td>
+</tr>
+<tr class="even">
+<td>AT4G39050</td>
+<td>ATR13_NOKS1</td>
+</tr>
+<tr class="odd">
+<td>AT5G24660</td>
+<td>ATR13_NOKS1</td>
+</tr>
+<tr class="even">
+<td>AT4G00710</td>
+<td>AvrRpt2_Pto JL1065_CatalyticDead</td>
+</tr>
+<tr class="odd">
+<td>AT4G16380</td>
+<td>HARXL44</td>
+</tr>
+<tr class="even">
+<td>AT2G45660</td>
+<td>HARXL45</td>
+</tr>
+<tr class="odd">
+<td>AT5G11980</td>
+<td>HARXL73</td>
+</tr>
+<tr class="even">
+<td>AT2G35500</td>
+<td>HARXLL445</td>
+</tr>
+<tr class="odd">
+<td>AT1G67170</td>
+<td>HARXLL470_WACO9</td>
+</tr>
+<tr class="even">
+<td>AT4G36970</td>
+<td>HARXLL470_WACO9</td>
+</tr>
+<tr class="odd">
+<td>AT5G56250</td>
+<td>HARXLL470_WACO9</td>
+</tr>
+<tr class="even">
+<td>AT3G09980</td>
+<td>HARXLL516_WACO9</td>
+</tr>
+<tr class="odd">
+<td>AT5G50010</td>
+<td>HARXLL60</td>
+</tr>
+<tr class="even">
+<td>AT3G44720</td>
+<td>HARXLL73_2_WACO9</td>
+</tr>
+<tr class="odd">
+<td>AT5G22630</td>
+<td>HARXLL73_2_WACO9</td>
+</tr>
+<tr class="even">
+<td>AT5G43700</td>
+<td>HopH1_Psy B728A</td>
+</tr>
+</tbody>
+</table>
+<p>Table 1: Genes predictive of infection status of <em>Botrytis cinerea</em> whose proteins are targeted by effectors of a variety of pathogens</p>
+<p>As always, let's take a look at what our model and the data look like. In this case we plot the training data labels and the fit from the logistic regression i.e., <span class="math inline">\(p(\mathbf{y}=1|\mathbf{x})\)</span>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bestpredictor &lt;-<span class="st"> </span><span class="kw">which</span>(aucscore<span class="op">==</span><span class="kw">max</span>(aucscore))[<span class="dv">1</span>]
+best_mod_fit &lt;-<span class="st"> </span><span class="kw">train</span>(y <span class="op">~</span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtrain[,bestpredictor], <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtrain<span class="op">$</span>Infec)), <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>, <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>)
+
+xpred &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="kw">min</span>(Dtest[,bestpredictor]),<span class="kw">max</span>(Dtest[,bestpredictor]),<span class="dt">length=</span><span class="dv">200</span>)
+ypred &lt;-<span class="st"> </span><span class="kw">predict</span>(best_mod_fit,<span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> xpred),<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)[,<span class="dv">2</span>]
+
+Data_to_plot &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtest[,bestpredictor],<span class="dt">y=</span>Dtest[,<span class="dv">3</span>])
+<span class="kw">ggplot</span>(Data_to_plot, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">colour =</span> <span class="kw">factor</span>(y) )) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>)) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xpred,<span class="dt">y=</span>ypred), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p>We can see from this plot that the level of AT2G21380 appears to be highly predictive of infection status. When AT2G21380 is low, its almost certain that the <em>Botrytis cinerea</em> has gained a foothold; whether this is causal or not, we cannot say, but it is certainly a good marker and a good starting point for further testing.</p>
+<p>We could also make predictions using more than one variable. This might be useful, for example to figure out if there are any combinations of genes that together contain additional information. In the snippet of code we search for all combinations with AT2G21380:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">aucscore2 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">165</span>)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">4</span>,<span class="dv">165</span>)){
+mod_fit &lt;-<span class="st"> </span><span class="kw">train</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtrain[,<span class="kw">unique</span>(<span class="kw">c</span>(bestpredictor,i))], <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtrain<span class="op">$</span>Infec)), <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)
+prob &lt;-<span class="st"> </span><span class="kw">predict</span>(mod_fit, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtest[,<span class="kw">unique</span>(<span class="kw">c</span>(bestpredictor,i))], <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec)), <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)
+pred &lt;-<span class="st"> </span><span class="kw">prediction</span>(prob<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>, <span class="kw">as.factor</span>(Dtest<span class="op">$</span>Infec))
+perf &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="dt">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)
+auc &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;auc&quot;</span>)
+aucscore2[i] &lt;-<span class="st"> </span>auc<span class="op">@</span>y.values[[<span class="dv">1</span>]]
+}
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">4</span>,<span class="dv">165</span>,<span class="dv">1</span>),<span class="dt">y=</span>aucscore2[<span class="dv">4</span><span class="op">:</span><span class="dv">165</span>]), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>)  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span><span class="st">  </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="kw">max</span>(aucscore) )) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p>This looks promising - there are a few combinations that allow us to make even better predictions. However, we have made one mistake! If we are to do this properly, we must ensure that we are making decisions on a dataset that has not been seen by the model. In the above case, this would not strictly be true, as we have selected our &quot;best gene&quot; using the test data. Thus to do this properly we would have to either look at pairwise combinations at an earlier step (before we picked our best gene), or have access to a third batch of datapoints on which to do the selection. Indeed it is quite common to see datasets broken down into training, evaluation, and test sets, with the second set used to pick between several competing models. Luckily I have just such a dataset that I have been holding in reserve:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Deval &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/Arabidopsis/Arabidopsis_Botrytis_transpose_3.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">row.names=</span><span class="dv">1</span>)
+aucscore2 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">165</span>)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">4</span>,<span class="dv">165</span>)){
+mod_fit &lt;-<span class="st"> </span><span class="kw">train</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Dtrain[,<span class="kw">unique</span>(<span class="kw">c</span>(bestpredictor,i))], <span class="dt">y =</span> <span class="kw">as.factor</span>(Dtrain<span class="op">$</span>Infec)), <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)
+prob &lt;-<span class="st"> </span><span class="kw">predict</span>(mod_fit, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">x =</span> Deval[,<span class="kw">unique</span>(<span class="kw">c</span>(bestpredictor,i))], <span class="dt">y =</span> <span class="kw">as.factor</span>(Deval<span class="op">$</span>Infec)), <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)
+pred &lt;-<span class="st"> </span><span class="kw">prediction</span>(prob<span class="op">$</span><span class="st">`</span><span class="dt">1</span><span class="st">`</span>, <span class="kw">as.factor</span>(Deval<span class="op">$</span>Infec))
+perf &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;tpr&quot;</span>, <span class="dt">x.measure =</span> <span class="st">&quot;fpr&quot;</span>)
+auc &lt;-<span class="st"> </span><span class="kw">performance</span>(pred, <span class="dt">measure =</span> <span class="st">&quot;auc&quot;</span>)
+aucscore2[i] &lt;-<span class="st"> </span>auc<span class="op">@</span>y.values[[<span class="dv">1</span>]]
+}
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">seq</span>(<span class="dv">4</span>,<span class="dv">165</span>,<span class="dv">1</span>),<span class="dt">y=</span>aucscore2[<span class="dv">4</span><span class="op">:</span><span class="dv">165</span>]), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="fl">2.5</span>)  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_vline</span>(<span class="kw">aes</span>(<span class="dt">xintercept =</span> <span class="dv">28</span> )) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="09-logistic-regression-gaussian-processes_files/figure-html/unnamed-chunk-38-1.png" width="672" /> Here we indicate by a vertical line the index corresponding to the basal model (i.e, AT2G21380 only) and can see there are several combinatorial models that allow us to more accurately predict infection status.</p>
+</div>
+</div>
+<div id="using-regression-approaches-to-infer-3d-gene-expression-patterns-in-marmoset-embryos" class="section level2">
+<h2><span class="header-section-number">4.2</span> Using regression approaches to infer 3D gene expression patterns in marmoset embryos</h2>
+<p>In our recent paper <a href="https://www.nature.com/articles/s41586-022-04953-1">(Bergmann et al., Nature, 2022)</a> we combined laser capture microdissection (LCM) with RNA-sequencing and immunofluorescent staining to generate 3D transcriptional reconstructions of early post-implantation marmoset embryos. Here, adjacent sections were used to build a 3D model of the embryo. The 3D position of each LCM within this reconstructed embryo was retained, allowing an interpolation of expression patterns across the embryo using regression (albeit a nonlinear form of rgression). In the exammpels below we will take a look at the 3D models and use simple linear regression to investigate anterior-posterior gradients in the embryonic disc.</p>
+<p>First we will load the 3D &quot;scaffolds&quot; for the embryonic disc and the amnion. This consists of a set of vetices and a set of indices that define faces of the objecct. This example scaffold was constructed from sequential sections of a Carnegie stage 6 (CS6) marmoset embryo.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(plotly)</code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;plotly&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     last_plot</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     layout</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">D1 &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Embryo/CS6Vertices.csv&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;,&quot;</span>,<span class="dt">header=</span>F) 
+D2 &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Embryo/CS6EmDisc.csv&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;,&quot;</span>,<span class="dt">header=</span>F)
+D3 &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Embryo/CS6Am.csv&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;,&quot;</span>,<span class="dt">header=</span>F)</code></pre></div>
+<p>We will also load in the 3D locations of the laser capture microdissection samples that we used to do RNA-seq and the gene-expression of those samples. For simplicity I've included a processed expression matrix for a handful of genes.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">D5 &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;data/Embryo/CS6Expression.csv&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;,&quot;</span>,<span class="dt">header=</span>T)</code></pre></div>
+<p>As an illustrative example of regression we will look at the expression pattern differences in the embryonic disc versus the amnion. In this case we will do regression on embryonic disc and amnion seperately.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ind1 &lt;-<span class="st"> </span><span class="kw">which</span>(D5<span class="op">$</span>Lineage<span class="op">==</span><span class="st">&quot;EmDisc_CS6&quot;</span>)
+ind2 &lt;-<span class="st"> </span><span class="kw">which</span>(D5<span class="op">$</span>Lineage<span class="op">==</span><span class="st">&quot;Am_CS6&quot;</span>)</code></pre></div>
+<p>In the snippet of code below we use plotly to plot the scaffold tissues</p>
+<p>We can also visualise where the LCM samples are within the embryo:</p>
+<p>Okay so now we can do some regression. We first infer a model using the embryonic disc samples, and then infer a value over the full scaffold region:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit &lt;-<span class="st"> </span><span class="kw">train</span>(expr<span class="op">~</span>x<span class="op">+</span>y<span class="op">+</span>z, <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">expr=</span>D5<span class="op">$</span>SOX2[ind1],<span class="dt">x=</span>D5<span class="op">$</span>X[ind1],<span class="dt">y=</span>D5<span class="op">$</span>Y[ind1],<span class="dt">z=</span>D5<span class="op">$</span>Z[ind1]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+newX &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D1<span class="op">$</span>V1,<span class="dt">y=</span>D1<span class="op">$</span>V2,<span class="dt">z=</span>D1<span class="op">$</span>V3)
+predictedValues&lt;-<span class="kw">predict</span>(lrfit, newX)</code></pre></div>
+<p>We can visualise the interpolated values of <span class="math inline">\(SOX2\)</span> on the embryonic disc:</p>
+<p>We could do the same for the expression level of T and other genes. In the snippets of code below we have opted not to evaluate the code to keep the workbook size down, but these may still be run in your R session.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit &lt;-<span class="st"> </span><span class="kw">train</span>(expr<span class="op">~</span>x<span class="op">+</span>y<span class="op">+</span>z, <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">expr=</span>D5<span class="op">$</span>T[ind1],<span class="dt">x=</span>D5<span class="op">$</span>X[ind1],<span class="dt">y=</span>D5<span class="op">$</span>Y[ind1],<span class="dt">z=</span>D5<span class="op">$</span>Z[ind1]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+newX &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D1<span class="op">$</span>V1,<span class="dt">y=</span>D1<span class="op">$</span>V2,<span class="dt">z=</span>D1<span class="op">$</span>V3)
+predictedValues&lt;-<span class="kw">predict</span>(lrfit, newX)
+<span class="kw">plot_ly</span>(<span class="dt">x =</span> D1<span class="op">$</span>V1, <span class="dt">y =</span> D1<span class="op">$</span>V2, <span class="dt">z =</span> D1<span class="op">$</span>V3,  
+             <span class="dt">i =</span> <span class="kw">c</span>(D2<span class="op">$</span>V1<span class="op">-</span><span class="dv">1</span>),<span class="dt">j=</span><span class="kw">c</span>(D2<span class="op">$</span>V2<span class="op">-</span><span class="dv">1</span>),<span class="dt">k=</span><span class="kw">c</span>(D2<span class="op">$</span>V3<span class="op">-</span><span class="dv">1</span>),
+             <span class="dt">intensity =</span> predictedValues,
+             <span class="dt">colorscale =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="st">&#39;red&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.33</span>,<span class="st">&#39;orange&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.66</span>, <span class="st">&#39;yellow&#39;</span>),
+                               <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&#39;green&#39;</span>)),
+             <span class="dt">type =</span> <span class="st">&quot;mesh3d&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">layout</span>(<span class="dt">scene =</span> <span class="kw">list</span>(<span class="dt">xaxis =</span> ax, <span class="dt">yaxis =</span> ax, <span class="dt">zaxis =</span> ax), <span class="dt">font =</span> <span class="kw">list</span>(<span class="dt">color=</span><span class="st">&#39;#FFFFFF&#39;</span>))</code></pre></div>
+<p>Here we visualise expression of SOX2 on both the embryonic disc and amnion, in order to see tissue specific biases in gene expression.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit1 &lt;-<span class="st"> </span><span class="kw">train</span>(expr<span class="op">~</span>x<span class="op">+</span>y<span class="op">+</span>z, <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">expr=</span>D5<span class="op">$</span>SOX2[ind1],<span class="dt">x=</span>D5<span class="op">$</span>X[ind1],<span class="dt">y=</span>D5<span class="op">$</span>Y[ind1],<span class="dt">z=</span>D5<span class="op">$</span>Z[ind1]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+lrfit2 &lt;-<span class="st"> </span><span class="kw">train</span>(expr<span class="op">~</span>x<span class="op">+</span>y<span class="op">+</span>z, <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">expr=</span>D5<span class="op">$</span>SOX2[ind2],<span class="dt">x=</span>D5<span class="op">$</span>X[ind2],<span class="dt">y=</span>D5<span class="op">$</span>Y[ind2],<span class="dt">z=</span>D5<span class="op">$</span>Z[ind2]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+newX &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D1<span class="op">$</span>V1,<span class="dt">y=</span>D1<span class="op">$</span>V2,<span class="dt">z=</span>D1<span class="op">$</span>V3)
+predictedValues1&lt;-<span class="kw">predict</span>(lrfit1, newX)
+predictedValues2&lt;-<span class="kw">predict</span>(lrfit2, newX)
+maxE &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">c</span>(predictedValues1,predictedValues2))
+minE &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(predictedValues1,predictedValues2))
+<span class="co">#NB this is a hack. Plot_ly rescales internally so to make sure the two barplots are on the same scale we need to make sure they have the same limits. The final two colour points are not used  directly</span>
+predictedValues1&lt;-<span class="st"> </span><span class="kw">c</span>(predictedValues1,minE,maxE)
+predictedValues2&lt;-<span class="st"> </span><span class="kw">c</span>(predictedValues2,minE,maxE)
+
+p &lt;-<span class="st"> </span><span class="kw">plot_ly</span>(<span class="dt">x =</span> D1<span class="op">$</span>V1, <span class="dt">y =</span> D1<span class="op">$</span>V2, <span class="dt">z =</span> D1<span class="op">$</span>V3,  
+             <span class="dt">i =</span> <span class="kw">c</span>(D2<span class="op">$</span>V1<span class="op">-</span><span class="dv">1</span>),<span class="dt">j=</span><span class="kw">c</span>(D2<span class="op">$</span>V2<span class="op">-</span><span class="dv">1</span>),<span class="dt">k=</span><span class="kw">c</span>(D2<span class="op">$</span>V3<span class="op">-</span><span class="dv">1</span>),
+             <span class="dt">intensity =</span> <span class="kw">c</span>(predictedValues1),
+             <span class="dt">colorscale =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="st">&#39;red&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.33</span>,<span class="st">&#39;orange&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.66</span>, <span class="st">&#39;yellow&#39;</span>),
+                               <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&#39;green&#39;</span>)),
+             <span class="dt">type =</span> <span class="st">&quot;mesh3d&quot;</span>)
+
+p &lt;-<span class="st"> </span>p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">add_trace</span>(<span class="dt">x =</span> D1<span class="op">$</span>V1, <span class="dt">y =</span> D1<span class="op">$</span>V2, <span class="dt">z =</span> D1<span class="op">$</span>V3,  
+             <span class="dt">i =</span> <span class="kw">c</span>(D3<span class="op">$</span>V1<span class="op">-</span><span class="dv">1</span>),<span class="dt">j=</span><span class="kw">c</span>(D3<span class="op">$</span>V2<span class="op">-</span><span class="dv">1</span>),<span class="dt">k=</span><span class="kw">c</span>(D3<span class="op">$</span>V3<span class="op">-</span><span class="dv">1</span>),
+             <span class="dt">intensity =</span> <span class="kw">c</span>(predictedValues2),
+             <span class="dt">colorscale =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="st">&#39;red&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.33</span>,<span class="st">&#39;orange&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.66</span>, <span class="st">&#39;yellow&#39;</span>),
+                               <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&#39;green&#39;</span>)),
+             <span class="dt">type =</span> <span class="st">&quot;mesh3d&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">layout</span>(<span class="dt">scene =</span> <span class="kw">list</span>(<span class="dt">xaxis =</span> ax, <span class="dt">yaxis =</span> ax, <span class="dt">zaxis =</span> ax), <span class="dt">font =</span> <span class="kw">list</span>(<span class="dt">color=</span><span class="st">&#39;#000000&#39;</span>))
+p</code></pre></div>
+<p>Coversely we can look at an amnion marker VTCN1:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrfit1 &lt;-<span class="st"> </span><span class="kw">train</span>(expr<span class="op">~</span>x<span class="op">+</span>y<span class="op">+</span>z, <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">expr=</span>D5<span class="op">$</span>VTCN1[ind1],<span class="dt">x=</span>D5<span class="op">$</span>X[ind1],<span class="dt">y=</span>D5<span class="op">$</span>Y[ind1],<span class="dt">z=</span>D5<span class="op">$</span>Z[ind1]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+lrfit2 &lt;-<span class="st"> </span><span class="kw">train</span>(expr<span class="op">~</span>x<span class="op">+</span>y<span class="op">+</span>z, <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">expr=</span>D5<span class="op">$</span>VTCN1[ind2],<span class="dt">x=</span>D5<span class="op">$</span>X[ind2],<span class="dt">y=</span>D5<span class="op">$</span>Y[ind2],<span class="dt">z=</span>D5<span class="op">$</span>Z[ind2]), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+newX &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D1<span class="op">$</span>V1,<span class="dt">y=</span>D1<span class="op">$</span>V2,<span class="dt">z=</span>D1<span class="op">$</span>V3)
+predictedValues1&lt;-<span class="kw">predict</span>(lrfit1, newX)
+predictedValues2&lt;-<span class="kw">predict</span>(lrfit2, newX)
+maxE &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">c</span>(predictedValues1,predictedValues2))
+minE &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(predictedValues1,predictedValues2))
+<span class="co">#NB this is a hack. Plot_ly rescales internally so to make sure the two barplots are on the same scale we need to make sure they have the same limits. The final two colour points are not used  directly</span>
+predictedValues1&lt;-<span class="st"> </span><span class="kw">c</span>(predictedValues1,minE,maxE)
+predictedValues2&lt;-<span class="st"> </span><span class="kw">c</span>(predictedValues2,minE,maxE)
+
+p &lt;-<span class="st"> </span><span class="kw">plot_ly</span>(<span class="dt">x =</span> D1<span class="op">$</span>V1, <span class="dt">y =</span> D1<span class="op">$</span>V2, <span class="dt">z =</span> D1<span class="op">$</span>V3,  
+             <span class="dt">i =</span> <span class="kw">c</span>(D2<span class="op">$</span>V1<span class="op">-</span><span class="dv">1</span>),<span class="dt">j=</span><span class="kw">c</span>(D2<span class="op">$</span>V2<span class="op">-</span><span class="dv">1</span>),<span class="dt">k=</span><span class="kw">c</span>(D2<span class="op">$</span>V3<span class="op">-</span><span class="dv">1</span>),
+             <span class="dt">intensity =</span> <span class="kw">c</span>(predictedValues1),
+             <span class="dt">colorscale =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="st">&#39;red&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.33</span>,<span class="st">&#39;orange&#39;</span>),
+                               <span class="kw">c</span>(<span class="fl">0.66</span>, <span class="st">&#39;yellow&#39;</span>),
+                               <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&#39;green&#39;</span>)),
+             <span class="dt">type =</span> <span class="st">&quot;mesh3d&quot;</span>)
+
+p &lt;-<span class="st"> </span>p <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">add_trace</span>(<span class="dt">x =</span> D1<span class="op">$</span>V1, <span class="dt">y =</span> D1<span class="op">$</span>V2, <span class="dt">z =</span> D1<span class="op">$</span>V3,  
+                     <span class="dt">i =</span> <span class="kw">c</span>(D3<span class="op">$</span>V1<span class="op">-</span><span class="dv">1</span>),<span class="dt">j=</span><span class="kw">c</span>(D3<span class="op">$</span>V2<span class="op">-</span><span class="dv">1</span>),<span class="dt">k=</span><span class="kw">c</span>(D3<span class="op">$</span>V3<span class="op">-</span><span class="dv">1</span>),
+                     <span class="dt">intensity =</span> <span class="kw">c</span>(predictedValues2),
+                     <span class="dt">colorscale =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="st">&#39;red&#39;</span>),
+                                       <span class="kw">c</span>(<span class="fl">0.33</span>,<span class="st">&#39;orange&#39;</span>),
+                                       <span class="kw">c</span>(<span class="fl">0.66</span>, <span class="st">&#39;yellow&#39;</span>),
+                                       <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&#39;green&#39;</span>)),
+                     <span class="dt">type =</span> <span class="st">&quot;mesh3d&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">layout</span>(<span class="dt">scene =</span> <span class="kw">list</span>(<span class="dt">xaxis =</span> ax, <span class="dt">yaxis =</span> ax, <span class="dt">zaxis =</span> ax), <span class="dt">font =</span> <span class="kw">list</span>(<span class="dt">color=</span><span class="st">&#39;#000000&#39;</span>))
+p</code></pre></div>
+<p>Whilst in these examples we have not used a rigorous treatment of the data, they should illustrate the power of regression and some of the examples where they might be useuful in more contemporary settings. Indeed in our paper we make explicit use of different regression models to statistically identify tissue that exhibit strong spatial biases.</p>
+</div>
+<div id="resources" class="section level2">
+<h2><span class="header-section-number">4.3</span> Resources</h2>
+<p>A variety of examples using {caret} to perform regression and classification have been implemented <a href="https://github.com/tobigithub/caret-machine-learning">here</a>.</p>
+<p>For those that want to start their own reading on nonlinear regression, a good stating point is Rasmussen and William's book on <a href="http://www.gaussianprocess.org/gpml/chapters/RW.pdf">Gaussian processes</a>. Be warned, it will contain a lot more maths than this course.</p>
+<p>======= ## Exercises</p>
+<p>Solutions to exercises can be found in appendix <a href="solutions-logistic-regression.html#solutions-logistic-regression">6</a>.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-windram2012arabidopsis">
+<p>Windram, Oliver, Priyadharshini Madhou, Stuart McHattie, Claire Hill, Richard Hickman, Emma Cooke, Dafyd J Jenkins, et al. 2012. “Arabidopsis Defense Against Botrytis Cinerea: Chronology and Regulation Deciphered by High-Resolution Temporal Transcriptomic Analysis.” <em>The Plant Cell</em> 24 (9). Am Soc Plant Biol: 3530–57.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="installation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mlnn.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

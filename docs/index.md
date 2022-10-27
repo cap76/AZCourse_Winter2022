@@ -1,7 +1,7 @@
 --- 
 title: "Classical approaches to Machine Learning"
 author: "Chris Penfold"
-date: "2022-05-19"
+date: "2022-10-27"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book

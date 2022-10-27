@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 {r} #install.packages(keras) #library(keras) #library(tensorflow) #tf$compat$v1$disable_eager_execution() #library(keras) # | Classical approaches to Machine Learning</title>
+  <meta name="description" content="Course materials for Classical approaches to Machine Learning" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 {r} #install.packages(keras) #library(keras) #library(tensorflow) #tf$compat$v1$disable_eager_execution() #library(keras) # | Classical approaches to Machine Learning" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="figures/cover_image.png" />
+  <meta property="og:description" content="Course materials for Classical approaches to Machine Learning" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 {r} #install.packages(keras) #library(keras) #library(tensorflow) #tf$compat$v1$disable_eager_execution() #library(keras) # | Classical approaches to Machine Learning" />
+  
+  <meta name="twitter:description" content="Course materials for Classical approaches to Machine Learning" />
+  <meta name="twitter:image" content="figures/cover_image.png" />
+
+<meta name="author" content="Chris Penfold" />
+
+
+<meta name="date" content="2022-07-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="once-tensorflow-is-installed-and-available-should-be-able-to-install-the-keras-wrapper-for-r-.html"/>
+<link rel="next" href="solutions-logistic-regression.html"/>
+<script src="libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About the course</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#schedule"><i class="fa fa-check"></i><b>1.2</b> Schedule</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#github"><i class="fa fa-check"></i><b>1.3</b> Github</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i><b>1.4</b> License</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#colophon"><i class="fa fa-check"></i><b>1.6</b> Colophon</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>3</b> Installation</a></li>
+<li class="chapter" data-level="4" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>4</b> Linear regression and logistic regression</a><ul>
+<li class="chapter" data-level="4.1" data-path="logistic-regression.html"><a href="logistic-regression.html#regression"><i class="fa fa-check"></i><b>4.1</b> Regression</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="logistic-regression.html"><a href="logistic-regression.html#linear-regression"><i class="fa fa-check"></i><b>4.1.1</b> Linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="logistic-regression.html"><a href="logistic-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>4.1.2</b> Polynomial regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="logistic-regression.html"><a href="logistic-regression.html#logistic-regression1"><i class="fa fa-check"></i><b>4.1.3</b> Logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="logistic-regression.html"><a href="logistic-regression.html#using-regression-approaches-to-infer-3d-gene-expression-patterns-in-marmoset-embryos"><i class="fa fa-check"></i><b>4.2</b> Using regression approaches to infer 3D gene expression patterns in marmoset embryos</a></li>
+<li class="chapter" data-level="4.3" data-path="logistic-regression.html"><a href="logistic-regression.html#resources"><i class="fa fa-check"></i><b>4.3</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="mlnn.html"><a href="mlnn.html"><i class="fa fa-check"></i><b>5</b> Deep Learning</a><ul>
+<li class="chapter" data-level="5.1" data-path="mlnn.html"><a href="mlnn.html#multilayer-neural-networks"><i class="fa fa-check"></i><b>5.1</b> Multilayer Neural Networks</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="mlnn.html"><a href="mlnn.html#installing-the-r-wrapper-for-keras"><i class="fa fa-check"></i><b>5.1.1</b> Installing the R wrapper for Keras</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="once-tensorflow-is-installed-and-available-should-be-able-to-install-the-keras-wrapper-for-r-.html"><a href="once-tensorflow-is-installed-and-available-should-be-able-to-install-the-keras-wrapper-for-r-.html"><i class="fa fa-check"></i><b>6</b> Once tensorflow is installed and available, should be able to install the keras wrapper for R.</a></li>
+<li class="chapter" data-level="7" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><i class="fa fa-check"></i><b>7</b> <code>{r} #install.packages(keras) #library(keras) #library(tensorflow) #tf$compat$v1$disable_eager_execution() #library(keras) #</code></a><ul>
+<li class="chapter" data-level="7.0.1" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#regression-with-keras"><i class="fa fa-check"></i><b>7.0.1</b> Regression with Keras</a></li>
+<li class="chapter" data-level="7.0.2" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#image-classification-with-rick-and-morty"><i class="fa fa-check"></i><b>7.0.2</b> Image classification with Rick and Morty</a></li>
+<li class="chapter" data-level="7.0.3" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#rick-and-morty-classifier-using-deep-learning"><i class="fa fa-check"></i><b>7.0.3</b> Rick and Morty classifier using Deep Learning</a></li>
+<li class="chapter" data-level="7.1" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#convolutional-neural-networks"><i class="fa fa-check"></i><b>7.1</b> Convolutional neural networks</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#checking-the-models"><i class="fa fa-check"></i><b>7.1.1</b> Checking the models</a></li>
+<li class="chapter" data-level="7.1.2" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#intepreting-cnn"><i class="fa fa-check"></i><b>7.1.2</b> Intepreting CNN</a></li>
+<li class="chapter" data-level="7.1.3" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#data-augmentation"><i class="fa fa-check"></i><b>7.1.3</b> Data augmentation</a></li>
+<li class="chapter" data-level="7.1.4" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#asking-more-precise-questions"><i class="fa fa-check"></i><b>7.1.4</b> Asking more precise questions</a></li>
+<li class="chapter" data-level="7.1.5" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#more-complex-networks"><i class="fa fa-check"></i><b>7.1.5</b> More complex networks</a></li>
+<li class="chapter" data-level="7.1.6" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#autoencoders"><i class="fa fa-check"></i><b>7.1.6</b> Autoencoders</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html"><a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#further-reading"><i class="fa fa-check"></i><b>7.2</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Solutions to Chapter 4 - Linear regression and logistic regression</a></li>
+<li class="chapter" data-level="9" data-path="solutions-to-chapter-5-neural-networks.html"><a href="solutions-to-chapter-5-neural-networks.html"><i class="fa fa-check"></i><b>9</b> Solutions to Chapter 5 - Neural Networks</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Classical approaches to Machine Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="r-install.packageskeras-librarykeras-librarytensorflow-tfcompatv1disable_eager_execution-librarykeras" class="section level1">
+<h1><span class="header-section-number">7</span> <code>{r} #install.packages(keras) #library(keras) #library(tensorflow) #tf$compat$v1$disable_eager_execution() #library(keras) #</code></h1>
+<p>We are now ready to begin.</p>
+<div id="regression-with-keras" class="section level3">
+<h3><span class="header-section-number">7.0.1</span> Regression with Keras</h3>
+<p>For the training set we generate two arrays, an <em>input</em> array, containing a random set of numbers (between <span class="math inline">\(0\)</span> and <span class="math inline">\(100\)</span>), and an <em>output</em> array, containing the square roots of those numbers (a similar set will be independently generated for the test set):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(jpeg)</code></pre></div>
+<pre><code>## Warning: package &#39;jpeg&#39; was built under R version 3.5.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(grid)
+
+<span class="kw">set.seed</span>(<span class="dv">12345</span>)
+
+tdims &lt;-<span class="st"> </span><span class="dv">50</span> <span class="co">#Number of samples to generate</span>
+x &lt;-<span class="st">  </span><span class="kw">runif</span>(tdims, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">100</span>) <span class="co">#Generate random x in range 0 to 100</span>
+y &lt;-<span class="st"> </span><span class="kw">sqrt</span>(x) <span class="co">#Calculate square root of x</span>
+
+trainingX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>)) <span class="co">#Store data as an array (required by Keras)</span>
+trainingX[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>x
+trainingY  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>))
+trainingY[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>y
+
+<span class="co">#Now do the same but for a independently generated test set</span>
+x &lt;-<span class="st">  </span><span class="kw">runif</span>(tdims, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">100</span>)
+y &lt;-<span class="st"> </span><span class="kw">sqrt</span>(x)
+
+testingX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>)) <span class="co">#Store as arrays</span>
+testingX[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>x
+testingY  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>))
+testingY[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>y</code></pre></div>
+<p>A user friendly package for <em>neural networks</em> is available via <a href="https://keras.io">keras</a>, an application programming interface (API) written in Python, which uses either <a href="http://deeplearning.net/software/theano/">theano</a> or <a href="https://www.tensorflow.org">tensorflow</a> as a back-end. An R interface for keras is available in the form of <a href="https://keras.rstudio.com/">keras</a>. Before we can use {keras in R} we first need to load the {keras} library in R (prior to this we also have to install python package {keras} and {tensorflow}).</p>
+<p>And so we come to specifying the model itself. Keras has an simple and intuitive way of specifying <a href="https://keras.io/layers/core/">layers</a> of a neural network, and kerasR makes good use of this. We first initialise the model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>()</code></pre></div>
+<p>This tells keras that we're using the Sequential API i.e., a network with the first layer connected to the second, the second to the third and so forth, which distinguishes it from more complex networks possible using the Model API. Once we've specified a sequential model, we can start adding layers to the neural network.</p>
+<p>A standard layer of neurons, can be specified using the {Dense} command: the first layer of our network must also include the dimension of the input data. So, for example, if our input data was a scalar, we could add an input layer via:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) </code></pre></div>
+<p>We also need to specify the activation function to the next level. This can be done via {activation}, so our snippet of code using a Rectified Linear Unit (relu) activation would look something like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)</code></pre></div>
+<p>This is all we need to specify a single layer of the neural network. We could add another layer of <span class="math inline">\(120\)</span> neurons via:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">120</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)</code></pre></div>
+<p>Finally, we should add the output neurons. The number of output neurons will differ, but should match the size of the output we're aiming to predict. In this section we have one output, a scalar representing the square root of the input, so will have a {Dense(1)} output. The final activation function also depends on the nature of our data. If, for example, we're doing regression, we can explicitly specify a {linear} activation function. Our final model would look like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">120</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;linear&quot;</span>)</code></pre></div>
+<p>That's it. Simple!</p>
+<p>Next, we can print a summary of the network, to visualise how many parameters it has:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model)</code></pre></div>
+<p>Before we can perform inference, we need to compile and run the model. In this case we need to specify three things:</p>
+<ul>
+<li><p>A <a href="https://keras.io/losses/">loss</a> function, which specifies the objective function that the model will try to minimise. A number of existing loss functions are built into keras, including the mean squared error (mean_squared_error) for regression, and categorical cross entropy (categorical_crossentropy), which is used for categorical classification. Since we are dealing with regression, we will stick with the mean squared error.</p></li>
+<li><p>An <a href="https://keras.io/optimizers/">optimiser</a>, which determines how the loss function is optimised. Possible examples include stochastic gradient descent ({SGD()}) and Root Mean Square Propagation ({RMSprop()}).</p></li>
+<li><p>A list of <a href="https://keras.io/metrics/">metrics</a> to return. These are additional summary statistics that keras evaluates and prints. For classification, a good choice would be accuracy (or {binary_accuracy}).</p></li>
+</ul>
+<p>We can compile our model using {keras_compile}:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;mse&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)</code></pre></div>
+<p>Finally the model can be fitted to the data. When doing so we additionally should specify the validation set (if we have one), the batch size, and the number of epochs, where an epoch is one forward pass and one backward pass of all the training examples, and the batch size is the number of training examples in one forward/backward pass. Our complete code would then look like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">120</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;linear&quot;</span>)</code></pre></div>
+<pre><code>## Loaded Tensorflow version 2.7.0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;mse&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainingX, <span class="dt">y =</span> trainingY, <span class="dt">validation_data =</span> <span class="kw">list</span>(testingX, testingY), <span class="dt">epochs =</span> <span class="dv">100</span>, <span class="dt">verbose =</span> <span class="dv">2</span>)</code></pre></div>
+<p>We can see that the mean square error rapidly decreases (from approx. 4 at epoch 1 to around 0.5 towards the end). As always, let's take a look at the actual results, rather than rely on summary metrics. To make predictions we can use the {predict} function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xstar &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">200</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+forecastY &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(xstar)
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span>xstar,<span class="dt">y=</span>forecastY ), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xstar,<span class="dt">y=</span><span class="kw">sqrt</span>(xstar)), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Okay, so it's not particularly good. However, we didn't use a particularly large training set and there are a few things we can do to try to optimise the network. Another important point is that we didn't use the <em>best</em> network (the one with the best test set error). By default when we call prediction functions we tend to use whatever the final network was during our training. We can add this in to the code above, which would then look something like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">120</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;linear&quot;</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;mse&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/densemodel.h5&#39;</span>, <span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_mse&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainingX, <span class="dt">y =</span> trainingY, <span class="dt">validation_data =</span> <span class="kw">list</span>(testingX, testingY), <span class="dt">epochs =</span> <span class="dv">100</span>, <span class="dt">verbose =</span> <span class="dv">2</span>,  <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
+<p>The optimised model can be loaded in:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/densemodel.h5&#39;</span>)
+xstar &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">200</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+forecastY &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(xstar)
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span>xstar,<span class="dt">y=</span>forecastY ), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xstar,<span class="dt">y=</span><span class="kw">sqrt</span>(xstar)), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>We can try varying a few other aspects of the network to get an idea of how NNs behave. For example, first try increasing the training set size. Try adding or removing layers, and varying layer widths. Another thing thing that can be varied is final layer activation. The [keras manual]{<a href="https://keras.io/api/layers/activations/" class="uri">https://keras.io/api/layers/activations/</a>} should provide a useful resource to explore what options are available.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tdims &lt;-<span class="st"> </span><span class="dv">5000</span> <span class="co">#Number of samples to generate</span>
+x &lt;-<span class="st">  </span><span class="kw">runif</span>(tdims, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">200</span>) <span class="co">#Generate random x in range 0 to 100</span>
+y &lt;-<span class="st"> </span><span class="kw">sqrt</span>(x) <span class="co">#Calculate square root of x</span>
+
+trainingX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>)) <span class="co">#Store data as an array (required by Keras)</span>
+trainingX[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>x
+trainingY  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>))
+trainingY[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>y
+
+<span class="co">#Now do the same but for a independently generated test set</span>
+x &lt;-<span class="st">  </span><span class="kw">runif</span>(tdims, <span class="dt">min=</span><span class="dv">0</span>, <span class="dt">max=</span><span class="dv">200</span>)
+y &lt;-<span class="st"> </span><span class="kw">sqrt</span>(x)
+
+testingX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>)) <span class="co">#Store as arrays</span>
+testingX[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>x
+testingY  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(tdims,<span class="dv">1</span>))
+testingY[<span class="dv">1</span><span class="op">:</span>tdims,<span class="dv">1</span>] &lt;-<span class="st"> </span>y
+
+
+model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">10</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">20</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;linear&quot;</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;mse&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/densemodel.h5&#39;</span>, <span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_mse&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainingX, <span class="dt">y =</span> trainingY, <span class="dt">validation_data =</span> <span class="kw">list</span>(testingX, testingY), <span class="dt">epochs =</span> <span class="dv">100</span>, <span class="dt">verbose =</span> <span class="dv">0</span>,  <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))
+
+model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/densemodel.h5&#39;</span>)
+xstar &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">250</span>,<span class="dt">by=</span><span class="fl">0.5</span>)
+
+forecastY &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(xstar)
+
+<span class="kw">colnames</span>(trainingX) &lt;-<span class="st"> &quot;x&quot;</span>
+<span class="kw">colnames</span>(trainingY) &lt;-<span class="st"> &quot;y&quot;</span>
+lrfit &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x)
+newd &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>xstar)
+predictedValues&lt;-<span class="kw">predict.lm</span>(lrfit, <span class="dt">newdata =</span> newd)
+
+<span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span>xstar,<span class="dt">y=</span>forecastY ), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>,<span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xstar,<span class="dt">y=</span>predictedValues), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span>
+<span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;green&#39;</span>,<span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x=</span>xstar,<span class="dt">y=</span><span class="kw">sqrt</span>(xstar)), <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+</div>
+<div id="image-classification-with-rick-and-morty" class="section level3">
+<h3><span class="header-section-number">7.0.2</span> Image classification with Rick and Morty</h3>
+<p>We will now try to train a network for image classification. As with any machine learning application, it's important to both have some question in mind (in this case &quot;can we identify images that contain Rick Sanchez&quot;), and understand the dataset(s) we're using.</p>
+<p>The image data can be found in the directory {data/RickandMorty/data/}. We begin by loading in some images of Rick using the {readJPEG} and {grid.raster} functions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">im &lt;-<span class="st"> </span><span class="kw">readJPEG</span>(<span class="st">&quot;data/RickandMorty/data/AllRickImages/Rick_1.jpg&quot;</span>)
+grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(im, <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.5</span>)</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Let's understand take a closer look at this dataset. We can use the funciton {dim(im)} to return the image dimensions. In this case each image is stored as a jpeg file, with <span class="math inline">\(90 \times 160\)</span> pixel resolution and <span class="math inline">\(3\)</span> colour channels (RGB). This loads into R as <span class="math inline">\(160 \times 90 \times 3\)</span> array. We could start by converting the image to grey scale, reducing the dimensions of the input data. However, each channel will potentially carry novel information, so ideally we wish to retain all of the information. You can take a look at what information is present in the different channels by plotting them individually using e.g., {grid.raster(im[,,3], interpolate=FALSE)}. Whilst the difference is not so obvious here, we can imagine sitations where different channels could be dramamtically different, for example, when dealing with remote observation data from satellites, where we might have visible wavelength alongside infrared and a variety of other spectral channels.</p>
+<p>Since we plan to retain the channel information, our input data is a tensor of dimension <span class="math inline">\(90 \times 160 \times 3\)</span> i.e., height x width x channels. Note that this ordering is important, as the the package we're using expects this ordering (be careful, as other packages can expect a different ordering).</p>
+<p>Before building a neural network we first have to load the data and construct a training, validation, and test set of data. Whilst the package we're using has the ability to specify this on the fly, I prefer to manually seperate out training/test/validation sets, as it makes it easier to later debug when things go wrong.</p>
+<p>First load all <em>Rick</em> images and all <em>not Rick</em> images from their directory. We can get a list of all the <em>Rick</em> and <em>not Rick</em> images using {list.files}:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files1 &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/RickandMorty/data/AllRickImages/&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;jpg&quot;</span>)
+files2 &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/RickandMorty/data/AllMortyImages/&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;jpg&quot;</span>)</code></pre></div>
+<p>After loading the lsit of files we can see we have <span class="math inline">\(2211\)</span> images of <em>Rick</em> and <span class="math inline">\(3046\)</span> images of <em>not Rick</em>. Whilst this is a slightly unbiased dataset it is not dramatically so; in cases where there is extreme inbalance in the number of class observations we may have to do something extra, such as data augmentation, or assinging weights during training.</p>
+<p>We next preallocate an empty array to store these training images for the <em>Rick</em> and <em>not Rick</em> images (an array of dimension <span class="math inline">\(5257 \times 90 \times 160 \times 3\)</span>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(<span class="kw">length</span>(files1)<span class="op">+</span><span class="kw">length</span>(files2),<span class="kw">dim</span>(im)[<span class="dv">1</span>],<span class="kw">dim</span>(im)[<span class="dv">2</span>],<span class="kw">dim</span>(im)[<span class="dv">3</span>]))</code></pre></div>
+<p>We can load images using the {readJPEG} function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(files1)){
+  allX[i,<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(im)[<span class="dv">1</span>],<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(im)[<span class="dv">2</span>],<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(im)[<span class="dv">3</span>]] &lt;-<span class="st"> </span><span class="kw">readJPEG</span>(<span class="kw">paste</span>(<span class="st">&quot;data/RickandMorty/data/AllRickImages/&quot;</span>, files1[i], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
+}</code></pre></div>
+<p>Similarly, we can load the <em>not Rick</em> images and store in the same array:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(files2)){
+  allX[i<span class="op">+</span><span class="kw">length</span>(files1),<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(im)[<span class="dv">1</span>],<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(im)[<span class="dv">2</span>],<span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(im)[<span class="dv">3</span>]] &lt;-<span class="st"> </span><span class="kw">readJPEG</span>(<span class="kw">paste</span>(<span class="st">&quot;data/RickandMorty/data/AllMortyImages/&quot;</span>, files2[i], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
+}</code></pre></div>
+<p>Next we can construct a vector of length <span class="math inline">\(5257\)</span> containing the classification for each of the images e.g., a <span class="math inline">\(0\)</span> if the image is a <em>Rick</em> and <span class="math inline">\(1\)</span> if it is <em>not Rick</em>. This is simple enough using the function {rbind}, as we know the first <span class="math inline">\(2211\)</span> images were <em>Rick</em> and the second lot of images are <em>not Rick</em>. Since we are dealing with a classification algorithm, we next convert the data to binary categorical output (that is, a <em>Rick</em> is now represented as <span class="math inline">\([1, 0]\)</span> and a <em>not Rick</em> is a <span class="math inline">\([0, 1]\)</span>), which we can do using the {to_categorical} conversion function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">labels &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">matrix</span>(<span class="dv">0</span>, <span class="kw">length</span>(files1), <span class="dv">1</span>), <span class="kw">matrix</span>(<span class="dv">1</span>, <span class="kw">length</span>(files2), <span class="dv">1</span>))
+allY &lt;-<span class="st"> </span><span class="kw">to_categorical</span>(labels, <span class="dt">num_classes =</span> <span class="dv">2</span>)</code></pre></div>
+<p>Obviously in the snippet of code above we have <span class="math inline">\(2\)</span> classes; we could just as easily perform classificaiton with more than <span class="math inline">\(2\)</span> classes, for example if we wanted to classify <em>Ricky</em>, <em>Morty</em>, or <em>Jerry</em>, and so forth.</p>
+<p>We must now split our data in training sets, validation sets, and test sets. In fact I have already stored some seperate &quot;test&quot; set images in another folder that we will load in at the end, so here we only need to seperate images into training and validation sets. It's important to note that we shouldn't simply take the first <span class="math inline">\(N\)</span> images for training with the remainder used for validation/testing, since this may introduce artefacts. For example, here we've loaded in all the <em>Rick</em> images in first, with the <em>not Rick</em> images loaded in second: if we took, say, the first <span class="math inline">\(2000\)</span> images for training, we would be training with only Rick images, which makes our task impossible, and our algorithm will fail catastrophically.</p>
+<p>Although there are more elegant ways to shuffle data using {caret}, here we are going to manually randomly permute the data, and then take the first <span class="math inline">\(4000\)</span> permuted images for training, with the remainder for validation (Note: it's crucial to permute the <span class="math inline">\(Y\)</span> data in the same way).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">12345</span>) <span class="co">#Set random number generator for R aspects of the session</span>
+
+vecInd &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="kw">length</span>(files1)<span class="op">+</span><span class="kw">length</span>(files2)) <span class="co">#A vector of indexes</span>
+trainInd &lt;-<span class="st"> </span><span class="kw">sample</span>(vecInd)[<span class="dv">1</span><span class="op">:</span><span class="dv">4001</span>] <span class="co">#Permute and take first 4000 training</span>
+valInd &lt;-<span class="st"> </span><span class="kw">setdiff</span>(vecInd,trainInd) <span class="co">#The remainder are for val/testing</span>
+
+trainX &lt;-<span class="st"> </span>allX[trainInd, , , ]
+trainY &lt;-<span class="st"> </span>allY[trainInd, <span class="dv">1</span>]
+
+valX &lt;-<span class="st"> </span>allX[valInd, , , ]
+valY &lt;-<span class="st"> </span>allY[valInd, <span class="dv">1</span>]</code></pre></div>
+<p>Before we move on, take a moment to think about the form of our data, in particular the output data Y. What exactly is the format we've settled on? This will be important later on in specifying our loss function. Think about cases where using similar datasets, we might want the data in a slightly different format.</p>
+<p>We are almost ready to begin building our neural networks. First can try a few things to make sure out data has been processed correctly. For example, try manually plotting several of the images and seeing if the labels are correct. Manually print out the image matrix (not a visualisation of it): think about the range of the data, and whether it will need normalising. Finally we can check to see how many of each class is in the training and validation datasets. In this case there are <span class="math inline">\(1706\)</span> images of <em>Rick</em> and <span class="math inline">\(2294\)</span> images of <em>not Rick</em> in the training dataset. Again, whilst there is some slight class inbalance it is not terrible, so we don't need to perform data augmentation or assign weights to the different classes during training.</p>
+</div>
+<div id="rick-and-morty-classifier-using-deep-learning" class="section level3">
+<h3><span class="header-section-number">7.0.3</span> Rick and Morty classifier using Deep Learning</h3>
+<p>Let us return to our example of image classification. We start by specifying a sequential network as before.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span></code></pre></div>
+<p>Our data is slightly different to the usual inputs we've been dealing with: that is, we're not dealing with an input vector, but instead have an array. In this case each image is a <span class="math inline">\(90 \times 160 \time 3\)</span> array. So for our first layer we first have to flatten this down using {flatten}:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>))</code></pre></div>
+<p>This should turn our <span class="math inline">\(90 \times \160 \times 3\)</span> input into a <span class="math inline">\(1 \times 43200\)</span> node input. We now add intermediate layers connected to the input layer with rectified linear units ({relu}) as before.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">70</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>)</code></pre></div>
+<p>Finally we connect this layer over the final output layer (two neurons) with sigmoid activation: <a href="https://keras.io/activations/">activation</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="ot">NULL</span>,<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>) , <span class="dt">activation =</span> <span class="st">&#39;relu&#39;</span> ) <span class="op">%&gt;%</span>
+<span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>)</code></pre></div>
+<p>The complete model should look something like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">70</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;sigmoid&quot;</span>)</code></pre></div>
+<p>We can print a summary of the network, for example to see how many parameters it has:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model)</code></pre></div>
+<p>In this case we see a total of <span class="math inline">\(4,327,241\)</span> parameters. Yikes, that's a lot of parameters to tune, and not much data!</p>
+<p>Next we need to compile and run the model. In this case we need to specify the loss, optimiser, and metrics. Since we are dealing with binary classification, we will use binary cross entropy (binary_crossentropy) and for classification, a good choice of metrics would be accuracy (or {binary_accuracy}). We can compile our model using {keras_compile}:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;binary_accuracy&quot;</span>)</code></pre></div>
+<p>Finally the model can be fitted to the data. When doing so we additionally need to specify the validation set (if we have one), the batch size and the number of epochs, where an epoch is one forward pass and one backward pass of all the training examples, and the batch size is the number of training examples in one forward/backward pass. You may want to go and get a tea whilst this is running!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">12345</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainX, <span class="dt">y =</span> trainY, <span class="dt">validation_data =</span> <span class="kw">list</span>(valX, valY), <span class="dt">epochs =</span> <span class="dv">25</span>, <span class="dt">verbose =</span> <span class="dv">2</span>)</code></pre></div>
+<p>Together with an added callback to save the best model, our code should look something like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_flatten</span>(<span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">100</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">70</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;sigmoid&quot;</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;binary_accuracy&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/model.h5&#39;</span>,<span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_binary_accuracy&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainX, <span class="dt">y =</span> trainY, <span class="dt">validation_data =</span> <span class="kw">list</span>(valX, valY), <span class="dt">epochs =</span> <span class="dv">25</span>, <span class="dt">batch_size=</span><span class="dv">100</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
+<p>As before we can load a saved model in using the {load_model_hdf5} function and use it for predictions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/model.h5&#39;</span>)</code></pre></div>
+<p>For this model we achieved an accuracy of above <span class="math inline">\(0.61\)</span> on the validation dataset at epoch <span class="math inline">\(16\)</span> (which had a corresponding accuracy <span class="math inline">\(&gt;0.74\)</span> on the training set). Not fantastic when you consider that given the slight imbalance in the number of images in each class, a niave algorithm that always assigns the data to <em>not Rick</em> would achieve an accuracy of <span class="math inline">\(0.58\)</span> and <span class="math inline">\(0.57\)</span> in the training and validation sets respectively. It seems like we're getting nowhere fast, and need to change tactic.</p>
+<p>We need to think a little more about what the data actually <em>is</em>. In this case we're looking at a set of images. As Rick Sanchez can appear almost anywhere in the image, there's no reason to think that a given input node should correspond in two different images, so it's not surprising that the network did so badly, this is simply a task that a densely connected network is poor at. We need something that can extract out features from the image irregardless of where Rick is. There are approaches build precisely for image analysis that do just this: convolutional neural networks.</p>
+</div>
+<div id="convolutional-neural-networks" class="section level2">
+<h2><span class="header-section-number">7.1</span> Convolutional neural networks</h2>
+<p>Convolutional neural networks essentially scan through an image and extract out a set of feature representations. In multilayer neural networks, these features might then be passed on to deeper layer (other convolutional layers or standard neurons) which extract out higher order features, as shown in Figure <a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#fig:covnet">7.1</a>. Finally, a densly connected network acts to combine features together for prediction. At least in an idealised description of what's going on.</p>
+<div class="figure" style="text-align: center"><span id="fig:covnet"></span>
+<img src="images/Screen-Shot-2015-11-07-at-7.26.20-AM.png" alt="Example of a multilayer convolutional neural network" width="50%" />
+<p class="caption">
+Figure 7.1: Example of a multilayer convolutional neural network
+</p>
+</div>
+<p>In keras R we can add a convolutional layer using {layer_conv_2d} with a max pooling layer added via {layer_max_pooling_2d}. A multilayer convolutional neural network might look something like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
+<span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>))</code></pre></div>
+<p>which will construct <span class="math inline">\(20\)</span> feature maps (using a kernel of size <span class="math inline">\(5 \times 5\)</span>). A <span class="math inline">\(2 \times 2\)</span> max-pool layer would then be added on:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
+<span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</code></pre></div>
+<p>A complete example model is shown below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_flatten</span>( ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units=</span><span class="dv">100</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_dropout</span>(<span class="dt">rate =</span> <span class="fl">0.3</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units=</span><span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;sigmoid&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/modelCNN.h5&#39;</span>,<span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_binary_accuracy&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;binary_accuracy&quot;</span>)</code></pre></div>
+<p>To run the model we could use the snippet of code below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainX, <span class="dt">y =</span> trainY, <span class="dt">validation_data =</span> <span class="kw">list</span>(valX, valY), <span class="dt">epochs =</span> <span class="dv">50</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
+<p>Here we only ran the model for <span class="math inline">\(5\)</span> epochs just to get an feel for it. If we did have time to run this model longer, we would see better accuracy. We have an accuracy of <span class="math inline">\(0.854\)</span> on the validation dataset at epoch <span class="math inline">\(22\)</span>, with a training accuracy of <span class="math inline">\(0.982\)</span>. Whilst this is still not great (compared to how well a human could do on a similar task), it's accurate enough to begin making predictions and visualising the results. Fortunately I've already run (and saved) this model for <span class="math inline">\(25\)</span> epocs, so let's load it in for predictions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/modelCNN.h5&#39;</span>)</code></pre></div>
+<p>We can use this model to make predictions for images not present in either the training or validation datasets. We load in the new set of images, which can be found in the {predictions} subfolder:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/RickandMorty/data/predictions/&quot;</span>,<span class="dt">pattern =</span> <span class="st">&quot;jpg&quot;</span>)
+predictX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>,<span class="dt">dim=</span><span class="kw">c</span>(<span class="kw">length</span>(files),<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>))
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(files)){
+  x &lt;-<span class="st"> </span><span class="kw">readJPEG</span>(<span class="kw">paste</span>(<span class="st">&quot;data/RickandMorty/data/predictions/&quot;</span>, files[i],<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
+  predictX[i,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="st"> </span>x[<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]
+}</code></pre></div>
+<p>A hard classification can be assigned using the {predict_classes} function, whilst the actual probability of assignment to either class can be evaluated using {predict} (this can be useful for images that might be ambiguous).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">probY &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(predictX)
+predictY &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(probY<span class="op">&gt;</span><span class="fl">0.5</span>)</code></pre></div>
+<p>We can plot an example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">choice =<span class="st"> </span><span class="dv">13</span>
+grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="cf">if</span> (predictY[choice]<span class="op">==</span><span class="dv">1</span>) {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Rick&#39;</span>,<span class="dt">x =</span> <span class="fl">0.4</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>))
+} <span class="cf">else</span> {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Not Rick&#39;</span>,<span class="dt">x =</span> <span class="fl">0.4</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>))
+}</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">choice =<span class="st"> </span><span class="dv">1</span>
+grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="cf">if</span> (predictY[choice]<span class="op">==</span><span class="dv">1</span>) {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Rick&#39;</span>,<span class="dt">x =</span> <span class="fl">0.4</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>))
+} <span class="cf">else</span> {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Not Rick&#39;</span>,<span class="dt">x =</span> <span class="fl">0.4</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>))
+}</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">choice =<span class="st"> </span><span class="dv">6</span>
+grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="cf">if</span> (predictY[choice]<span class="op">==</span><span class="dv">1</span>) {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Rick&#39;</span>,<span class="dt">x =</span> <span class="fl">0.4</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>))
+} <span class="cf">else</span> {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Not Rick&#39;</span>,<span class="dt">x =</span> <span class="fl">0.4</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>))
+}</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+choice =<span class="st"> </span><span class="dv">16</span>
+<span class="cf">if</span> (predictY[choice]<span class="op">==</span><span class="dv">1</span>) {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Rick&#39;</span>,<span class="dt">x =</span> <span class="fl">0.4</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>))
+} <span class="cf">else</span> {
+  <span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>)
+  <span class="kw">grid.text</span>(<span class="dt">label=</span><span class="st">&#39;Not Rick: must be a Jerry&#39;</span>,<span class="dt">x =</span> <span class="fl">0.2</span>, <span class="dt">y =</span> <span class="fl">0.77</span>,<span class="dt">just =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;top&quot;</span>), <span class="dt">gp=</span><span class="kw">gpar</span>(<span class="dt">fontsize=</span><span class="dv">15</span>, <span class="dt">col=</span><span class="st">&quot;green&quot;</span>))
+}</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<div id="checking-the-models" class="section level3">
+<h3><span class="header-section-number">7.1.1</span> Checking the models</h3>
+<p>Although our model seems to be doing reasonably, it always helps to see where things are going wrong. Let's take a look at a few of the false positives and a few of the false negatives.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">probvalY &lt;-<span class="st">  </span>model <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">predict</span>(valX)
+predictvalY &lt;-<span class="kw">as.numeric</span>(probvalY<span class="op">&gt;</span><span class="fl">0.5</span>)
+
+TP &lt;-<span class="st"> </span><span class="kw">which</span>(predictvalY<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>valY<span class="op">==</span><span class="dv">1</span>)
+FN &lt;-<span class="st"> </span><span class="kw">which</span>(predictvalY<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>valY<span class="op">==</span><span class="dv">1</span>)
+TN &lt;-<span class="st"> </span><span class="kw">which</span>(predictvalY<span class="op">==</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>valY<span class="op">==</span><span class="dv">0</span>)
+FP &lt;-<span class="st"> </span><span class="kw">which</span>(predictvalY<span class="op">==</span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>valY<span class="op">==</span><span class="dv">0</span>)</code></pre></div>
+<p>Let's see where we go it right:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(valX[TP[<span class="dv">1</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(valX[TP[<span class="dv">2</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)
+<span class="kw">grid.raster</span>(valX[TP[<span class="dv">3</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.8</span>)</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p>And wrong (false negative):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(valX[FN[<span class="dv">1</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(valX[FN[<span class="dv">2</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)
+<span class="kw">grid.raster</span>(valX[FN[<span class="dv">3</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.8</span>)</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p>Or false positives:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(valX[FP[<span class="dv">1</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(valX[FP[<span class="dv">2</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)
+<span class="kw">grid.raster</span>(valX[FP[<span class="dv">4</span>],<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.8</span>)</code></pre></div>
+<p><img src="12-deep-learning_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>It's not entirely clear why exactly the network is failing in some of these cases. An alternative way to look at what's going wrong is a look at which pixels are contributing the most to the classifier, as we have done during the lecture. Currently this can be done in Python implementations of Keras using the [DeepExplain]{<a href="https://github.com/marcoancona/DeepExplain" class="uri">https://github.com/marcoancona/DeepExplain</a>} package {<span class="citation">M. Ancona and Grosss (<a href="#ref-DeepExplain">2018</a>)</span>}. Example Python code for doing this has been provided in the {Python} subdirectory.</p>
+</div>
+<div id="intepreting-cnn" class="section level3">
+<h3><span class="header-section-number">7.1.2</span> Intepreting CNN</h3>
+<p>For these types of tasks, a key advantage of CNNs over densley connected ones lies in increased intepretability.</p>
+<div id="visualising-feature-maps" class="section level4">
+<h4><span class="header-section-number">7.1.2.1</span> Visualising feature maps</h4>
+<p>In the snippet of code below, we will take an example image and look at the activations in the first layer of the network: that is, we get a glimpse as to how the filters have processed a specific image.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tf<span class="op">$</span>compat<span class="op">$</span>v1<span class="op">$</span><span class="kw">disable_eager_execution</span>()
+
+layer_outputs &lt;-<span class="st"> </span><span class="kw">lapply</span>(model<span class="op">$</span>layers[<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>], <span class="cf">function</span>(layer) layer<span class="op">$</span>output)
+activation_model &lt;-<span class="st"> </span><span class="kw">keras_model</span>(<span class="dt">inputs =</span> model<span class="op">$</span>input, <span class="dt">outputs =</span> layer_outputs)
+
+choice =<span class="st"> </span><span class="dv">1</span>
+activations &lt;-<span class="st"> </span>activation_model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>( <span class="kw">array_reshape</span>( predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">90</span>, <span class="dv">160</span>, <span class="dv">3</span>) ) )
+first_layer_activation &lt;-<span class="st"> </span>activations[[<span class="dv">1</span>]]
+<span class="kw">dim</span>(first_layer_activation)</code></pre></div>
+<p>Recall that the first layer is an array of size <span class="math inline">\(86 \times 156 \times 20\)</span>. Our output here should be the same. We can now visualise some of these feature maps (alongside the image itself):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(predictX[choice,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>))
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">1</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">2</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">3</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">4</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">5</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">10</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">12</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">15</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">image</span>(<span class="kw">t</span>(first_layer_activation[<span class="dv">1</span>,,,<span class="dv">20</span>]), <span class="dt">axes =</span> <span class="ot">FALSE</span> )
+<span class="kw">par</span>(op)</code></pre></div>
+<p>We could similarly take a look at the feature representations deeper in the network.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">image_width &lt;-<span class="st"> </span><span class="dv">56</span>
+images_per_row &lt;-<span class="st"> </span><span class="dv">5</span>
+
+i &lt;-<span class="st"> </span><span class="dv">7</span>
+  
+layer_activation &lt;-<span class="st"> </span>activations[[i]]
+layer_name &lt;-<span class="st"> </span>model<span class="op">$</span>layers[[i]]<span class="op">$</span>name
+ 
+n_features &lt;-<span class="st"> </span><span class="kw">dim</span>(layer_activation)[[<span class="dv">4</span>]]
+n_cols &lt;-<span class="st"> </span>n_features <span class="op">%/%</span><span class="st"> </span>images_per_row
+ 
+op &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(n_cols, images_per_row), <span class="dt">mai =</span> <span class="kw">rep_len</span>(<span class="fl">0.02</span>, <span class="dv">4</span>))
+  
+<span class="cf">for</span> (col <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span>(n_cols <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {
+  <span class="cf">for</span> (row <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span>(images_per_row <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {
+      channel_image &lt;-<span class="st"> </span>layer_activation[<span class="dv">1</span>,,,(col<span class="op">*</span>images_per_row) <span class="op">+</span><span class="st"> </span>row <span class="op">+</span><span class="st"> </span><span class="dv">1</span>]
+      <span class="kw">image</span>(<span class="kw">t</span>(channel_image), <span class="dt">axes =</span> <span class="ot">FALSE</span>,)
+  }
+}
+  
+<span class="kw">par</span>(op)</code></pre></div>
+</div>
+<div id="class-activation" class="section level4">
+<h4><span class="header-section-number">7.1.2.2</span> Class activation</h4>
+<p>Alteratively, we can also begin to visulaise how a particular image begins to activate to a particular class i.e., identify what pixels the CNN is concentrating no when looking at in an image of Rick.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">choice &lt;-<span class="st"> </span><span class="dv">9</span>
+
+X0 &lt;-<span class="st"> </span><span class="kw">readJPEG</span>(<span class="kw">paste</span>(<span class="st">&quot;data/RickandMorty/data/AllRickImages/&quot;</span>, files1[choice], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
+imag_pred &lt;-<span class="st"> </span><span class="kw">array_reshape</span>(X0[<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] , <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">90</span>, <span class="dv">160</span>, <span class="dv">3</span>) )
+
+<span class="kw">predict</span>(model, imag_pred)
+
+<span class="co"># Prediction vector</span>
+d_output &lt;-<span class="st"> </span>model<span class="op">$</span>output[, <span class="dv">1</span>]
+
+<span class="co">#The last convolutional layer</span>
+last_conv_layer &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">get_layer</span>(<span class="st">&quot;conv2d_2&quot;</span>)
+
+<span class="co"># This is the gradient of the &quot;Rick&quot; class with regard to the output feature map of `conv2d_2`</span>
+grads &lt;-<span class="st"> </span><span class="kw">k_gradients</span>(d_output, last_conv_layer<span class="op">$</span>output)[[<span class="dv">1</span>]]
+
+<span class="co"># This is a vector of shape (64,), eaah is mean intensity of the gradient over a specific feature map channel</span>
+pooled_grads &lt;-<span class="st"> </span><span class="kw">k_mean</span>(grads, <span class="dt">axis =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))
+
+<span class="co"># This function allows us to access the values of the quantities we just defined:</span>
+<span class="co"># `pooled_grads` and the output feature map of `conv2d_2`, given a sample image</span>
+iterate &lt;-<span class="st"> </span><span class="kw">k_function</span>(<span class="kw">list</span>(model<span class="op">$</span>input),
+                      <span class="kw">list</span>(pooled_grads, last_conv_layer<span class="op">$</span>output[<span class="dv">1</span>,,,]))
+
+<span class="co"># These are the values of these two quantities, as arrays</span>
+<span class="kw">c</span>(pooled_grads_value, conv_layer_output_value) <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">iterate</span>(<span class="kw">list</span>( imag_pred  ))
+
+<span class="co"># We multiply each channel in the feature map array by &quot;how important this channel is&quot; with regard to the Rick class</span>
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">64</span>) {
+  conv_layer_output_value[,,i] &lt;-<span class="st"> </span>
+<span class="st">    </span>conv_layer_output_value[,,i] <span class="op">*</span><span class="st"> </span>pooled_grads_value[[i]] 
+}
+
+<span class="co"># The channel-wise mean of the resulting feature map is our heatmap of class activation</span>
+heatmap &lt;-<span class="st"> </span><span class="kw">apply</span>(conv_layer_output_value, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), mean)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">heatmap &lt;-<span class="st"> </span><span class="kw">pmax</span>(heatmap, <span class="dv">0</span>) 
+heatmap &lt;-<span class="st"> </span>heatmap <span class="op">/</span><span class="st"> </span><span class="kw">max</span>(heatmap)
+write_heatmap &lt;-<span class="st"> </span><span class="cf">function</span>(heatmap, filename, <span class="dt">width =</span> <span class="dv">150</span>, <span class="dt">height =</span> <span class="dv">150</span>,
+                          <span class="dt">bg =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">col =</span> <span class="kw">terrain.colors</span>(<span class="dv">12</span>)) {
+  <span class="kw">png</span>(filename, <span class="dt">width =</span> width, <span class="dt">height =</span> height, <span class="dt">bg =</span> bg)
+  op =<span class="st"> </span><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))
+  <span class="kw">on.exit</span>({<span class="kw">par</span>(op); <span class="kw">dev.off</span>()}, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+  rotate &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">t</span>(<span class="kw">apply</span>(x, <span class="dv">2</span>, rev))
+  <span class="kw">image</span>(<span class="kw">rotate</span>(heatmap), <span class="dt">axes =</span> <span class="ot">FALSE</span>, <span class="dt">asp =</span> <span class="dv">1</span>, <span class="dt">col =</span> col)
+}
+<span class="kw">write_heatmap</span>(heatmap, <span class="st">&quot;d_heatmap.png&quot;</span>) </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magick) 
+<span class="kw">library</span>(viridis) 
+image &lt;-<span class="st"> </span><span class="kw">image_read</span>(<span class="kw">paste</span>(<span class="st">&quot;data/RickandMorty/data/AllRickImages/&quot;</span>, files1[choice], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
+
+info &lt;-<span class="st"> </span><span class="kw">image_info</span>(image) 
+geometry &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">&quot;%dx%d!&quot;</span>, info<span class="op">$</span>width, info<span class="op">$</span>height) 
+pal &lt;-<span class="st"> </span><span class="kw">col2rgb</span>(<span class="kw">viridis</span>(<span class="dv">20</span>), <span class="dt">alpha =</span> <span class="ot">TRUE</span>) 
+alpha &lt;-<span class="st"> </span><span class="kw">floor</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">255</span>, <span class="dt">length =</span> <span class="kw">ncol</span>(pal))) 
+pal_col &lt;-<span class="st"> </span><span class="kw">rgb</span>(<span class="kw">t</span>(pal), <span class="dt">alpha =</span> alpha, <span class="dt">maxColorValue =</span> <span class="dv">255</span>)
+<span class="kw">write_heatmap</span>(heatmap, <span class="st">&quot;d_overlay.png&quot;</span>, <span class="dt">width =</span> <span class="dv">14</span>, <span class="dt">height =</span> <span class="dv">14</span>, <span class="dt">bg =</span> <span class="ot">NA</span>, <span class="dt">col =</span> pal_col) 
+<span class="co"># Overlay the heatmap</span>
+<span class="kw">image_read</span>(<span class="st">&quot;d_overlay.png&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">image_resize</span>(geometry, <span class="dt">filter =</span> <span class="st">&quot;quadratic&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">image_composite</span>(image, <span class="dt">operator =</span> <span class="st">&quot;blend&quot;</span>, <span class="dt">compose_args =</span> <span class="st">&quot;20&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">plot</span>() </code></pre></div>
+</div>
+</div>
+<div id="data-augmentation" class="section level3">
+<h3><span class="header-section-number">7.1.3</span> Data augmentation</h3>
+<p>Although we saw some improvements when using convolutional neural networks compared to densely connected one, the end results were not particularly convincing. After all, previous applications in the recognition of handwritten digits (0-9) showed above human accuracy, see e.g., <a href="http://neuralnetworksanddeeplearning.com/chap3.html">Neural Networks and Deep Learning</a>. Our accuracy of approximately <span class="math inline">\(90\)</span> percent is nowhere near human levels. So where are we gong wrong?</p>
+<p>We should, of course, start by considering the number of parameters versus the size of the training dataset. In our final model we had <span class="math inline">\(69,506\)</span> parameters, and only a few thousand training images, so it is perhaps not surprising that our model is doing relatively poorly. In previous examples of digit recognition more than <span class="math inline">\(10,000\)</span> images were used, whilst better known examples of <em>deep learning</em> for image classification make use of millions of images. Our task is also, arguably, a lot harder than digit recognition. After all, a handwritten <span class="math inline">\(0\)</span> is relatively similar regardless of who wrote it. Rick Sanchez, on the other hand, can come in a diverse range of guises, with different postures, facial expressions, clothing, and even in pickle-Rick form. We may well need a vastly increased number of training images: with more training data, we can begin to learn more robustly what features define a <em>Rick</em>. Whilst we could simply download more data from <a href="https://masterofallscience.com">Master of All Science</a>, an alternative approach is to artificially increase our pool of training data by manipulating the images. For example, we could shear, warp or rotate some of the images in our training set; we could add noise and we could manipulate the colouring.</p>
+</div>
+<div id="asking-more-precise-questions" class="section level3">
+<h3><span class="header-section-number">7.1.4</span> Asking more precise questions</h3>
+<p>Another way we could improve our accuracy is to ask more precise questions. In our application we have focused on what makes a <em>Rick</em>, and what makes a <em>not Rick</em>. Whilst there may be definable features for <em>Rick</em>, such as his hair and his white coat, the class <em>not Rick</em> is an amalgamation of all other characters and scenes in the series. A more specific approach might be to develop algorithms that classify <em>Rick</em> versus <em>Morty</em>. In this case additionally learning the features of a <em>Morty</em> might make it easier to make a binary choice. Of course, we might want to allow more complex situations, such as case where you have a Rick and a Morty. As a general open question, think about how you would encode just such an example. What would you need to change in the code?</p>
+<p>Another approach that might help us increase our accuracy is to use <strong>transfer learning</strong>. This is where we make use of existing neural networks to make predictions about our specific datasets, usually by fixing the topology and parameters of the uppermost layers and fine tuning the lower layers to our dataset. For image recognition we could make use of top perfoming neural networks on the <a href="http://www.image-net.org">ImageNet</a> database, although these types of large-scale models are certainly not without their issues {<span class="citation">Prabhu and Birhane (<a href="#ref-Prabhu2020">2020</a>)</span>}. Whilst none of these networks would have been designed to identify <em>Rick</em> they would have been trained on millions of images, and the top levels would have been able to extract useful general features of that allowed identification of images.</p>
+</div>
+<div id="more-complex-networks" class="section level3">
+<h3><span class="header-section-number">7.1.5</span> More complex networks</h3>
+<p>More complex learning algorithms can easily be built using Keras via the model class API. This allows, for example, learning from multiple inputs and/or predicting multiple outputs, with more interconnection between the different layers. We might, for example, want to include additional contextual information about the image that could serve to augment the predictions.</p>
+</div>
+<div id="autoencoders" class="section level3">
+<h3><span class="header-section-number">7.1.6</span> Autoencoders</h3>
+<p>In previous sections we have used CNNs to build a <em>Rick</em>/<em>not Rick</em> classifier. In doing so we are halfway towards other interesting neural network architectures, including autoencoders.</p>
+<p>One type of autoencoder consists of a stack of convolution/max pooling layers which served to condense the original image down into a reduced dimensional (encoded) representation, with a stack of <em>upsampled</em> layers used to decode the encoded layer (Figure <a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#fig:AE">7.2</a>). Within such a network the input and output layers are an identical image and we are therefore training a network that can both compresses the original high resolution data and subsequently interpret that compressed representation to recreate the original as closely as possible.</p>
+<p>A slight deviation of this principle would be to use noisy versions of the image as input, with clean versions as the output. In these cases the autoencoder becomes a denoiser (Figure <a href="r-install-packageskeras-librarykeras-librarytensorflow-tfcompatv1disable-eager-execution-librarykeras.html#fig:AE2">7.3</a>). Similar methods can be used for generating higher resolution versions of an image.</p>
+<div class="figure" style="text-align: center"><span id="fig:AE"></span>
+<img src="images/AE.png" alt="Example of an autoencoder (https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368)" width="50%" />
+<p class="caption">
+Figure 7.2: Example of an autoencoder (<a href="https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368" class="uri">https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368</a>)
+</p>
+</div>
+<div class="figure" style="text-align: center"><span id="fig:AE2"></span>
+<img src="images/AE2.png" alt="Example of an autoencoder (https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368)" width="50%" />
+<p class="caption">
+Figure 7.3: Example of an autoencoder (<a href="https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368" class="uri">https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368</a>)
+</p>
+</div>
+<p>In the example below we implement a simple Autoencoder, constructed by stacking a number of convolution layers with a stak of deconvolution layers (foregoing the max pooling layers). Note that in, in R, each pixel is represented as a number between 1 and 0. A suitable final activation function is therefore one that scales between 0 and 1 e.g., a sigmoid function. Nevertheless, we are not doing logistic regrssion, so we will choose to monitor the mse. Note that this snippet of code will take a good few hours to run <span class="math inline">\(25\)</span> epochs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">3</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>), <span class="dt">padding =</span> <span class="st">&#39;same&#39;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;sigmoid&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/modelAE.h5&#39;</span>,<span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_mse&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainX, <span class="dt">y =</span> trainX, <span class="dt">validation_data =</span> <span class="kw">list</span>(valX, valX), <span class="dt">epochs =</span> <span class="dv">25</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
+<p>Instead of running this snippet again, we can load in a pre-run model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/modelAE.h5&#39;</span>)
+<span class="kw">summary</span>(model)</code></pre></div>
+<p>We can see that this model condenses down the images from <span class="math inline">\(90 \times 160\)</span> pixel images down to <span class="math inline">\(78 \times 148\)</span> (not a huge compression, but a good starting point). Let's try compressing (and decompressing) a few of the held out examples:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">predictAEX &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(predictX)
+
+grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(predictX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(predictAEX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(predictX[<span class="dv">2</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(predictAEX[<span class="dv">2</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(predictX[<span class="dv">3</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(predictAEX[<span class="dv">3</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)</code></pre></div>
+<p>Exercise 2.2: Think about how the script can be modified to demonstrate the use of a denoisiny algorithm (hint: the dataset will need to be modified in some way, but the algorithm itself should be functional as is).</p>
+</div>
+</div>
+<div id="further-reading" class="section level2">
+<h2><span class="header-section-number">7.2</span> Further reading</h2>
+<p>A particularly comprehensive introduction to <em>Deep Learning</em> can be found in the e-book <a href="http://neuralnetworksanddeeplearning.com/chap3.html">Neural Networks and Deep Learning</a>, written by Michael Nielsen.</p>
+<p>Useful examples can also be found in the <a href="https://keras.io">keras documentation</a>, with many more examples found in the keras <a href="https://keras.rstudio.com/index.html">R wrapper documentation</a>.</p>
+<p>======= ## Exercises</p>
+<p>Solutions to exercises can be found in appendix <a href="solutions-logistic-regression.html#solutions-logistic-regression">8</a>.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-DeepExplain">
+<p>M. Ancona, C. Oztireli, E. Ceolini, and M. Grosss. 2018. “Towards Better ¨ Understanding of Gradient-Based Attribution Methods for Deep Neural Networks.” <em>International Conference of Learning Representations</em>.</p>
+</div>
+<div id="ref-Prabhu2020">
+<p>Prabhu, Vinay Uday, and Abeba Birhane. 2020. “Large Image Datasets: A Pyrrhic Win for Computer Vision?” <em>CoRR</em> abs/2006.16923. <a href="https://arxiv.org/abs/2006.16923" class="uri">https://arxiv.org/abs/2006.16923</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="once-tensorflow-is-installed-and-available-should-be-able-to-install-the-keras-wrapper-for-r-.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="solutions-logistic-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

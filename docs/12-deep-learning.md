@@ -4,30 +4,54 @@
 
 ## Multilayer Neural Networks
 
-Neural networks with multiple layers are increasingly used to attack a variety of complex problems in biology under the umbrella of *deep learning* [@angermueller2016deep,@Mohammad2019deep]. This umbrella contains an incredibly diverse range of techniques, including densely connected networks (which are essentially complex counterparts to the traditional perceptron), convolutional neural networks (CNN), autoencoders (AE), and adversarial neural networks (ANN), amongst others. 
+Neural networks are increasingly used to address a variety of complex problems in biology under the umbrella of *deep learning*. This umbrella contains a diverse range of techniques, tools, and heursitics, that have collectively been used to addressing everything from image analysis [@von2021democratising] to the data avalanch of modern genomics [@angermueller2016deep,@Mohammad2019deep,@zhang2022assessing]; from protein structure prerdiction [@jumper2021highly] to drug perrturbation prediction and discovery [@gomez2018automatic,@rampavsek2019dr]. These tecniques include densely connected networks, convolutional neural networks (CNN), autoencoders (AE), and adversarial neural networks (ANN), as well as more recent developments such as diffusion models.
 
-In this section we will explore the basics of *deep learning* on a practical level. We will first learn how to construct a neural network using {keras}, using a densely connected neural networks to explore a regression setting, before trying our hand at image classification using a set of images taken from the animated TV series [Rick and Morty](https://en.wikipedia.org/wiki/Rick_and_Morty). For those unfamiliar with Rick and Morty, the series revolves around the adventures of Rick Sanchez, an alcoholic, arguably sociopathic scientist, and his neurotic grandson, Morty Smith. Although many scientists aspire to be like Rick, they're usually more like a Jerry. Our motivating goal in this latte section is to develop an image classification algorithm capable of telling us whether any given image contains Rick or not: a binary classification task with two classes, *Rick* or *not Rick*. For training purposes I have downloaded several thousand random images of Rick and several thousand images without Rick from the website [Master of All Science](https://masterofallscience.com).
+In this chapter we will explore the basics of *deep learning* on a practical level. We will first learn how to construct a simple densly connected neural network within R using {keras}, and use this network to perform regression. Later we will try our hand at image classification using a set of images taken from the animated TV series [Rick and Morty](https://en.wikipedia.org/wiki/Rick_and_Morty). For those unfamiliar with Rick and Morty, the series revolves around the adventures of Rick Sanchez, an alcoholic scientist, and his neurotic grandson, Morty Smith. Although many scientists aspire to be like Rick, they're usually more of a Jerry. Our motivating goal in the latter sections is to develop an image classification algorithm capable of telling us whether any given image contains Rick or not. Finally, we will see how these techniques can be adaptedd for use with other data, including to identify DNA motif from ChIP-sequencing data.
 
-The main ideas to take home from this section are:
+The main take home message from this section are:
 
-1. Look at the data.
-2. There are a limitless variety of architectures that can be built into a neural network. Picking one to use is often arbitrary or *at best* empirically-motivated by previous works.
-3. Some approaches are better suited for specific datasets.
+1. It's important to look at the data.
+2. It's important to having a clear question to address.
+3. There are a limitless variety of architectures that can be built into a neural networks. Picking one to use is often arbitrary or *at best* empirically-motivated by previous works. Having a clear idea of the limitations of the data and having a clear question can help pin this down.
+4. Some apprroaches and architectures are particularly suited to specific tasks.
 
-### Installing the R wrapper for Keras
+### Regression with Keras
 
-We will first have a go at building simple densely connected Neural Networks (NN) to perform regression. In general the nature of the NN use will be motivated by the dataset we have and the question we're interested in. As a gentle introduction, we aim to use NNs to calculate the square root of a number. We first generate training and evaluation dataset. For installation instructions of the Tensorflow backend please see Section X. To set the version of Python we will be using we will need to install reticulate:
+We will first build a multilayer densely connected Neural Network (NN) to perform regression. Specifically, we aim to calculate the square root of a number. A user friendly package for *neural networks* is available via [keras](https://keras.io), an application programming interface (API) written in Python, which uses either [theano](http://deeplearning.net/software/theano/) or [tensorflow](https://www.tensorflow.org) as a back-end. An R interface for keras is available in the form of [keras](https://keras.rstudio.com/). We will first install (or import) the relevant packages. In my case, I have installed Tensorflow within Python3.9, and can set R to call this version using reticulate. We also load a few packages for general plotting and data manipulation.
 
 
 ```r
-install.packages(reticulate)
+library(ggplot2) #Packate for plotting
+library(dplyr) #Package for data maipulation
 ```
 
-In my case, I have installed Tensorflow within Python3.9, and can set R to call this version using reticulate.
+```
+## 
+## Attaching package: 'dplyr'
+```
 
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
 
 ```r
-library(ggplot2)
+library(jpeg) #Package for plotting
+```
+
+```
+## Warning: package 'jpeg' was built under R version 3.5.2
+```
+
+```r
+library(grid) #Package for plotting
 library(reticulate)
 ```
 
@@ -37,69 +61,48 @@ library(reticulate)
 
 ```r
 use_python("Python3.9")
-```
-
-If you have not already done so, you can install the keras wrapper for R via:
-
-Once tensorflow is installed and available, should be able to install the keras wrapper for R.
-
-
-```r
-#install.packages(keras)
-```
-
-We are now ready to begin.
-
-### Regression with Keras
-
-For the training set we generate two arrays, an *input* array, containing a random set of numbers (between $0$ and $100$), and an *output* array, containing the square roots of those numbers (a similar set will be independently generated for the test set):
-
-
-```r
+library(tensorflow)
 library(keras)
-library(jpeg)
 ```
 
-```
-## Warning: package 'jpeg' was built under R version 3.5.2
-```
+The task of building and using a densly connected network is moreorless the same as for other ML models, with the following steps:
+
+1. Measure, generate, or construct an appropriate dataset, which will be split into training/test/validation sets.
+2. Pick an appropriate method to address specific questions.
+3. Identify a appropriate objective function we wish to optimise with respect to the parameters of the model
+
+To illustate this, we will have to generate a synthetic dataset: for the training set we generate two arrays, an *input* array, containing a random set of numbers sampled from a given interval (e.g. between $0$ and $100$), and an *output* array, containing the square roots of those numbers, which we have numerically calculated. A similar set of data will be independently generated for the validation set:
+
 
 ```r
-library(grid)
-
 set.seed(12345)
 
 tdims <- 50 #Number of samples to generate
-x <-  runif(tdims, min=0, max=100) #Generate random x in range 0 to 100
-y <- sqrt(x) #Calculate square root of x
 
-trainingX  <- array(0, dim=c(tdims,1)) #Store data as an array (required by Keras)
-trainingX[1:tdims,1] <- x
+#We first generate random locations for an interval for the training set and store them as an array, then numerically calculate the square root at these locations (again storing as an array)
+trainingX  <- array(0, dim=c(tdims,1)) #Store data as an array (as required by Keras)
+trainingX[1:tdims,1] <- runif(tdims, min=0, max=100) #Generate random x in range 0 to 100
+
 trainingY  <- array(0, dim=c(tdims,1))
-trainingY[1:tdims,1] <- y
+trainingY[1:tdims,1] <- sqrt(trainingX[1:tdims,1])
 
 #Now do the same but for a independently generated test set
-x <-  runif(tdims, min=0, max=100)
-y <- sqrt(x)
-
 testingX  <- array(0, dim=c(tdims,1)) #Store as arrays
-testingX[1:tdims,1] <- x
+testingX[1:tdims,1] <- runif(tdims, min=0, max=100)
 testingY  <- array(0, dim=c(tdims,1))
-testingY[1:tdims,1] <- y
+testingY[1:tdims,1] <- sqrt(testingX[1:tdims,1])
 ```
 
-A user friendly package for *neural networks* is available via [keras](https://keras.io), an application programming interface (API) written in Python, which uses either [theano](http://deeplearning.net/software/theano/) or [tensorflow](https://www.tensorflow.org) as a back-end. An R interface for keras is available in the form of [keras](https://keras.rstudio.com/). Before we can use {keras in R} we first need to load the {keras} library in R (prior to this we also have to install python package {keras} and {tensorflow}).
-
-And so we come to specifying the model itself. Keras has an simple and intuitive way of specifying [layers](https://keras.io/layers/core/) of a neural network, and kerasR makes good use of this. We first initialise the model:
+We therefore have a simple task, we have a number and wish to approximate its square root. We have a 1D (scalar) input, and a 1D (scalar) output, and need to construct a multi-layer neural network to approximate the function that maps form one to the other, in a way that hopefully generalises. Keras has an simple and intuitive way of specifying [layers](https://keras.io/layers/core/) of a neural network, and the R wrapper for keras makes good use of this (see [here for documentation]{https://tensorflow.rstudio.com/}). We first initialise the model:
 
 
 ```r
 model <- keras_model_sequential()
 ```
 
-This tells keras that we're using the Sequential API i.e., a network with the first layer connected to the second, the second to the third and so forth, which distinguishes it from more complex networks possible using the Model API. Once we've specified a sequential model, we can start adding layers to the neural network. 
+This tells keras that we're using the Sequential API i.e., a simple architecture in which the first layer will be connected to the second, the second to the third and so forth, which distinguishes it from more complex networks possible using the Model API. Once we've specified this sequential model, we can start adding layers to the neural network one by one. 
 
-A standard layer of neurons, can be specified using the {Dense} command: the first layer of our network must also include the dimension of the input data. So, for example, if our input data was a scalar, we could add an input layer via:
+A standard layer of neurons, can be specified using the {layer_dense} function. When specifying the first layer of the network, we must also include the dimension of the input data. The first layer is often taken to be a {layer_flatten}, which simply flattens the input (essetially turning it into a vector).  So, for example, if our input data was a scalar, we could specify a Sequential API and add the first input layer via:
 
 
 ```r
@@ -107,7 +110,7 @@ model <- keras_model_sequential() %>%
   layer_flatten(input_shape = c(1)) 
 ```
 
-We also need to specify the activation function to the next level. This can be done via {activation}, so our snippet of code using a Rectified Linear Unit (relu) activation would look something like:
+When adding a layer we also need to specify the activation function to the next level. This can be done via {activation}. In earlier on, sigmoid activation funnctions were common, but were gradually replaced by relu activations, mostly for empircal performence reasons. So to add a layer of $100$ nodes with a Rectified Linear Unit (relu) activation, our code would look something like:
 
 
 ```r
@@ -116,7 +119,9 @@ model <- keras_model_sequential() %>%
   layer_dense(units = 100, activation = "relu")
 ```
 
-This is all we need to specify a single layer of the neural network. We could add another layer of $120$ neurons via:
+The various parameters of the model (the weights of the individual connections and biases) will be initialised by default, although different schemes can be set manually. The default initialises the connection weights as a uniform random variable over a particular range, with the biases set to zero. 
+
+We could add a second hidden layer of $120$ neurons (with relu activation and randomly initialised parameters), so that our complete code is now:
 
 
 ```r
@@ -126,7 +131,7 @@ model <- keras_model_sequential() %>%
   layer_dense(units = 120, activation = "relu")
 ```
 
-Finally, we should add the output neurons. The number of output neurons will differ, but should match the size of the output we're aiming to predict. In this section we have one output, a scalar representing the square root of the input, so will have a {Dense(1)} output. The final activation function also depends on the nature of our data. If, for example, we're doing regression, we can explicitly specify a {linear} activation function. Our final model would look like:
+Finally, we should add the output neurons. The number of output neurons differs depending on our task and data: it should match the size of the output we're aiming to predict. In this section we have one output, a scalar representing the square root of the input, so will have a {layer_dense(1)} output. The final activation function will depend on the nature of our data, but should be appropriate to the task. If, for example, we're doing regression, in which the output variable could feasibly take any real valued number over some range, it would be inappropriate to set a sigmoid activation, but we might instead specify a {linear} activation function:
 
 
 ```r
@@ -137,32 +142,31 @@ model <- keras_model_sequential() %>%
   layer_dense(1, activation = "linear")
 ```
 
-That's it. Simple!
-
-Next, we can print a summary of the network, to visualise how many parameters it has:
+That's it. Simple! Our model is now complete; we have specified a multi-layered neural network for regression consisting of two hidden layers of width $100$ and $120$ respectively. we can print a summary of the network, to visualise how many parameters it has:
 
 
 ```r
 summary(model)
 ```
 
-Before we can perform inference, we need to compile and run the model. In this case we need to specify three things:
+In total, this model contans $12,441$ parameters, strikingly higher than number of parameters we've been used to from other machine learning models. However, in terms of size and number of parameterrs, this is a tiny model: some of the bigger models out there have already surpassed [$500$ billion parameters]{https://www.microsoft.com/en-us/research/blog/using-deepspeed-and-megatron-to-train-megatron-turing-nlg-530b-the-worlds-largest-and-most-powerful-generative-language-model/}.
 
-* A [loss](https://keras.io/losses/) function, which specifies the objective function that the model will try to minimise. A number of existing loss functions are built into keras, including the mean squared error (mean_squared_error) for regression, and categorical cross entropy (categorical_crossentropy), which is used for categorical classification. Since we are dealing with regression, we will stick with the mean squared error. 
+Before we use our model to perform inference, we must first compile it. In this case we need to specify three things:
 
-* An [optimiser](https://keras.io/optimizers/), which determines how the loss function is optimised. Possible examples include stochastic gradient descent ({SGD()}) and Root Mean Square Propagation ({RMSprop()}).
+* A [loss](https://keras.io/losses/) function, which specifies the objective function that the we will try to minimise with respect to these $12,441$ parameters. A number of existing loss functions are built into keras, including the mean squared error (mean_squared_error) for regression, binary cross entrophy for binary classification (binary_crossentropy), and categorical cross entropy (categorical_crossentropy), which is used for categorical classification. Since we are dealing with regression, we will stick with the mean squared error.
 
-* A list of [metrics](https://keras.io/metrics/) to return. These are additional summary statistics that keras evaluates and prints. For classification, a good choice would be accuracy (or {binary_accuracy}).
+* An [optimiser](https://keras.io/optimizers/), which determines how the loss function is optimised. Possible examples include stochastic gradient descent ({sgd}), Root Mean Square Propagation ({rmsprop}), and Adam ({adam}). We will generally use Adam within this chapter.
 
-We can compile our model using {keras_compile}:
+* A list of [metrics](https://keras.io/metrics/) to return. These do not directly impact the optimisation, but are additional summary statistics that keras evaluates and prints out, which can come in very handy when intepreting or summarising the results. For classification, a good choice would be accuracy ({binary_accuracy} or {categorical_accuracy}) whilst for regression we could print out various metrics like the root mean square error, mean absolute error and so forth. 
+
+We compile our model using {compile}:
 
 
 ```r
 model %>% compile(loss = "mse", optimizer = "adam", metrics = "mse")
 ```
 
-Finally the model can be fitted to the data. When doing so we additionally should specify the validation set (if we have one), the batch size, and the number of epochs, where an epoch is one forward pass and one backward pass of all the training examples, and the batch size is the number of training examples in one forward/backward pass. Our complete code would then look like this:
-
+Finally the model is fitted to the data. When doing so we should additionally specify the validation set (if we have one), the batch size, and the number of epochs. One epoch is one forward pass and one backward pass of all the training examples, and the batch size is the number of training examples in one forward/backward pass. Our complete code would then look like the sippet below. Alternatively to above, rather than specify the training and validation data sets manually, we could use validation_split to specify the fraction of data to be used as the validation set. This can be useful when dealing with larger datasets. Generally in this section we have very small datasets and can load all the input and output data into memory, but may not be possible if dealing with images or large genomic data. Instead we could specify validation_split along with flow_from_directory to read small batches directly from a directory. Precicesly how the objective funciton is optimised is based on back propogation (you can read more on this [here]{https://towardsdatascience.com/understanding-backpropagation-algorithm-7bb3aa2f95fd}, [here]{https://towardsdatascience.com/hyper-parameter-tuning-techniques-in-deep-learning-4dad592c63c8}, and [here]{https://medium.com/spidernitt/breaking-down-neural-networks-an-intuitive-approach-to-backpropagation-3b2ff958794c})
 
 
 ```r
@@ -184,7 +188,7 @@ tensorflow::set_random_seed(42)
 model %>% fit(x = trainingX, y = trainingY, validation_data = list(testingX, testingY), epochs = 100, verbose = 2)
 ```
 
-We can see that the mean square error rapidly decreases (from approx. 4 at epoch 1 to around 0.5 towards the end). As always, let's take a look at the actual results, rather than rely on summary metrics. To make predictions we can use the {predict} function:
+We can see that the mean square error rapidly decreases (from approx. 16 at epoch 3 to around 0.8 towards the end). As always, let's take a look at the actual results, rather than rely on summary metrics. To make predictions using the model we can use the {predict} function:
 
 
 ```r
@@ -194,7 +198,7 @@ ggplot(data.frame(x=xstar,y=forecastY ), aes(x = x, y = y)) + geom_line(size = 1
 geom_line(color='red',size = 1, data = data.frame(x=xstar,y=sqrt(xstar)), aes(x=x, y=y)) + theme_bw()
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 Okay, so it's not particularly good. However, we didn't use a particularly large training set and there are a few things we can do to try to optimise the network. Another important point is that we didn't use the *best* network (the one with the best test set error). By default when we call prediction functions we tend to use whatever the final network was during our training. We can add this in to the code above, which would then look something like:
 
@@ -212,7 +216,7 @@ cp_callback <- callback_model_checkpoint(filepath = 'data/RickandMorty/data/mode
 
 
 tensorflow::set_random_seed(42)
-model %>% fit(x = trainingX, y = trainingY, validation_data = list(testingX, testingY), epochs = 100, verbose = 2,  callbacks = list(cp_callback))
+model %>% fit(x = trainingX, y = trainingY, validation_data = list(testingX, testingY), epochs = 100, verbose = 0,  callbacks = list(cp_callback))
 ```
 
 The optimised model can be loaded in:
@@ -220,34 +224,30 @@ The optimised model can be loaded in:
 
 ```r
 model = load_model_hdf5('data/RickandMorty/data/models/densemodel.h5')
-
+xstar <- seq(0,200,by=0.5)
+forecastY <- model %>% predict(xstar)
 ggplot(data.frame(x=xstar,y=forecastY ), aes(x = x, y = y)) + geom_line(size = 1) + geom_point(color='blue') +
 geom_line(color='red',size = 1, data = data.frame(x=xstar,y=sqrt(xstar)), aes(x=x, y=y)) + theme_bw()
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 We can try varying a few other aspects of the network to get an idea of how NNs behave. For example, first try increasing the training set size. Try adding or removing layers, and varying layer widths. Another thing thing that can be varied is final layer activation. The [keras manual]{https://keras.io/api/layers/activations/} should provide a useful resource to explore what options are available.  
 
 
 ```r
 tdims <- 5000 #Number of samples to generate
-x <-  runif(tdims, min=0, max=200) #Generate random x in range 0 to 100
-y <- sqrt(x) #Calculate square root of x
 
 trainingX  <- array(0, dim=c(tdims,1)) #Store data as an array (required by Keras)
-trainingX[1:tdims,1] <- x
+trainingX[1:tdims,1] <-  c( runif(tdims/2, min=0, max=80),  runif(tdims/2, min=120, max=200) )
 trainingY  <- array(0, dim=c(tdims,1))
-trainingY[1:tdims,1] <- y
+trainingY[1:tdims,1] <- sqrt(trainingX[1:tdims,1])
 
 #Now do the same but for a independently generated test set
-x <-  runif(tdims, min=0, max=200)
-y <- sqrt(x)
-
 testingX  <- array(0, dim=c(tdims,1)) #Store as arrays
-testingX[1:tdims,1] <- x
+testingX[1:tdims,1] <- runif(tdims, min=0, max=200)
 testingY  <- array(0, dim=c(tdims,1))
-testingY[1:tdims,1] <- y
+testingY[1:tdims,1] <- sqrt(testingX[1:tdims,1])
 
 
 model <- keras_model_sequential() %>% 
@@ -269,47 +269,70 @@ xstar <- seq(0,250,by=0.5)
 
 forecastY <- model %>% predict(xstar)
 
-colnames(trainingX) <- "x"
-colnames(trainingY) <- "y"
-lrfit <- lm(y~x)
-newd <- data.frame(x=xstar)
-predictedValues<-predict.lm(lrfit, newdata = newd)
+dataLM <- data.frame(x=trainingX,y=trainingY)
+lrfit <- lm(data = dataLM, y~x)
+predictedValues<-predict.lm(lrfit, newdata = data.frame(x=xstar) )
 
 ggplot(data.frame(x=xstar,y=forecastY ), aes(x = x, y = y)) + geom_line(size = 1) + geom_point(color='blue') +
 geom_line(color='red',size = 1, data = data.frame(x=xstar,y=predictedValues), aes(x=x, y=y)) + 
 geom_line(color='green',size = 1, data = data.frame(x=xstar,y=sqrt(xstar)), aes(x=x, y=y)) + theme_bw()
 ```
 
-### Image classification with Rick and Morty
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
-We will now try to train a network for image classification. As with any machine learning application, it's important to both have some question in mind (in this case "can we identify images that contain Rick Sanchez"), and understand the dataset(s) we're using.
-
-The image data can be found in the directory {data/RickandMorty/data/}. We begin by loading in some images of Rick using the {readJPEG} and {grid.raster} functions.
+Let's take a closer look over the range where we didn't have any training data:
 
 
 ```r
-im <- readJPEG("data/RickandMorty/data/AllRickImages/Rick_1.jpg")
+model = load_model_hdf5('data/RickandMorty/data/models/densemodel.h5')
+xstar <- seq(60,140,by=0.5)
+
+forecastY <- model %>% predict(xstar)
+
+dataLM <- data.frame(x=trainingX,y=trainingY)
+lrfit <- lm(data = dataLM, y~x)
+predictedValues<-predict.lm(lrfit, newdata = data.frame(x=xstar) )
+
+ggplot(data.frame(x=xstar,y=forecastY ), aes(x = x, y = y)) + geom_line(size = 1) + geom_point(color='blue') +
+geom_line(color='red',size = 1, data = data.frame(x=xstar,y=predictedValues), aes(x=x, y=y)) + 
+geom_line(color='green',size = 1, data = data.frame(x=xstar,y=sqrt(xstar)), aes(x=x, y=y)) + theme_bw()
+```
+
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+
+Not perfect, but better than a linear model, at least. So we have a model that has interpolated reasonably well. These types of models are pretty good at inference for a whole range of real world (nonlinear) functions for which there is a sufficient amount of data. 
+
+Excercise 12.1: How could you modify the code above for inferece in a system where we have $5$ input variables and $3$ output variables?
+
+
+### Image classification with Rick and Morty
+
+We will now try to modify our network for image classification. As with any machine learning application, it's important to have both a question in mind (in this case "can we identify images that contain Rick Sanchez"), and understand the dataset(s) we're using. For training purposes I have downloaded several thousand random images of Rick Sanchez and several thousand images without Rick from the website [Master of All Science](https://masterofallscience.com). The image data can be found in the directory {data/RickandMorty/data/}, which we can load and plot using the {readJPEG} and {grid.raster} functions respectively.
+
+
+```r
+im <- readJPEG("data/RickandMorty/altdata/AllRickImages/Rick_1.jpg")
 grid::grid.newpage()
 grid.raster(im, interpolate=FALSE, width = 0.5)
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
-Let's understand take a closer look at this dataset. We can use the funciton {dim(im)} to return the image dimensions. In this case each image is stored as a jpeg file, with $90 \times 160$ pixel resolution and $3$ colour channels (RGB). This loads into R as $160 \times 90 \times 3$ array. We could start by converting the image to grey scale, reducing the dimensions of the input data. However, each channel will potentially carry novel information, so ideally we wish to retain all of the information. You can take a look at what information is present in the different channels by plotting them individually using e.g., {grid.raster(im[,,3], interpolate=FALSE)}. Whilst the difference is not so obvious here, we can imagine sitations where different channels could be dramamtically different, for example, when dealing with remote observation data from satellites, where we might have visible wavelength alongside infrared and a variety of other spectral channels.
+We can use the funciton {dim(im)} to return the image dimensions. In this case each image is stored as a jpeg file, with a $90 \times 160$ pixel resolution with $3$ colour channels (RGB). This loads into R as $160 \times 90 \times 3$ array. We could start by converting the image to grey scale, reducing the dimensions of the input data. However, each channel will potentially carry novel information, so ideally we wish to retain all of the information. You can take a look at what information is present in the different channels by plotting them individually using e.g., {grid.raster(im[,,3], interpolate=FALSE)}. Whilst the difference is not so obvious here, we can imagine sitations where different channels could be dramamtically different, for example, when dealing with remote observation data from satellites, where we might have visible wavelengths alongside infrared and other wavelengths.
 
-Since we plan to retain the channel information, our input data is a tensor of dimension $90 \times 160 \times 3$ i.e., height x width x channels. Note that this ordering is important, as the the package we're using expects this ordering (be careful, as other packages can expect a different ordering). 
+Since we plan to retain the channel information, our input data is a tensor of dimension $90 \times 160 \times 3$ i.e., height x width x channels. Note that this ordering is important, as keras expects this ordering (but be careful, as other packages can expect a different ordering).
 
-Before building a neural network we first have to load the data and construct a training, validation, and test set of data. Whilst the package we're using has the ability to specify this on the fly, I prefer to manually seperate out training/test/validation sets, as it makes it easier to later debug when things go wrong. 
+Before building a neural network we first have to load the data and construct a training, validation, and test set of data. Whilst the package we're using has the ability to specify this on the fly (flow_images_from_directory), for smaller datasets I prefer to manually seperate out training/test/validation sets, as it makes it a little easier debug when things go wrong. 
 
 First load all *Rick* images and all *not Rick* images from their directory. We can get a list of all the *Rick* and *not Rick* images using {list.files}:
 
 
 ```r
-files1 <- list.files(path = "data/RickandMorty/data/AllRickImages/", pattern = "jpg")
-files2 <- list.files(path = "data/RickandMorty/data/AllMortyImages/", pattern = "jpg")
+files1 <- list.files(path = "data/RickandMorty/altdata/AllRickImages/", pattern = "jpg")
+files2 <- list.files(path = "data/RickandMorty/altdata/AllMortyImages/", pattern = "jpg")
 ```
 
-After loading the lsit of files we can see we have $2211$ images of *Rick* and $3046$ images of *not Rick*. Whilst this is a slightly unbiased dataset it is not dramatically so; in cases where there is extreme inbalance in the number of class observations we may have to do something extra, such as data augmentation, or assinging weights during training.
+After loading the files we can see we have $2211$ images of *Rick* and $3046$ images of *not Rick*, for a total of $5257$ imaages. Whilst this is a slight class imbalaance in the dataset (there are more not Rick images than Rick images) it is not dramatically so; in cases where there is extreme imbalance in the number of class observations we may have to do something extra, such as data augmentation, or assinging weights during training.
 
 We next preallocate an empty array to store these training images for the *Rick* and *not Rick* images (an array of dimension $5257 \times 90 \times 160 \times 3$):
 
@@ -323,7 +346,7 @@ We can load images using the {readJPEG} function:
 
 ```r
 for (i in 1:length(files1)){
-  allX[i,1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/AllRickImages/", files1[i], sep=""))
+  allX[i,1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/altdata/AllRickImages/", files1[i], sep=""))
 }
 ```
 
@@ -332,40 +355,40 @@ Similarly, we can load the *not Rick* images and store in the same array:
 
 ```r
 for (i in 1:length(files2)){
-  allX[i+length(files1),1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/AllMortyImages/", files2[i], sep=""))
+  allX[i+length(files1),1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/altdata/AllMortyImages/", files2[i], sep=""))
 }
 ```
 
-Next we can construct a vector of length $5257$ containing the classification for each of the images e.g., a $0$ if the image is a *Rick* and $1$ if it is *not Rick*. This is simple enough using the function {rbind}, as we know the first $2211$ images were *Rick* and the second lot of images are *not Rick*. Since we are dealing with a classification algorithm, we next convert the data to binary categorical output (that is, a *Rick* is now represented as $[1, 0]$ and a *not Rick* is a $[0, 1]$), which we can do using the {to_categorical} conversion function:
+Next we can construct the output variable (usually denoted Y). The nature of this depends on the data itself. In the simplest case we are looking to infer a Rick or not, which is a binary variable, with a zero (0) indicating Rick present, annd one (1) indicating no Rick (we could always flip this). The output can therefore be represented as a single (binary) output node. We can construct Y as a vector of length $5257$ containing the classification for each of the images e.g., a $0$ if the image is a *Rick* and $1$ if it is *not Rick*. This is simple enough using the function {rbind}, as we know the first $2211$ images were *Rick* (so create a vector of zeros of length 2211) and the second lot of images are *not Rick* (create a vector of ones of length 3046) and join them together using rbind.
 
 
 ```r
 labels <- rbind(matrix(0, length(files1), 1), matrix(1, length(files2), 1))
-allY <- to_categorical(labels, num_classes = 2)
 ```
 
-Obviously in the snippet of code above we have $2$ classes; we could just as easily perform classificaiton with more than $2$ classes, for example if we wanted to classify *Ricky*, *Morty*, or *Jerry*, and so forth.
+Next, we must now split our data in training sets, validation sets, and test sets. In fact I have already stored some seperate "test" set images in another folder that we will load in at the end, so here we only need to seperate images into training and validation sets. It's important to note that we shouldn't simply take the first $N$ images for training with the remainder used for validation/testing, since this may introduce artefacts. For example, here we've loaded in all the *Rick* images in first, with the *not Rick* images loaded in second: if we took, say, the first $2000$ images for training, we would be training with only Rick images, which makes our task impossible, and our algorithm will fail catastrophically.
 
-We must now split our data in training sets, validation sets, and test sets. In fact I have already stored some seperate "test" set images in another folder that we will load in at the end, so here we only need to seperate images into training and validation sets. It's important to note that we shouldn't simply take the first $N$ images for training with the remainder used for validation/testing, since this may introduce artefacts. For example, here we've loaded in all the *Rick* images in first, with the *not Rick* images loaded in second: if we took, say, the first $2000$ images for training, we would be training with only Rick images, which makes our task impossible, and our algorithm will fail catastrophically.
-
-Although there are more elegant ways to shuffle data using {caret}, here we are going to manually randomly permute the data, and then take the first $4000$ permuted images for training, with the remainder for validation (Note: it's crucial to permute the $Y$ data in the same way).
+Although there are more elegant ways to shuffle data using {caret} or {keras}, here we are going to manually randomly permute the data, and then take the first $4000$ permuted images for training, with the remainder for validation (Note: it's crucial to permute the $Y$ data in the same way).
 
 
 ```r
 set.seed(12345) #Set random number generator for R aspects of the session
 
-vecInd <- seq(0,length(files1)+length(files2)) #A vector of indexes
+vecInd <- seq(1,length(files1)+length(files2)) #A vector of indexes of the length of the data
 trainInd <- sample(vecInd)[1:4001] #Permute and take first 4000 training
-valInd <- setdiff(vecInd,trainInd) #The remainder are for val/testing
 
+#Training set
 trainX <- allX[trainInd, , , ]
-trainY <- allY[trainInd, 1]
+valX <- allX[-trainInd, , , ]    
 
-valX <- allX[valInd, , , ]
-valY <- allY[valInd, 1]
+#Val set
+trainY <- labels[trainInd, 1]
+valY <- labels[-trainInd, 1]
 ```
 
-Before we move on, take a moment to think about the form of our data, in particular the output data Y. What exactly is the format we've settled on? This will be important later on in specifying our loss function. Think about cases where using similar datasets, we might want the data in a slightly different format.
+Before we move on, take a moment to think about the form of our data, in particular the output data Y. Although we could have stuck with a one-hot encoded approach, here we have a simpler case of binary classification with a data being 0 or 1. We can therefore simply take the first column of Y, which will be zero if it's a Rick and one if it's a not Rick. 
+
+What exactly is the format we've settled on? This will be important later on in specifying our loss function. Think about cases where using similar datasets, we might want the data in a slightly different format.
 
 We are almost ready to begin building our neural networks. First can try a few things to make sure out data has been processed correctly. For example, try manually plotting several of the images and seeing if the labels are correct. Manually print out the image matrix (not a visualisation of it): think about the range of the data, and whether it will need normalising. Finally we can check to see how many of each class is in the training and validation datasets. In this case there are $1706$ images of *Rick* and $2294$ images of *not Rick* in the training dataset. Again, whilst there is some slight class inbalance it is not terrible, so we don't need to perform data augmentation or assign weights to the different classes during training. 
 
@@ -394,15 +417,15 @@ This should turn our $90 \times \160 \times 3$ input into a $1 \times 43200$ nod
 model <- keras_model_sequential() %>% 
   layer_flatten(input_shape = c(90,160,3)) %>% 
   layer_dense(units = 100, activation = "relu") %>% 
-  layer_dense(units = 70, activation = "relu")
+  layer_dense(units = 120, activation = "relu")
 ```
 
-Finally we connect this layer over the final output layer (two neurons) with sigmoid activation:
+Finally we connect this layer over the final output layer (one neuron) with sigmoid activation:
 [activation](https://keras.io/activations/)
 
 
 ```r
-layer_flatten(input_shape = c(NULL,90,160,3) , activation = 'relu' ) %>%
+layer_flatten(input_shape = c(90,160,3) , activation = 'relu' ) %>%
 layer_dense(units = 100)
 ```
 
@@ -413,7 +436,7 @@ The complete model should look something like:
 model <- keras_model_sequential() %>% 
   layer_flatten(input_shape = c(90,160,3)) %>% 
   layer_dense(units = 100, activation = "relu") %>% 
-  layer_dense(units = 70, activation = "relu") %>% 
+  layer_dense(units = 120, activation = "relu") %>% 
   layer_dense(1, activation = "sigmoid")
 ```
 
@@ -424,9 +447,7 @@ We can print a summary of the network, for example to see how many parameters it
 summary(model)
 ```
 
-In this case we see a total of $4,327,241$ parameters. Yikes, that's a lot of parameters to tune, and not much data! 
-
-Next we need to compile and run the model. In this case we need to specify the loss, optimiser, and metrics. Since we are dealing with binary classification, we will use binary cross entropy (binary_crossentropy) and for classification, a good choice of metrics would be accuracy (or {binary_accuracy}). We can compile our model using {keras_compile}:
+In this case we see a total of $4,332,341$ parameters. Yikes, that's a lot of parameters to tune (well not compared some models), and not much data! Next we need to compile and run the model. In this case we need to specify the loss, optimiser, and metrics. Since we are dealing with binary classification, we will use binary cross entropy (binary_crossentropy) and for classification, a good choice of metrics would be {binary_accuracy}. We can compile our model using {keras_compile}:
 
 
 ```r
@@ -448,38 +469,39 @@ Together with an added callback to save the best model, our code should look som
 model <- keras_model_sequential() %>% 
   layer_flatten(input_shape = c(90,160,3)) %>% 
   layer_dense(units = 100, activation = "relu") %>% 
-  layer_dense(units = 70, activation = "relu") %>% 
+  layer_dense(units = 120, activation = "relu") %>% 
   layer_dense(1, activation = "sigmoid")
 
 model %>% compile(loss = "binary_crossentropy", optimizer = "adam", metrics = "binary_accuracy")
 
-cp_callback <- callback_model_checkpoint(filepath = 'data/RickandMorty/data/models/model.h5',save_weights_only = FALSE, mode = "auto",  monitor = "val_binary_accuracy", verbose = 0)
+cp_callback <- callback_model_checkpoint(filepath = 'data/RickandMorty/data/models/model_rerun.h5',save_weights_only = FALSE, mode = "auto",  monitor = "val_binary_accuracy", verbose = 0)
 
 
 tensorflow::set_random_seed(42)
-model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 25, batch_size=100, verbose = 2, callbacks = list(cp_callback))
+model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 25, batch_size=500, verbose = 2, callbacks = list(cp_callback))
 ```
 
 As before we can load a saved model in using the {load_model_hdf5} function and use it for predictions:
+
 
 ```r
 model = load_model_hdf5('data/RickandMorty/data/models/model.h5')
 ```
 
-For this model we achieved an accuracy of above $0.68$ on the validation dataset at epoch $16$ (which had a corresponding accuracy $>0.74$ on the training set). Not fantastic when you consider that given the slight imbalance in the number of images in each class, a niave algorithm that always assigns the data to *not Rick* would achieve an accuracy of $0.58$ and $0.57$ in the training and validation sets respectively. It seems like we're getting nowhere fast, and need to change tactic. 
+For this model we achieved an accuracy of above $0.62$ on the validation dataset at epoch $20$ (which had a corresponding accuracy $0.53$ on the training set). Not fantastic when you consider that given the slight imbalance in the number of images in each class, a niave algorithm that always assigns the data to *not Rick* would achieve an accuracy of $0.58$ and $0.57$ in the training and validation sets respectively. It seems like we're getting nowhere fast, and need to change tactic. 
 
-We need to think a little more about what the data actually *is*. In this case we're looking at a set of images. As Rick Sanchez can appear almost anywhere in the image, there's no reason to think that a given input node should correspond in two different images, so it's not surprising that the network did so badly, this is simply a task that a densely connected network is poor at. We need something that can extract out features from the image irregardless of where Rick is. There are approaches build precisely for image analysis that do just this: convolutional neural networks. 
+We need to think a little more about what the data actually *is*. In this case we're looking at a set of images. As Rick Sanchez can appear almost anywhere in the image, there's no reason to think that a given input node should correspond in two different images to any useful feature, so it's not surprising that the network did so badly, this is simply a task that a densely connected network is poor at. We need something that can extract out features from the image irregardless of where Rick is. There are approaches build precisely for image analysis that do just this: convolutional neural networks (CNN). 
 
 ## Convolutional neural networks
 
-Convolutional neural networks essentially scan through an image and extract out a set of feature representations. In multilayer neural networks, these features might then be passed on to deeper layer (other convolutional layers or standard neurons) which extract out higher order features, as shown in Figure \@ref(fig:covnet). Finally, a densly connected network acts to combine features together for prediction. At least in an idealised description of what's going on.
+Convolutional neural networks essentially scan across an image and extract out a set of feature representations. These features might then be passed on to a deeper layer (other convolutional layers or standard neurons) which extract out higher order features, as shown in Figure \@ref(fig:covnet). Finally, a densely connected network acts to combine the end features together for prediction. At least in an idealised description of what's going on.
 
 <div class="figure" style="text-align: center">
 <img src="images/Screen-Shot-2015-11-07-at-7.26.20-AM.png" alt="Example of a multilayer convolutional neural network" width="50%" />
 <p class="caption">(\#fig:covnet)Example of a multilayer convolutional neural network</p>
 </div>
 
-In keras R we can add a convolutional layer using {layer_conv_2d} with a max pooling layer added via {layer_max_pooling_2d}. A multilayer convolutional neural network might look something like:
+In keras we can add a 2D convolutional layer using {layer_conv_2d}. A multilayer convolutional neural network might look something like:
 
 
 ```r
@@ -488,6 +510,7 @@ layer_conv_2d(input_shape = list(90,160,3), filters = 20, kernel_size = c(5,5))
 ```
 
 which will construct $20$  feature maps (using a kernel of size $5 \times 5$). A $2 \times 2$ max-pool layer would then be added on:
+
 
 ```r
 model <- keras_model_sequential() %>%
@@ -518,16 +541,12 @@ model <- keras_model_sequential() %>%
 cp_callback <- callback_model_checkpoint(filepath = 'data/RickandMorty/data/models/modelCNN_rerun.h5',save_weights_only = FALSE, mode = "auto",  monitor = "val_binary_accuracy", verbose = 0)
 
 model %>% compile(loss = "binary_crossentropy", optimizer = "adam", metrics = "binary_accuracy")
-```
 
-To  run the model we could use the snippet of code below.   
-
-```r
 tensorflow::set_random_seed(42)
-model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 5, verbose = 2, callbacks = list(cp_callback))
+model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 5, batch_size=100, verbose = 2, callbacks = list(cp_callback))
 ```
 
-Here we only ran the model for $5$ epochs just to get an feel for it. If we did have time to run this model longer, we would see better accuracy. We have an accuracy of $0.854$ on the validation dataset at epoch $22$, with a training accuracy of $0.982$. Whilst this is still not great (compared to how well a human could do on a similar task), it's accurate enough to begin making predictions and visualising the results. Fortunately I've already run (and saved) this model for $25$ epocs, so let's load it in for predictions:
+Here we only ran the model for $5$ epochs just to get an feel for it. If we did have time to run this model longer, we would see better accuracy. We have an accuracy of $0.88$ on the validation dataset at epoch $43$, with a training accuracy of $0.995$. Whilst this is still not great (compared to how well a human could do on a similar task), it's accurate enough to begin making predictions and visualising the results. Fortunately I've already run (and saved) this model for $50$ epochs, so let's load it in for predictions:
 
 
 ```r
@@ -551,7 +570,7 @@ A hard classification can be assigned using the {predict_classes} function, whil
 
 ```r
 probY <- model %>% predict(predictX)
-predictY <- as.numeric(probY>0.5)
+predictY <- as.numeric(probY>0.5) #Rick or not 
 ```
 
 We can plot an example:
@@ -562,14 +581,14 @@ choice = 13
 grid::grid.newpage()
 if (predictY[choice]==1) {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
+  grid.text(label='Not Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
 } else {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Not Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="grey"))
+  grid.text(label='Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=25, col="black"))
 }
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-41-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-39-1.png" width="672" />
 
 
 ```r
@@ -577,14 +596,14 @@ choice = 1
 grid::grid.newpage()
 if (predictY[choice]==1) {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
+  grid.text(label='Not Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=25, col="white"))
 } else {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Not Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
+  grid.text(label='Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
 }
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-42-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-40-1.png" width="672" />
 
 
 
@@ -593,14 +612,14 @@ choice = 6
 grid::grid.newpage()
 if (predictY[choice]==1) {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
+  grid.text(label='Not Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=25, col="black"))
 } else {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Not Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
+  grid.text(label='Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=25, col="white"))
 }
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-43-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-41-1.png" width="672" />
 
 
 ```r
@@ -608,18 +627,20 @@ grid::grid.newpage()
 choice = 16
 if (predictY[choice]==1) {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Rick',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="black"))
+  grid.text(label='Not Rick: Must be a Jerry',x = 0.4, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="white"))
 } else {
   grid.raster(predictX[choice,1:90,1:160,1:3], interpolate=FALSE)
-  grid.text(label='Not Rick: must be a Jerry',x = 0.2, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="green"))
+  grid.text(label='Rick',x = 0.2, y = 0.77,just = c("left", "top"), gp=gpar(fontsize=15, col="white"))
 }
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-44-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-42-1.png" width="672" />
+Excercise: Try coding a CNN for image analysis using laodig data direct from their folders rather than loading each to memory. 
+
 
 ### Checking the models
 
-Although our model seems to be doing reasonably, it always helps to see where things are going wrong. Let's take a look at a few of the false positives and a few of the false negatives.
+Although our model seems to be doing reasonably well, it always helps to see where things are going wrong. Let's take a look at a few of the false positives and a few of the false negatives.
 
 
 ```r
@@ -632,7 +653,7 @@ TN <- which(predictvalY==0 & valY==0)
 FP <- which(predictvalY==1 & valY==0)
 ```
 
-Let's see where we go it right:
+Let's see where we go it right, these were all predicted as not Rick:
 
 
 ```r
@@ -642,9 +663,20 @@ grid.raster(valX[TP[2],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5,
 grid.raster(valX[TP[3],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.8)
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-46-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-44-1.png" width="672" />
+And these were all predicted as Rick:
 
-And wrong (false negative):
+
+```r
+grid::grid.newpage()
+grid.raster(valX[TN[1],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.2)
+grid.raster(valX[TN[2],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.5)
+grid.raster(valX[TN[3],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.8)
+```
+
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-45-1.png" width="672" />
+
+And these we got wrong (predicted Rick):
 
 
 ```r
@@ -654,9 +686,9 @@ grid.raster(valX[FN[2],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5,
 grid.raster(valX[FN[3],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.8)
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-47-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-46-1.png" width="672" />
 
-Or false positives:
+Or wrong (predicted not Rick):
 
 
 ```r
@@ -666,19 +698,704 @@ grid.raster(valX[FP[2],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5,
 grid.raster(valX[FP[4],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.8)
 ```
 
-<img src="12-deep-learning_files/figure-html/unnamed-chunk-48-1.png" width="672" />
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-47-1.png" width="672" />
 
-It's not entirely clear why exactly the network is failing in some of these cases. An alternative way to look at what's going wrong is a look at which pixels are contributing the most to the classifier, as we have done during the lecture. Currently this can be done in Python implementations of Keras using the [DeepExplain]{https://github.com/marcoancona/DeepExplain} package {@DeepExplain}. Example Python code for doing this has been provided in the {Python} subdirectory.
+It's not entirely clear why exactly the network is failing in some of these cases. An alternative way to look at what's going wrong is a look at which pixels are contributing the most to the classifier, as we have done in the lecture. We will return to this question shortly.
+
+## Multiclass prediction
+
+In previous sections we dealt with predicting a Rick (0) or a not Rick (1). This is because we framed our goal as a simple binary question. An image either has a Rick in or it doesn't. There are other possible questions we might be interested: for example, does the image contain another character, such as a Morty? Here a given image could contain either a Rick or a Morty, both a Rick and a Morty, or neither. We can frame this as two binary questions, however: 'does the image contain a Rick?" and  "does the image contain a Morty?" requiring two output nodes. I have already processed the invidual images into seperate folders, one containing only Rick, one only Morty, one containing both, and one containing neither. These can be read in:
+
+
+```r
+files1 <- list.files(path = "data/RickandMorty/data/ThreeClassModel/AllRickImages/", pattern = "jpg") #These contain Rick but not Morty
+files2 <- list.files(path = "data/RickandMorty/data/ThreeClassModel/AllMortyImages/", pattern = "jpg") #These contai Morty but not Rick
+files3 <- list.files(path = "data/RickandMorty/data/ThreeClassModel/Both/", pattern = "jpg") #These contain both Rick and Morty
+files4 <- list.files(path = "data/RickandMorty/data/ThreeClassModel/Neither/", pattern = "jpg") #These contain neither
+
+allX  <- array(0, dim=c(length(files1)+length(files2)+length(files3)+length(files4),dim(im)[1],dim(im)[2],dim(im)[3]))
+
+for (i in 1:length(files1)){
+  allX[i,1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/AllRickImages/", files1[i], sep=""))
+}
+
+for (i in 1:length(files2)){
+  allX[i+length(files1),1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/AllMortyImages/", files2[i], sep=""))
+}
+
+for (i in 1:length(files3)){
+  allX[i+length(files1)+length(files2),1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/Both/", files3[i], sep=""))
+}
+
+for (i in 1:length(files4)){
+  allX[i+length(files1)+length(files2)+length(files3),1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/Neither/", files4[i], sep=""))
+}
+```
+
+As before we can costruct the output variable: a two dimensional output with $[1,0]$ indicating Rick, $[0,1]$ and Morty, $[1,1]$ indicating both, and $[0,0]$ neither.
+
+
+```r
+labels <- rbind(
+  t(t(rep(1, length(files1)))) %*% c(1,0),
+  t(t(rep(1, length(files2)))) %*% c(0,1),
+  t(t(rep(1, length(files3)))) %*% c(1,1),
+  t(t(rep(1, length(files4)))) %*% c(0,0)
+  )
+```
+
+In total there are $2213$ Ricks, and $2158$ Mortys. We can split this data for training/validation as before:
+
+
+```r
+set.seed(12345) #Set random number generator for R aspects of the session
+
+vecInd <- seq(1,length(files1)+length(files2)+length(files3)+length(files4)) #A vector of indexes
+trainInd <- sample(vecInd)[1:4001] #Permute and take first 4000 training
+#Train
+trainX <- allX[trainInd, , , ]
+trainY <- labels[trainInd, ]
+#Val
+valX <- allX[-trainInd, , , ]     
+valY <- labels[-trainInd, ]
+```
+
+And we can perform inference similary to before, with the only real difference that we now have two output nodes with sigmoid activation. One asking is there a Rick, one asking is there a Morty.
+
+
+```r
+model <- keras_model_sequential() %>%
+  layer_conv_2d(input_shape = list(90,160,3), filters = 20, kernel_size = c(5,5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%
+  layer_conv_2d(filters = 20, kernel_size = c(5,5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%
+  layer_conv_2d(filters = 64, kernel_size = c(5,5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%
+  layer_flatten( ) %>%
+  layer_dense(units=100) %>%
+  layer_dropout(rate = 0.3) %>%
+  layer_dense(units=2, activation = "sigmoid")
+
+cp_callback <- callback_model_checkpoint(filepath = 'data/RickandMorty/data/models/modelCNNMultClass_rerun.h5',save_weights_only = FALSE, mode = "auto",  monitor = "val_binary_accuracy", verbose = 0)
+
+model %>% compile(loss = "binary_crossentropy", optimizer = "adam", metrics = "binary_accuracy")
+
+tensorflow::set_random_seed(42)
+model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 5, batch_size=100, verbose = 2, callbacks = list(cp_callback))
+```
+
+
+### Categorical data
+
+In the previous example we were using a binary classification since we were only concerned if an the image contained a Rick or not (or by extension if a Morty or not). A more general case is categorical classification (of which binary is a special case) where we have $P$ mutually exclusive classes, and wish to infer which one of those $P$-classes is in a particular image. In this case we might want to infer Rick, Morty, or neither, so a three class system. Note that since we are framing this as exclusive question, we shoudn't really use the data with both Rick and Morty in.
+
+
+```r
+allX  <- array(0, dim=c(length(files1)+length(files2)+length(files4),dim(im)[1],dim(im)[2],dim(im)[3]))
+
+for (i in 1:length(files1)){
+  allX[i,1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/AllRickImages/", files1[i], sep=""))
+}
+
+for (i in 1:length(files2)){
+  allX[i+length(files1),1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/AllMortyImages/", files2[i], sep=""))
+}
+
+for (i in 1:length(files4)){
+  allX[i+length(files1)+length(files2),1:dim(im)[1],1:dim(im)[2],1:dim(im)[3]] <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/Neither/", files4[i], sep=""))
+}
+```
+
+When using categorical data (Rick/Morty/Neither) we could instead represent this as a number or factor (1/2/3). A far more useful way to encode this, is called one-hot encoding, that is we have vector of length $P$ with zeros everywhere exept the column represeting a particular class. So in our Rick, Morty, Neither system a Rick is $[1,0,0]$, and Morty is $[0,1,0]$, and Neither is $[0,0,1]$. In the snippet of code below we do this manually, but if we had a numeric represetation we could also use the {to_catogrical} function.
+
+
+
+```r
+labels <- rbind(
+  t(t(rep(1, length(files1)))) %*% c(1,0,0),
+  t(t(rep(1, length(files2)))) %*% c(0,1,0),
+  t(t(rep(1, length(files4)))) %*% c(0,0,1)
+  )
+```
+
+As previously, we can construct a train/validation set:
+
+
+```r
+set.seed(12345) #Set random number generator for R aspects of the session
+
+vecInd <- seq(1,length(files1)+length(files2)+length(files4)) #A vector of indexes
+trainInd <- sample(vecInd)[1:3001] #Permute and take first 4000 training
+
+#Train
+trainX <- allX[trainInd, , , ]
+trainY <- labels[trainInd, ]
+
+#Val
+valX <- allX[-trainInd, , , ]    
+valY <- labels[-trainInd, ]
+```
+
+And finally run the code. Here we must make sure to use the appropriate activation funtion on the final layer and correct loss function/metrics.
+
+
+```r
+model <- keras_model_sequential() %>%
+  layer_conv_2d(input_shape = list(90,160,3), filters = 20, kernel_size = c(5,5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%
+  layer_conv_2d(filters = 20, kernel_size = c(5,5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%
+  layer_conv_2d(filters = 64, kernel_size = c(5,5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_2d(pool_size=c(2,2)) %>%
+  layer_flatten( ) %>%
+  layer_dense(units=100) %>%
+  layer_dropout(rate = 0.3) %>%
+  layer_dense(units=3, activation = "softmax")
+
+cp_callback <- callback_model_checkpoint(filepath = 'data/RickandMorty/data/models/modelCNNCat_rerun.h5',save_weights_only = FALSE, mode = "auto",  monitor = "val_categorical_accuracy", verbose = 0)
+
+model %>% compile(loss = "categorical_crossentropy", optimizer = "adam", metrics = "categorical_accuracy")
+
+tensorflow::set_random_seed(42)
+model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 5, batch_size=100, verbose = 2, callbacks = list(cp_callback))
+```
+
+I have already run this model for $50$ epochs and saved as a .h5 model. Let's take a quick look at this model for prediction:
+
+
+```r
+model = load_model_hdf5('data/RickandMorty/data/models/modelCNNCat.h5')
+
+probvalY <-  model %>%  predict(valX)
+
+#Find the instances where we Rick probabilty is maximum and the image is a Rick:
+#predictvalY <-as.numeric(probvalY>0.5)
+
+RickTP <- which( (probvalY[,1]>probvalY[,2]) & (probvalY[,1]>probvalY[,3]) & valY[,1]==1 )
+MortyTP <- which( (probvalY[,2]>probvalY[,1]) & (probvalY[,2]>probvalY[,3]) & valY[,2]==1 )
+```
+
+Let's plot them:
+
+
+```r
+grid::grid.newpage()
+grid.raster(valX[RickTP[1],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.2)
+grid.raster(valX[RickTP[2],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.5)
+grid.raster(valX[RickTP[3],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.8)
+```
+
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-57-1.png" width="672" />
+
+And for Morty
+
+
+```r
+grid::grid.newpage()
+grid.raster(valX[MortyTP[1],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.2)
+grid.raster(valX[MortyTP[2],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.5)
+grid.raster(valX[MortyTP[3],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.8)
+```
+
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-58-1.png" width="672" />
+
+### Intepreting CNN
+
+For these types of tasks, a key advantage of CNNs over densely connected ones lies in the increased interpretability. For example, for an optimised model and any given image we could take a look the feature representations at intermediate layers. In the snippet of code below, adapted from a [this tutorial]{https://rstudio-conf-2020.github.io/dl-keras-tf/notebooks/visualizing-what-cnns-learn.nb.html} (based on [this work]{https://blog.keras.io/how-convolutional-neural-networks-see-the-world.html}) we will take an example image and look at the activations in the first layer of the network: that is, we get a glimpse as to how the filters have processed a specific image. 
+
+
+```r
+model = load_model_hdf5('data/RickandMorty/data/models/modelCNNCat.h5')
+
+tf$compat$v1$disable_eager_execution()
+
+layer_outputs <- lapply(model$layers[1:8], function(layer) layer$output)
+activation_model <- keras_model(inputs = model$input, outputs = layer_outputs)
+
+choice = 1
+activations <- activation_model %>% predict( array_reshape( valX[RickTP[1],1:90,1:160,1:3] , c(1,90, 160, 3) ) )
+first_layer_activation <- activations[[1]]
+```
+
+Recall that the first layer is an array of size $86 \times 156 \times 20$. That is, 20 different feature representations of $86 \times 146$ (recall that we can check the expected size of individual layers by looking at the model summary). Our output should be the same. We will visualise some of these feature representations (alongside the image itself). First the image:
+
+
+```r
+grid::grid.newpage()
+grid.raster( valX[RickTP[1],1:90,1:160,1:3] , interpolate=FALSE, width = 0.3, x = 0.5, y=0.2)
+```
+
+And now feature maps $1,2,3,4,5,10,12,15$ and $20$.
+
+
+
+
+```r
+op <- par(mfrow=c(3,3))
+image(t(first_layer_activation[1,,,1])[,ncol(t(first_layer_activation[1,,,1])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,2])[,ncol(t(first_layer_activation[1,,,2])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,3])[,ncol(t(first_layer_activation[1,,,3])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,4])[,ncol(t(first_layer_activation[1,,,4])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,5])[,ncol(t(first_layer_activation[1,,,5])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,10])[,ncol(t(first_layer_activation[1,,,10])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,12])[,ncol(t(first_layer_activation[1,,,12])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,15])[,ncol(t(first_layer_activation[1,,,15])):1], axes = FALSE )
+image(t(first_layer_activation[1,,,20])[,ncol(t(first_layer_activation[1,,,20])):1], axes = FALSE )
+par(op)
+```
+We can see from these images a general similarity to the original plot, but certain parts have been emphasized. We could similarly take a look at the feature representations deeper in the network.
+
+
+```r
+image_width <- 56
+images_per_row <- 5
+
+i <- 7
+  
+layer_activation <- activations[[i]]
+layer_name <- model$layers[[i]]$name
+ 
+n_features <- dim(layer_activation)[[4]]
+n_cols <- n_features %/% images_per_row
+ 
+op <- par(mfrow = c(n_cols, images_per_row), mai = rep_len(0.02, 4))
+  
+for (col in 0:(n_cols - 1)) {
+  for (row in 0:(images_per_row - 1)) {
+      channel_image <- layer_activation[1,,,(col*images_per_row) + row + 1]
+      image(t(channel_image)[,ncol(t(channel_image)):1], axes = FALSE,)
+  }
+}
+  
+par(op)
+```
+
+At higher layers, the features have become far less recognisable and now represent specific features that can be built up to perform classification.
+
+#### Class activation
+
+Further to visualising the feature represetations, we can also begin to visualise how regions of a particular activate to a particular class i.e., identify what pixels the CNN is concentrating on when looking an image as Rick. In the example below we take a look at where the CNN is focussing when classifying a pickle Rick.
+
+
+```r
+choice <- 7
+
+X0 <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/AllRickImages/", files1[choice], sep=""))
+imag_pred <- array_reshape(X0[1:90,1:160,1:3] , c(1, 90, 160, 3) )
+
+predict(model, imag_pred)
+
+# Prediction vector
+d_output <- model$output[, 1]
+
+#The last convolutional layer
+last_conv_layer <- model %>% get_layer("conv2d_20")
+
+# This is the gradient of the "Rick" class with regard to the output feature map of `conv2d_2`
+grads <- k_gradients(d_output, last_conv_layer$output)[[1]]
+
+# This is a vector of shape (64,), eaah is mean intensity of the gradient over a specific feature map channel
+pooled_grads <- k_mean(grads, axis = c(1, 2, 3))
+
+# This function allows us to access the values of the quantities we just defined:
+# `pooled_grads` and the output feature map of `conv2d_2`, given a sample image
+iterate <- k_function(list(model$input),
+                      list(pooled_grads, last_conv_layer$output[1,,,]))
+
+# These are the values of these two quantities, as arrays
+c(pooled_grads_value, conv_layer_output_value) %<-% iterate(list( imag_pred  ))
+
+# We multiply each channel in the feature map array by "how important this channel is" with regard to the Rick class
+for (i in 1:64) {
+  conv_layer_output_value[,,i] <- 
+    conv_layer_output_value[,,i] * pooled_grads_value[[i]] 
+}
+
+# The channel-wise mean of the resulting feature map is our heatmap of class activation
+heatmap <- apply(conv_layer_output_value, c(1,2), mean)
+
+heatmap <- pmax(heatmap, 0) 
+heatmap <- heatmap / max(heatmap)
+write_heatmap <- function(heatmap, filename, width = 150, height = 150,
+                          bg = "white", col = terrain.colors(12)) {
+  png(filename, width = width, height = height, bg = bg)
+  op = par(mar = c(0,0,0,0))
+  on.exit({par(op); dev.off()}, add = TRUE)
+  rotate <- function(x) t(apply(x, 2, rev))
+  image(rotate(heatmap), axes = FALSE, asp = 1, col = col)
+}
+write_heatmap(heatmap, "data/RickandMorty/RM_heatmap.png") 
+
+library(magick) 
+library(viridis) 
+image <- image_read(paste("data/RickandMorty/data/ThreeClassModel/AllRickImages/", files1[choice], sep=""))
+
+info <- image_info(image) 
+geometry <- sprintf("%dx%d!", info$width, info$height) 
+pal <- col2rgb(viridis(20), alpha = TRUE) 
+alpha <- floor(seq(0, 255, length = ncol(pal))) 
+pal_col <- rgb(t(pal), alpha = alpha, maxColorValue = 255)
+write_heatmap(heatmap, "data/RickandMorty/RM_overlay.png", width = 14, height = 14, bg = NA, col = pal_col) 
+# Overlay the heatmap
+image_read("data/RickandMorty/RM_overlay.png") %>% 
+  image_resize(geometry, filter = "quadratic") %>% 
+  image_composite(image, operator = "blend", compose_args = "20") %>%
+  plot() 
+```
+And here we can see an example where it focusses on the lab coat. 
+
+
+```r
+choice <- 8
+
+X0 <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/AllRickImages/", files1[choice], sep=""))
+imag_pred <- array_reshape(X0[1:90,1:160,1:3] , c(1, 90, 160, 3) )
+
+predict(model, imag_pred)
+
+# Prediction vector
+d_output <- model$output[, 1]
+
+#The last convolutional layer
+last_conv_layer <- model %>% get_layer("conv2d_20")
+
+# This is the gradient of the "Rick" class with regard to the output feature map of `conv2d_2`
+grads <- k_gradients(d_output, last_conv_layer$output)[[1]]
+
+# This is a vector of shape (64,), eaah is mean intensity of the gradient over a specific feature map channel
+pooled_grads <- k_mean(grads, axis = c(1, 2, 3))
+
+# This function allows us to access the values of the quantities we just defined:
+# `pooled_grads` and the output feature map of `conv2d_2`, given a sample image
+iterate <- k_function(list(model$input),
+                      list(pooled_grads, last_conv_layer$output[1,,,]))
+
+# These are the values of these two quantities, as arrays
+c(pooled_grads_value, conv_layer_output_value) %<-% iterate(list( imag_pred  ))
+
+# We multiply each channel in the feature map array by "how important this channel is" with regard to the Rick class
+for (i in 1:64) {
+  conv_layer_output_value[,,i] <- 
+    conv_layer_output_value[,,i] * pooled_grads_value[[i]] 
+}
+
+# The channel-wise mean of the resulting feature map is our heatmap of class activation
+heatmap <- apply(conv_layer_output_value, c(1,2), mean)
+
+heatmap <- pmax(heatmap, 0) 
+heatmap <- heatmap / max(heatmap)
+write_heatmap <- function(heatmap, filename, width = 150, height = 150,
+                          bg = "white", col = terrain.colors(12)) {
+  png(filename, width = width, height = height, bg = bg)
+  op = par(mar = c(0,0,0,0))
+  on.exit({par(op); dev.off()}, add = TRUE)
+  rotate <- function(x) t(apply(x, 2, rev))
+  image(rotate(heatmap), axes = FALSE, asp = 1, col = col)
+}
+write_heatmap(heatmap, "data/RickandMorty/RM_heatmap.png") 
+
+library(magick) 
+library(viridis) 
+image <- image_read(paste("data/RickandMorty/data/ThreeClassModel/AllRickImages/", files1[choice], sep=""))
+
+info <- image_info(image) 
+geometry <- sprintf("%dx%d!", info$width, info$height) 
+pal <- col2rgb(viridis(20), alpha = TRUE) 
+alpha <- floor(seq(0, 255, length = ncol(pal))) 
+pal_col <- rgb(t(pal), alpha = alpha, maxColorValue = 255)
+write_heatmap(heatmap, "data/RickandMorty/RM_overlay.png", width = 14, height = 14, bg = NA, col = pal_col) 
+# Overlay the heatmap
+image_read("data/RickandMorty/RM_overlay.png") %>% 
+  image_resize(geometry, filter = "quadratic") %>% 
+  image_composite(image, operator = "blend", compose_args = "20") %>%
+  plot() 
+```
+We can have a look at where the CNN focuses on a set of Morty images.
+
+
+```r
+choice <- 30
+
+X0 <- readJPEG(paste("data/RickandMorty/data/ThreeClassModel/AllMortyImages/", files2[choice], sep=""))
+imag_pred <- array_reshape(X0[1:90,1:160,1:3] , c(1, 90, 160, 3) )
+
+predict(model, imag_pred)
+
+# Prediction vector
+d_output <- model$output[, 2]
+
+#The last convolutional layer
+last_conv_layer <- model %>% get_layer("conv2d_20")
+
+# This is the gradient of the "Rick" class with regard to the output feature map of `conv2d_2`
+grads <- k_gradients(d_output, last_conv_layer$output)[[1]]
+
+# This is a vector of shape (64,), eaah is mean intensity of the gradient over a specific feature map channel
+pooled_grads <- k_mean(grads, axis = c(1, 2, 3))
+
+# This function allows us to access the values of the quantities we just defined:
+# `pooled_grads` and the output feature map of `conv2d_20`, given a sample image
+iterate <- k_function(list(model$input),
+                      list(pooled_grads, last_conv_layer$output[1,,,]))
+
+# These are the values of these two quantities, as arrays
+c(pooled_grads_value, conv_layer_output_value) %<-% iterate(list( imag_pred  ))
+
+# We multiply each channel in the feature map array by "how important this channel is" with regard to the Rick class
+for (i in 1:64) {
+  conv_layer_output_value[,,i] <- 
+    conv_layer_output_value[,,i] * pooled_grads_value[[i]] 
+}
+
+# The channel-wise mean of the resulting feature map is our heatmap of class activation
+heatmap <- apply(conv_layer_output_value, c(1,2), mean)
+
+heatmap <- pmax(heatmap, 0) 
+heatmap <- heatmap / max(heatmap)
+write_heatmap <- function(heatmap, filename, width = 150, height = 150,
+                          bg = "white", col = terrain.colors(12)) {
+  png(filename, width = width, height = height, bg = bg)
+  op = par(mar = c(0,0,0,0))
+  on.exit({par(op); dev.off()}, add = TRUE)
+  rotate <- function(x) t(apply(x, 2, rev))
+  image(rotate(heatmap), axes = FALSE, asp = 1, col = col)
+}
+write_heatmap(heatmap, "data/RickandMorty/RM_heatmap.png") 
+
+library(magick) 
+library(viridis) 
+image <- image_read(paste("data/RickandMorty/data/ThreeClassModel/AllMortyImages/", files2[choice], sep=""))
+
+info <- image_info(image) 
+geometry <- sprintf("%dx%d!", info$width, info$height) 
+pal <- col2rgb(viridis(20), alpha = TRUE) 
+alpha <- floor(seq(0, 255, length = ncol(pal))) 
+pal_col <- rgb(t(pal), alpha = alpha, maxColorValue = 255)
+write_heatmap(heatmap, "data/RickandMorty/RM_overlay.png", width = 14, height = 14, bg = NA, col = pal_col) 
+# Overlay the heatmap
+image_read("data/RickandMorty/RM_overlay.png") %>% 
+  image_resize(geometry, filter = "quadratic") %>% 
+  image_composite(image, operator = "blend", compose_args = "20") %>%
+  plot() 
+```
+
+
+## CNNs for Motif analysis
+
+Aside from image analyses, CNNs have also bee useful for the study of other types of data including genomic data such as DNA-sequence analysis, or DNA-methylation and histone modificaiton data. The use of CNNs for studying regulatory motifs in genomic sequecing data as been reviewed in [Zhang et al. (2022)]{https://academic.oup.com/bib/article/23/1/bbab374/6381249}. Alhough no longer considered state-of-the art for these applications they still find practical use, particularly when combined with recurrent neural networks. 
+
+In the example below we code for a simple CNN which aims to identify if a particular genomic region of 200bp contains a SOX17 or PRDM1 binding site. The data is based on ChIP-sequencig data taken from [Tang, Castillo-Venzor, Gruhn et al. (2022)]{https://pubmed.ncbi.nlm.nih.gov/35411086/} and is avaible to download at NCBI GEO (GSE159654). Briefly, this dataset contains ChIP-sequencing indicating the binding of two trascription factors, SOX17 and PRDM1, in an in vitro pluripotent stem cell derived model for primordial germ cells (the embryonic precursors of sperm and eggs). Peaks from individual replicates were concatenated and overlapping regions merged using bedtools, and a final list of regions for each TF was generated based on the centre of these peaks plus or minus 100bp. Regions preset aas both a SOX17 and PRDM1 binding site were excluded. For comparison a random set of genomic sequences were sampled from the human genome. Finallly, geomic sequencecs associated with human genome hg38 extracted using beddtools getfasta. The processing steps can be found in the file data/ChIP/processdata.sh.
+
+In the sippet of code below we use the Biostrings package to read in the fasta files for SOX17, PRDM1, and random regions. To make inferece easier we first one-hot the sequence data i.e., instead of representing a particular base pair as A, C, G, or T, these will instead be represened as $A \to [1,0,0,0]$, $C \to [0,1,0,0]$, $G \to [0,0,1,0]$, $T \to [0,0,0,1]$. Each basepair therefore represets a "colour channel", and the iput data is a $200 \timmes 4$ array. In total we have $X$ sequences for SOX17, $X$ for PRDM1, and $Y$ random regions.
+
+
+```r
+library(Biostrings)
+```
+
+```
+## Warning: package 'Biostrings' was built under R version 3.5.2
+```
+
+```
+## Loading required package: BiocGenerics
+```
+
+```
+## Loading required package: parallel
+```
+
+```
+## 
+## Attaching package: 'BiocGenerics'
+```
+
+```
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+```
+
+```
+## The following object is masked from 'package:keras':
+## 
+##     normalize
+```
+
+```
+## The following objects are masked from 'package:dplyr':
+## 
+##     combine, intersect, setdiff, union
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     IQR, mad, sd, var, xtabs
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, basename, cbind, colMeans,
+##     colnames, colSums, dirname, do.call, duplicated, eval, evalq,
+##     Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,
+##     lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,
+##     pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans, rownames,
+##     rowSums, sapply, setdiff, sort, table, tapply, union, unique,
+##     unsplit, which, which.max, which.min
+```
+
+```
+## Loading required package: S4Vectors
+```
+
+```
+## Loading required package: stats4
+```
+
+```
+## 
+## Attaching package: 'S4Vectors'
+```
+
+```
+## The following objects are masked from 'package:dplyr':
+## 
+##     first, rename
+```
+
+```
+## The following object is masked from 'package:base':
+## 
+##     expand.grid
+```
+
+```
+## Loading required package: IRanges
+```
+
+```
+## 
+## Attaching package: 'IRanges'
+```
+
+```
+## The following objects are masked from 'package:dplyr':
+## 
+##     collapse, desc, slice
+```
+
+```
+## Loading required package: XVector
+```
+
+```
+## 
+## Attaching package: 'Biostrings'
+```
+
+```
+## The following object is masked from 'package:base':
+## 
+##     strsplit
+```
+
+```r
+library(abind)
+
+SOX17 <- readDNAStringSet("data/ChIP/SOX17.fa")
+SOXseq <- paste(SOX17)
+allS17  <- array(0, dim=c(length(SOXseq),200,4))
+ 
+for (i in 1:length(SOXseq)){
+         allS17[i,1:200,1:4] <- diag(4)[match(unlist(lapply(SOXseq[i], utf8ToInt)), utf8ToInt("ACGT")), ]
+}
+
+PRDM1 <- readDNAStringSet("data/ChIP/PRDM1.fa")
+PRDMseq <- paste(PRDM1)
+allP1  <- array(0, dim=c(length(PRDMseq),200,4))
+
+for (i in 1:length(PRDMseq)){
+         allP1[i,1:200,1:4] <- diag(4)[match(unlist(lapply(PRDMseq[i], utf8ToInt)), utf8ToInt("ACGT")), ]
+         }
+
+RANDOM1 <- readDNAStringSet("data/ChIP/random.fa")
+Rseq <- paste(RANDOM1)
+allR1  <- array(0, dim=c(length(Rseq),200,4))
+for (i in 1:length(Rseq)){
+         allR1[i,1:200,1:4] <- diag(4)[match(unlist(lapply(Rseq[i], utf8ToInt)), utf8ToInt("ACGT")), ]
+}
+
+allR1 <- allR1[is.na(rowSums(rowSums(allR1, dims = 2), dims = 1 ))==FALSE, , ]
+allTFX <- abind(allS17, allP1, allR1, along = 1)
+```
+
+Based on the way we have processed the data, our ChIP dataset represets a $3$ class system: any given sequence may be either SOX17 or PRDM1-binding, or a randomly samples sequece without SOX17/PRDM1-binding. For this example we could therefore treat this categorical classification, with the peaks one-hot encoded, such that a SOX17 peak is represented as $[1,0,0]$, a PRDM1 peak as $[0,1,0]$, and the random sequences as $[0,0,1]$. Below we also generate a random training and test set for the model by radomly splitting the dataset (X for training and Y for validation). In general, this may not be the optimal way to split the data, particularly if we are interested in esuring the inferences are generalisable. Other ways to split would be to train on data from a subset of chromosomes and test on the remainder; alteratively, it may be of interest to train on data from one cell type and predict on another, or even train on one species and predict an another. There are caveats, of course, and such splitting won't always be appropriate. 
+
+
+```r
+labels <- rbind(
+  t(t(rep(1, dim(allS17)[1] ))) %*% c(1,0,0),
+  t(t(rep(1, dim(allP1)[1] ))) %*% c(0,1,0),
+  t(t(rep(1, dim(allR1)[1] ))) %*% c(0,0,1)  
+  )
+
+vecInd <- seq(1, dim(allTFX)[1] ) #A vector of indexes
+trainInd <- sample(vecInd)[1:40000] #Permute and take first 4000 training
+
+
+allTFX_train <- allTFX[trainInd, , ]
+allTFX_test <- allTFX[-trainInd, ,]
+
+allYtrain <- labels[trainInd,]
+allYtest <- labels[-trainInd,]
+```
+
+Finally, we are ready to encode a model and perform inference. Here we have a three class classification system with a sequence associated with either SOX17, PRDM1, or a random region, so can use a categorical approach (thus use a softmax activation on the final level and use categorical cross etrophy and accuracy). Technically, we only have mutually exclusive categories because we have filtered the regios to esure there are no overlapping ones; within the genome we may - and in our case do - get cases where SOX17/PRDM1 co-bind. If looking into this aspect of biology was important, we might istead treat our data as a two-node binary classification for SOX17 and PRDM1. Below we code a simple CNN consisting of two 1D convolution layers (each with a 1D pooling layer). 
+
+
+```r
+model <- keras_model_sequential() %>%
+  layer_conv_1d(input_shape = list(200,4), filters = 20, kernel_size = c(5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_1d(pool_size=c(2)) %>%
+  layer_conv_1d(filters = 64, kernel_size = c(5)) %>%
+  layer_activation("relu") %>%
+  layer_max_pooling_1d(pool_size=c(2)) %>%
+  layer_flatten( ) %>%
+  layer_dense(units=100) %>%
+  layer_dropout(rate = 0.3) %>%
+  layer_dense(units=3, activation = "softmax")
+
+cp_callback <- callback_model_checkpoint(filepath = 'data/RickandMorty/data/models/modelCNNTF_rerun.h5',save_weights_only = FALSE, mode = "auto",  monitor = "val_categorical_accuracy", verbose = 0)
+
+model %>% compile(loss = "categorical_crossentropy", optimizer = "sgd", metrics = "categorical_accuracy")
+
+tensorflow::set_random_seed(42)
+model %>% fit(x = allTFX_train, y = allYtrain , validation_data = list(allTFX_test, allYtest), epochs = 5, batch_size=1000, verbose = 0, callbacks = list(cp_callback))
+```
+
+If we run this snippet of code we see the beginings of a increase in accuracy; on previous runs this accuracy begins to platea after around 400-500 steps. We have thus trained an algorithm to predict if a particcualr genomic sequence is a potetiall target for a particular TF. We could, of course, aim to increase this accuracy by tweaking the arcitecture, and the here we might want to follow the mantra "don't be a hero". That is, try arcitectures that have been shown to work well on these sorts of tasks. I will leave this to the individuals. For ispiration see the various approaches in [Zhang et al. (2022)]{https://academic.oup.com/bib/article/23/1/bbab374/6381249}.
+
+Excercise 2.2: Try visualising what it is the algorithm is looking at within a sequence region (hint: this is slightly different to image analysis. Start with a given motif and calculating how much the probability of mapping to the correct label changes when you perturb one base pair e.g., set that basepair to $[0,0,0,0]$, then role this out systematically for each base pair in turn). A useuful source to look at can be found [here]{https://github.com/const-ae/Neural_Network_DNA_Demo/blob/master/nn_for_sequence_data.ipynb}
+
 
 ### Data augmentation
 
-Although we saw some improvements when using convolutional neural networks compared to densely connected one, the end results were not particularly convincing. After all, previous applications in the recognition of handwritten digits (0-9) showed above human accuracy, see e.g., [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/chap3.html). Our accuracy of approximately $90$ percent is nowhere near human levels. So where are we gong wrong? 
+Although we saw some improvements when using convolutional neural networks compared to densely connected one, the end results were not particularly convincing. After all, previous applications in the recognition of handwritten digits (0-9) showed above human accuracy, see e.g., [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/chap3.html). Our accuracy for image analysis pushed approximately $90$ percent, whilst our TF example was closer to $70$ percent, neither of which close to human levels. So where are we gong wrong? 
 
-We should, of course, start by considering the number of parameters versus the size of the training dataset. In our final model we had $69,506$ parameters, and only a few thousand training images, so it is perhaps not surprising that our model is doing relatively poorly. In previous examples of digit recognition more than $10,000$ images were used, whilst better known examples of *deep learning* for image classification make use of millions of images. Our task is also, arguably, a lot harder than digit recognition. After all, a handwritten $0$ is relatively similar regardless of who wrote it. Rick Sanchez, on the other hand, can come in a diverse range of guises, with different postures, facial expressions, clothing, and even in pickle-Rick form. We may well need a vastly increased number of training images: with more training data, we can begin to learn more robustly what features define a *Rick*. Whilst we could simply download more data from [Master of All Science](https://masterofallscience.com), an alternative approach is to artificially increase our pool of training data by manipulating the images. For example, we could shear, warp or rotate some of the images in our training set; we could add noise and we could manipulate the colouring. 
+We should, of course, start by considering the number of parameters versus the size of the training dataset. In our final model we had many parameters, and only a few thousand training images, so it is perhaps not surprising that our model is doing relatively poorly. In previous examples of digit recognition more than $10,000$ images were used, whilst better known examples of *deep learning* for image classification make use of millions of images. Our task is also, arguably, a lot harder than digit recognition. After all, a handwritten $0$ is relatively similar regardless of who wrote it. Rick Sanchez, on the other hand, can come in a diverse range of guises, with different postures, facial expressions, clothing, and even in pickle-Rick form. We may well need a vastly increased number of training images: with more training data, we can begin to learn more robustly what features define a *Rick*. Whilst we could simply download more data from [Master of All Science](https://masterofallscience.com), an alternative approach is to artificially increase our pool of training data by manipulating the images. For example, we could shear, warp or rotate some of the images in our training set; we could add noise and we could manipulate the colouring. 
 
-### Asking more precise questions
-
-Another way we could improve our accuracy is to ask more precise questions. In our application we have focused on what makes a *Rick*, and what makes a *not Rick*. Whilst there may be definable features for *Rick*, such as his hair and his white coat, the class *not Rick* is an amalgamation of all other characters and scenes in the series. A more specific approach might be to develop algorithms that classify *Rick* versus *Morty*. In this case additionally learning the features of a *Morty* might make it easier to make a binary choice. Of course, we might want to allow more complex situations, such as case where you have a Rick and a Morty. As a general open question, think about how you would encode just such an example. What would you need to change in the code?
+### Transfer learning
 
 Another approach that might help us increase our accuracy is to use **transfer learning**. This is where we make use of existing neural networks to make predictions about our specific datasets, usually by fixing the topology and parameters of the uppermost layers and fine tuning the lower layers to our dataset. For image recognition we could make use of top perfoming neural networks on the [ImageNet](http://www.image-net.org) database, although these types of large-scale models are certainly not without their issues {@Prabhu2020}. Whilst none of these networks would have been designed to identify *Rick* they would have been trained on millions of images, and the top levels would have been able to extract useful general features of that allowed identification of images. 
 
@@ -740,6 +1457,48 @@ model = load_model_hdf5('data/RickandMorty/data/models/modelAE.h5')
 summary(model)
 ```
 
+```
+## Model: "sequential_7"
+## ________________________________________________________________________________
+##  Layer (type)                       Output Shape                    Param #     
+## ================================================================================
+##  conv2d_3 (Conv2D)                  (None, 86, 156, 20)             1520        
+##                                                                                 
+##  activation_3 (Activation)          (None, 86, 156, 20)             0           
+##                                                                                 
+##  conv2d_4 (Conv2D)                  (None, 82, 152, 20)             10020       
+##                                                                                 
+##  activation_4 (Activation)          (None, 82, 152, 20)             0           
+##                                                                                 
+##  conv2d_5 (Conv2D)                  (None, 78, 148, 64)             32064       
+##                                                                                 
+##  activation_5 (Activation)          (None, 78, 148, 64)             0           
+##                                                                                 
+##  conv2d_transpose (Conv2DTranspose)  (None, 82, 152, 64)            102464      
+##                                                                                 
+##  activation_6 (Activation)          (None, 82, 152, 64)             0           
+##                                                                                 
+##  conv2d_transpose_1 (Conv2DTranspos  (None, 86, 156, 20)            32020       
+##  e)                                                                             
+##                                                                                 
+##  activation_7 (Activation)          (None, 86, 156, 20)             0           
+##                                                                                 
+##  conv2d_transpose_2 (Conv2DTranspos  (None, 90, 160, 20)            10020       
+##  e)                                                                             
+##                                                                                 
+##  activation_8 (Activation)          (None, 90, 160, 20)             0           
+##                                                                                 
+##  conv2d_6 (Conv2D)                  (None, 90, 160, 3)              1503        
+##                                                                                 
+##  activation_9 (Activation)          (None, 90, 160, 3)              0           
+##                                                                                 
+## ================================================================================
+## Total params: 189,611
+## Trainable params: 189,611
+## Non-trainable params: 0
+## ________________________________________________________________________________
+```
+
 We can see that this model condenses down the images from $90 \times 160$ pixel images down to $78 \times 148$ (not a huge compression, but a good starting point). Let's try compressing (and decompressing) a few of the held out examples:
 
 
@@ -751,12 +1510,16 @@ grid.raster(predictX[1,1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5,
 grid.raster(predictAEX[1,1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.5)
 ```
 
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-71-1.png" width="672" />
+
 
 ```r
 grid::grid.newpage()
 grid.raster(predictX[2,1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.2)
 grid.raster(predictAEX[2,1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.5)
 ```
+
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-72-1.png" width="672" />
 
 
 ```r
@@ -765,6 +1528,8 @@ grid.raster(predictX[3,1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5,
 grid.raster(predictAEX[3,1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5, y=0.5)
 ```
 
+<img src="12-deep-learning_files/figure-html/unnamed-chunk-73-1.png" width="672" />
+
 Exercise 2.2: Think about how the script can be modified to demonstrate the use of a denoisiny algorithm (hint: the dataset will need to be modified in some way, but the algorithm itself should be functional as is).
 
 ## Further reading
@@ -772,6 +1537,8 @@ Exercise 2.2: Think about how the script can be modified to demonstrate the use 
 A particularly comprehensive introduction to *Deep Learning* can be found in the e-book [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/chap3.html), written by Michael Nielsen.
 
 Useful examples can also be found in the [keras documentation](https://keras.io), with many more examples found in the keras [R wrapper documentation](https://keras.rstudio.com/index.html).
+
+[Deep Learning with R]{https://www.manning.com/books/deep-learning-with-r}
 
 =======
 ## Exercises
