@@ -17,7 +17,7 @@ The main take home message from this section are:
 
 ### Regression with Keras
 
-We will first build a multilayer densely connected Neural Network (NN) to perform regression. A user friendly package for *neural networks* is available via [keras](https://keras.io), an application programming interface (API) written in Python, which uses either [theano](http://deeplearning.net/software/theano/) or [tensorflow](https://www.tensorflow.org) as a back-end. An R interface for keras is available in the form of [keras/tensorflow for R](https://keras.rstudio.com/). We will first install (or import) the relevant packages (see section 3 for further details about installation or follow the installation instructions [here](https://tensorflow.rstudio.com/install/https://tensorflow.rstudio.com/install/)). In my case, I have installed Tensorflow within Python3.9, and can set R to call this version using reticulate. We will also load a few other packages for general plotting and data manipulation.
+We will first build a multilayer densely connected Neural Network (NN) to perform regression. A user friendly package for *neural networks* is available via [keras](https://keras.io), an application programming interface (API) written in Python, which uses [tensorflow](https://www.tensorflow.org) as a back-end. An R interface for keras is available in the form of [keras/tensorflow for R](https://keras.rstudio.com/). We will first install (or import) the relevant packages (see section 3 for further details about installation or follow the installation instructions [here](https://tensorflow.rstudio.com/install/https://tensorflow.rstudio.com/install/)). In my case, I have installed Tensorflow within Python3.9, and can set R to call this version using reticulate. We will also load a few other packages for general plotting and data manipulation.
 
 
 ```
@@ -756,7 +756,7 @@ tensorflow::set_random_seed(42)
 model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 5, batch_size=100, verbose = 2, callbacks = list(cp_callback))
 ```
 
-### Categorical data
+## Categorical data
 
 In the previous example we were using a binary classification since we were only concerned if an the image contained a Rick or not (or by extension if a Morty or not). A more general case is categorical classification (of which binary is a special case) where we have $P$ mutually exclusive classes, and wish to infer which one of those $P$-classes is in a particular image. In this case we might want to infer Rick, Morty, or neither, so a three class system. Note that since we are framing this as exclusive question, we shoudn't really use any data with both Rick and Morty in.
 
@@ -951,7 +951,7 @@ par(op)
 
 At higher layers, the features have become far less recognisable and now, and represent specific features that can be built up to perform classification.
 
-#### Class activation
+### Class activation
 
 Further to visualising the feature represetations, we can also begin to visualise how particular regions activate to a particular class i.e., identify what pixels the CNN is concentrating on when looking classifying an image as Rick.
 
@@ -1271,7 +1271,7 @@ If we run this snippet of code we see the beginings of a increase in accuracy; t
 Excercise 2.2: Try visualising what the algorithm is looking at within a sequence region (hint: this is slightly different to image analysis. Start with a given motif and calculating how much the probability of mapping to the correct label changes when you perturb one base pair e.g., set that basepair to $[0,0,0,0]$, then roll this out systematically for each base pair in turn). A useuful source for inspiration can be found [here](https://github.com/const-ae/Neural_Network_DNA_Demo/blob/master/nn_for_sequence_data.ipynb)
 
 
-### Data augmentation
+## Data augmentation
 
 Although we saw some improvements when using convolutional neural networks compared to densely connected one, the end results were not particularly convincing. After all, previous applications in the recognition of handwritten digits (0-9) showed above human accuracy, see e.g., [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/chap3.html). Our accuracy for image analysis pushed approximately $90$ percent, whilst our TF example was closer to $70$ percent, neither of which close to human levels. So where are we gong wrong? 
 
@@ -1287,7 +1287,7 @@ Another approach that might help us increase our accuracy is to use **transfer l
 
 More complex learning algorithms can easily be built using Keras via the model class API. This allows, for example, learning from multiple inputs and/or predicting multiple outputs, with more interconnection between the different layers. We might, for example, want to include additional contextual information about the image that could serve to augment the predictions. For our sequence data we might want to allow several different filters of different sizes to run across the sequence, effectively allowing motifs of different sizes to be present in the dataset.  
 
-###Autoencoders
+##Autoencoders
 
 In previous sections we have used CNNs to build a *Rick*/*not Rick* classifier. In doing so we are halfway towards other interesting neural network architectures, including [autoencoders](https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368). 
 
