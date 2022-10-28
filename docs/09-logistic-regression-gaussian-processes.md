@@ -6,7 +6,14 @@ In section \@ref(logistic-regression1) we recap logistic regression (section \@r
 
 ## Regression {#regression}
 
-To recap our understanding of regression we will make use of an existing dataset which captures the gene expression levels in the model plant *Arabidopsis thaliana* following inoculation with *Botrytis cinerea* [@windram2012arabidopsis], a necrotrophic pathogen considered to be one of the most important fungal plant pathogens due to its ability to cause disease in a range of plants. Specifically this dataset is a time series measuring the gene expression in *Arabidopsis* leaves following inoculation with *Botrytis cinerea* over a $48$ hour time window, with observations taken at $2$ hour intervals. Whilst this example is biological in motivation the methods we discuss should be general and applicable to other collections of time series data, and it may be helpful to instead think of things in terms of *input variables* and *output variables*.
+To recap our understanding of regression we will make use of an existing dataset which captures the gene expression levels in the model plant *Arabidopsis thaliana* following inoculation with *Botrytis cinerea* [[@windram2012arabidopsis]](https://academic.oup.com/plcell/article/24/9/3530/6100561), a necrotrophic pathogen considered to be one of the most important fungal plant pathogens due to its ability to cause disease in a range of plants. Specifically this dataset is a time series measuring the gene expression in *Arabidopsis* leaves following inoculation with *Botrytis cinerea* over a $48$ hour time window, with observations taken at $2$ hour intervals (see \@ref(fig:bot)). Whilst this example is biological in motivation the methods we discuss should be general and applicable to other collections of time series data, and it may be helpful to instead think of things in terms of *input variables* and *output variables*.
+
+
+<div class="figure" style="text-align: center">
+<img src="images/botrytis.png" alt="Botrytis infection of Arabidopsis over a 48 hour window" width="90%" />
+<p class="caption">(\#fig:bot)Botrytis infection of Arabidopsis over a 48 hour window</p>
+</div>
+
 
 The dataset is available from GEO (GSE39597) but a pre-processed version has been deposited in the data folder. This pre-processed data contains the expression levels of a set of $163$ marker genes in tab delimited format. The fist row contains gene IDs for the marker genes (the individual input variables). Column $2$ contains the time points of observations, with column $3$ containing a binary indication of infection status evalutated as $0$ or $1$ according to wether there was a detectable presence of *Botrytis cinerea* tubulin protein. All subsequent columns indicate ($\log_2$) normalised *Arabidopsis* gene expression values from microarrays (V4 TAIR V9 spotted cDNA array). The expression dataset itself contains two time series: the first set of observations represent measurements of *Arabidopsis* gene expression in a control time series (uninfected), from $2h$ through $48h$ at $2$-hourly intervals, and therefore capture dynamic aspects natural plant processes, including circadian rhythms; the second set of observations represents an infected dataset, again commencing $2h$ after inoculation with *Botyris cinerea* through to $48h$. Both conditions are replicated a number of times. 
 
@@ -174,27 +181,27 @@ print(sessionInfo())
 ##  [4] class_7.3-15         digest_0.6.25        ipred_0.9-12        
 ##  [7] foreach_1.5.1        utf8_1.1.4           parallelly_1.23.0   
 ## [10] R6_2.5.0             plyr_1.8.6           stats4_3.5.1        
-## [13] evaluate_0.14        pillar_1.6.0         rlang_0.4.10        
-## [16] lazyeval_0.2.2       data.table_1.12.8    jquerylib_0.1.3     
-## [19] rpart_4.1-15         Matrix_1.2-18        rmarkdown_2.7       
-## [22] labeling_0.4.2       splines_3.5.1        gower_0.2.1         
-## [25] stringr_1.4.0        munsell_0.5.0        compiler_3.5.1      
-## [28] xfun_0.12            pkgconfig_2.0.3      globals_0.14.0      
-## [31] htmltools_0.5.1.1    nnet_7.3-13          tidyselect_1.1.1    
-## [34] tibble_3.1.1         prodlim_2019.11.13   bookdown_0.20       
-## [37] codetools_0.2-18     fansi_0.4.1          future_1.21.0       
-## [40] crayon_1.4.1         dplyr_1.0.5          withr_2.4.1         
-## [43] ModelMetrics_1.2.2.2 MASS_7.3-51.5        recipes_0.1.17      
-## [46] grid_3.5.1           nlme_3.1-145         jsonlite_1.6.1      
-## [49] gtable_0.3.0         lifecycle_1.0.0      DBI_1.1.1           
-## [52] magrittr_1.5         pROC_1.16.2          scales_1.1.1        
-## [55] future.apply_1.7.0   stringi_1.4.6        reshape2_1.4.3      
-## [58] farver_2.0.3         timeDate_3043.102    bslib_0.2.5.1       
-## [61] ellipsis_0.3.0       generics_0.1.0       vctrs_0.3.8         
-## [64] lava_1.6.10          iterators_1.0.13     tools_3.5.1         
-## [67] glue_1.3.2           purrr_0.3.3          parallel_3.5.1      
-## [70] survival_3.1-11      colorspace_1.4-1     knitr_1.28          
-## [73] sass_0.4.0
+## [13] evaluate_0.14        highr_0.8            pillar_1.6.0        
+## [16] rlang_0.4.10         lazyeval_0.2.2       data.table_1.12.8   
+## [19] jquerylib_0.1.3      rpart_4.1-15         Matrix_1.2-18       
+## [22] rmarkdown_2.7        labeling_0.4.2       splines_3.5.1       
+## [25] gower_0.2.1          stringr_1.4.0        munsell_0.5.0       
+## [28] compiler_3.5.1       xfun_0.12            pkgconfig_2.0.3     
+## [31] globals_0.14.0       htmltools_0.5.1.1    nnet_7.3-13         
+## [34] tidyselect_1.1.1     tibble_3.1.1         prodlim_2019.11.13  
+## [37] bookdown_0.20        codetools_0.2-18     fansi_0.4.1         
+## [40] future_1.21.0        crayon_1.4.1         dplyr_1.0.5         
+## [43] withr_2.4.1          ModelMetrics_1.2.2.2 MASS_7.3-51.5       
+## [46] recipes_0.1.17       grid_3.5.1           nlme_3.1-145        
+## [49] jsonlite_1.6.1       gtable_0.3.0         lifecycle_1.0.0     
+## [52] DBI_1.1.1            magrittr_1.5         pROC_1.16.2         
+## [55] scales_1.1.1         future.apply_1.7.0   stringi_1.4.6       
+## [58] reshape2_1.4.3       farver_2.0.3         timeDate_3043.102   
+## [61] bslib_0.2.5.1        ellipsis_0.3.0       generics_0.1.0      
+## [64] vctrs_0.3.8          lava_1.6.10          iterators_1.0.13    
+## [67] tools_3.5.1          glue_1.3.2           purrr_0.3.3         
+## [70] parallel_3.5.1       survival_3.1-11      colorspace_1.4-1    
+## [73] knitr_1.28           sass_0.4.0
 ```
 
 Or look at a specific package:
@@ -531,6 +538,11 @@ geom_line(color='red',data = data.frame(x=newX,y=predictedValues), aes(x=x, y=y)
 
 Which seems to suggest that, for this dataset, a more complex model is better than the simple linear regression we began with, which is in line with our intuition of this gene being a circadian one. In practice, high-order polynomials are not ideal models for real world data, and we will instead move to more flexible approaches to regression including decision trees, neural networks. Nevertheless, the principle of using held out data to select a good model remains true in these cases. And now that we have a understanding of regression in the context of machine learning, we can easily incroporate more complex models (including nonlineaar regression) into our toolbox, and use these diverse approaches for a variey of means: for making predictions of continuous variables, for making decisions about future, and for extracing understanding about the nature of the dataset itself (model selection).
 
+Excerise 1.1: Think about how regression models can be used as a means for testing differential expression of time-series data. Hint: frame this as alternative hypothesis, the first where there is no differetial expression, the time series should be described by an identical model, whilst the second case, the idividual time series would require two independent models.
+
+Excercise 1.2: Given a set of time series, like our Arabidopsis dataset, think about how regression can be used to infer regulatory networks.
+
+
 ### Logistic regression {#logistic-regression1}
 
 The type of linear regression models we've been using up to this point deal with real-valued observation data, $\mathbf{y}$, and are therefore not appropriate for classification. To deal with cases where $\mathbf{y}$ is a binary outcome, we instead have to think of different *models*, use different *objective functions* to optimise, and use different *metrics* to choose between competing models. Fortunately, however, much of the framework used for regression remains the same. 
@@ -556,10 +568,6 @@ To illustate this we will again make use of our plant dataset. Recall that the t
 In the codde, below, we will use logistic regression to learn a set of markers capable of predicting infection status. To begin with, let's see if *time* is informative of infection status:
 
 
-```r
-library(pROC)
-```
-
 ```
 ## Warning: package 'pROC' was built under R version 3.5.2
 ```
@@ -579,10 +587,6 @@ library(pROC)
 ##     cov, smooth, var
 ```
 
-```r
-library(ROCR)
-```
-
 ```
 ## Loading required package: gplots
 ```
@@ -596,15 +600,6 @@ library(ROCR)
 ## The following object is masked from 'package:stats':
 ## 
 ##     lowess
-```
-
-```r
-options(warn=-1)
-
-Dtrain = D[c(1:72,97:168),]
-Dtest = D[c(73:96,169:192),]
-
-mod_fit <- train(y ~ ., data=data.frame(x = Dtrain$Time, y = as.factor(Dtrain$Infec)), method="glm", family="binomial")
 ```
 
 Here we have again split the data into a training and test set. We can calulate the probability that each datapoint in the test set belongs to class $0$ or $1$:
@@ -663,17 +658,6 @@ auc
 Both the ROC curve and the AUC score are much better. In the example below, we now regress infection status against individual gene expression levels for all genes in our set. The idea is to identify genes that have expression values indicative of *Botrytis* infection: marker genes.
 
 
-```r
-aucscore <- matrix(0, 1, 165)
-for (i in seq(4,165)){
-mod_fit <- train(y ~ ., data=data.frame(x = Dtrain[,i], y = as.factor(Dtrain$Infec)), method="glm", family="binomial")
-prob <- predict(mod_fit, newdata=data.frame(x = Dtest[,i], y = as.factor(Dtest$Infec)), type="prob")
-pred <- prediction(prob$`1`, as.factor(Dtest$Infec))
-perf <- performance(pred, measure = "tpr", x.measure = "fpr")
-auc <- performance(pred, measure = "auc")
-aucscore[i] <- auc@y.values[[1]]
-}
-```
 
 
 
@@ -781,14 +765,15 @@ Here we indicate by a vertical line the index corresponding to the basal model (
 
 ## Using regression approaches to infer 3D gene expression patterns in marmoset embryos
 
-In our recent paper [(Bergmann et al., Nature, 2022)](https://www.nature.com/articles/s41586-022-04953-1) we combined laser capture microdissection (LCM) with RNA-sequencing and immunofluorescent staining to generate 3D transcriptional reconstructions of early post-implantation marmoset embryos. Here, adjacent sections were used to build a 3D model of the embryo. The 3D position of each LCM within this reconstructed embryo was retained, allowing an interpolation of expression patterns across the embryo using regression (albeit a nonlinear form of rgression). In the exammpels below we will take a look at the 3D models and use simple linear regression to investigate anterior-posterior gradients in the embryonic disc.
+In our recent paper [[@bergmann2022spatial]](https://www.nature.com/articles/s41586-022-04953-1) we combined laser capture microdissection (LCM) with RNA-sequencing and immunofluorescent staining to generate 3D transcriptional reconstructions of early post-implantation marmoset embryos. Here, adjacent sections were used to build a 3D model of the embryo (see \@ref(fig:embryo)). The 3D position of each LCM within this reconstructed embryo was retained, allowing an interpolation of expression patterns across the embryo using regression (albeit a nonlinear form of rgression). Raw sequencing data is available from ArrayExpress under accession numbers E-MTAB-9367 and E-MTAB-9349.
 
-First we will load the 3D "scaffolds" for the embryonic disc and the amnion. This consists of a set of vetices and a set of indices that define faces of the objecct. This example scaffold was constructed from sequential sections of a Carnegie stage 6 (CS6) marmoset embryo. 
+<div class="figure" style="text-align: center">
+<img src="images/embryo.png" alt="3D representations of primate embryos at Carnegie stages 5, 6, and 7. Laser capture microdissection allowed comprehesnive RNA-sequencing at near single cell level whislt retaining 3D-sptial information" width="90%" />
+<p class="caption">(\#fig:embryo)3D representations of primate embryos at Carnegie stages 5, 6, and 7. Laser capture microdissection allowed comprehesnive RNA-sequencing at near single cell level whislt retaining 3D-sptial information</p>
+</div>
 
+In the exammpels below we will take a look at the 3D models and use simple linear regression to investigate anterior-posterior gradients in the embryonic disc. First we will load the 3D "scaffolds" for the embryonic disc and the amnion. This consists of a set of vetices and a set of indices that define faces of the objecct. This example scaffold was constructed from sequential sections of a Carnegie stage 6 (CS6) marmoset embryo. 
 
-```r
-library(plotly)
-```
 
 ```
 ## 
@@ -811,12 +796,6 @@ library(plotly)
 ## The following object is masked from 'package:graphics':
 ## 
 ##     layout
-```
-
-```r
-D1 <- read.table("data/Embryo/CS6Vertices.csv",sep=",",header=F) 
-D2 <- read.table("data/Embryo/CS6EmDisc.csv",sep=",",header=F)
-D3 <- read.table("data/Embryo/CS6Am.csv",sep=",",header=F)
 ```
 
 We will also load in the 3D locations of the laser capture microdissection samples that we used to do RNA-seq and the gene-expression of those samples. For simplicity I've included a processed expression matrix for a handful of genes. 
@@ -942,7 +921,7 @@ p <- p %>% add_trace(x = D1$V1, y = D1$V2, z = D1$V3,
 p
 ```
 
-Whilst in these examples we have not used a rigorous treatment of the data, they should illustrate the power of regression and some of the examples where they might be useuful in more contemporary settings. Indeed in our paper we make explicit use of different regression models to statistically identify tissue that exhibit strong spatial biases.
+Whilst in these examples we have not used a rigorous treatment of the data, they should illustrate the power of regression and some of the examples where they might be useuful in more contemporary settings. Indeed in our paper we make explicit use of different regression models (Gaussian processes) to statistically identify tissue that exhibit strong spatial biases.
  
 
 ## Resources
@@ -950,7 +929,7 @@ Whilst in these examples we have not used a rigorous treatment of the data, they
 A variety of examples using {caret} to perform regression and classification have been implemented 
 [here](https://github.com/tobigithub/caret-machine-learning).
 
-For those that want to start their own reading on nonlinear regression, a good stating point is Rasmussen and William's book on [Gaussian processes](http://www.gaussianprocess.org/gpml/chapters/RW.pdf). Be warned, it will contain a lot more maths than this course.
+For those that want to start their own reading on nonlinear regression, a good stating point is Rasmussen and William's book on [Gaussian processes](http://www.gaussianprocess.org/gpml/chapters/RW.pdf). Be warned, it will contain a lot more maths than this course. We also have an introductory section in this work book. A brief primer on Gaussian Processes can also be found at the end of appendix \@ref(solutions-logistic-regression).
 
 =======
 ## Exercises

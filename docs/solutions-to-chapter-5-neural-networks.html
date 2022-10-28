@@ -24,7 +24,7 @@
 <meta name="author" content="Chris Penfold" />
 
 
-<meta name="date" content="2022-10-27" />
+<meta name="date" content="2022-10-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -142,11 +142,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="mlnn.html"><a href="mlnn.html#further-reading"><i class="fa fa-check"></i><b>5.5</b> Further reading</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html"><i class="fa fa-check"></i><b>6</b> Solutions to Chapter 4 - Linear regression and logistic regression</a><ul>
-<li class="chapter" data-level="6.0.1" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html#distributions-of-fits"><i class="fa fa-check"></i><b>6.0.1</b> Distributions of fits</a></li>
-<li class="chapter" data-level="6.0.2" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html#gaussian-process-regression"><i class="fa fa-check"></i><b>6.0.2</b> Gaussian process regression</a></li>
+<li class="chapter" data-level="6" data-path="solutions-logistic-regression.html"><a href="solutions-logistic-regression.html"><i class="fa fa-check"></i><b>6</b> Solutions to Chapter 4 - Linear regression and logistic regression</a></li>
+<li class="chapter" data-level="7" data-path="solutions-to-chapter-5-neural-networks.html"><a href="solutions-to-chapter-5-neural-networks.html"><i class="fa fa-check"></i><b>7</b> Solutions to Chapter 5 - Neural Networks</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="solutions-to-chapter-5-neural-networks.html"><a href="solutions-to-chapter-5-neural-networks.html#gaussian-process-regression"><i class="fa fa-check"></i><b>7.0.1</b> Gaussian process regression</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="solutions-to-chapter-5-neural-networks.html"><a href="solutions-to-chapter-5-neural-networks.html"><i class="fa fa-check"></i><b>7</b> Solutions to Chapter 5 - Neural Networks</a></li>
 </ul>
 
       </nav>
@@ -172,122 +171,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">10</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">20</span>, <span class="dt">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">layer_dense</span>(<span class="dv">3</span>, <span class="dt">activation =</span> <span class="st">&quot;linear&quot;</span>)</code></pre></div>
-<p>Excercise 2.2: read images direct from their folder.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Number of files in total around 5257, we will split roughly by</span>
-number_of_train_samples &lt;-<span class="st"> </span><span class="dv">4000</span>
-number_of_val_samples &lt;-<span class="st"> </span><span class="dv">1257</span>
-batch_size =<span class="st"> </span><span class="dv">100</span>
-
-steps_per_epoch =<span class="st"> </span><span class="kw">ceiling</span>(number_of_train_samples <span class="op">/</span><span class="st"> </span>batch_size)
-val_steps =<span class="st"> </span><span class="kw">ceiling</span>(number_of_val_samples <span class="op">/</span><span class="st"> </span>batch_size)
-
-datagen &lt;-<span class="st"> </span><span class="kw">image_data_generator</span>(<span class="dt">horizontal_flip =</span> <span class="ot">TRUE</span>, <span class="dt">validation_split =</span> <span class="fl">0.2</span>)
-
-test_generator =<span class="st"> </span><span class="kw">flow_images_from_directory</span>(<span class="st">&quot;data/RickandMorty/altdata/&quot;</span>, <span class="dt">target_size=</span><span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">160</span>), <span class="dt">batch_size =</span> batch_size, <span class="dt">class_mode=</span><span class="st">&#39;binary&#39;</span>,<span class="dt">shuffle=</span><span class="ot">FALSE</span>, <span class="dt">seed=</span><span class="dv">10</span>, <span class="dt">subset =</span> <span class="st">&#39;validation&#39;</span>, <span class="dt">color_mode =</span> <span class="st">&#39;rgb&#39;</span>,<span class="dt">generator =</span> datagen)
-
-train_generator =<span class="st"> </span><span class="kw">flow_images_from_directory</span>(<span class="st">&quot;data/RickandMorty/altdata/&quot;</span>, <span class="dt">target_size=</span><span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">160</span>), <span class="dt">batch_size =</span> batch_size, <span class="dt">class_mode=</span><span class="st">&#39;binary&#39;</span>,<span class="dt">shuffle=</span><span class="ot">FALSE</span>, <span class="dt">seed=</span><span class="dv">10</span>, <span class="dt">subset =</span> <span class="st">&#39;training&#39;</span>, <span class="dt">color_mode =</span> <span class="st">&#39;rgb&#39;</span>,<span class="dt">generator =</span> datagen)
-
-model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_flatten</span>( ) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units=</span><span class="dv">100</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_dropout</span>(<span class="dt">rate =</span> <span class="fl">0.3</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units=</span><span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;sigmoid&quot;</span>)
-
-cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/modelCNNFlowfromfolder.h5&#39;</span>,<span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_binary_accuracy&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
-
-model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;binary_accuracy&quot;</span>)
-
-tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
-  model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(train_generator, <span class="dt">steps_per_epoch=</span> steps_per_epoch, <span class="dt">validation_data =</span> test_generator, <span class="dt">validation_steps=</span> val_steps, <span class="dt">epochs =</span> <span class="dv">5</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
-<p>Excercise 2.3: The same sippet of code should be usable from the image analyses, with minor changes to &quot;image size&quot;. We first randomly set a certain fraction of pixels to 0.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cleanX &lt;-<span class="st"> </span>valX
-noiseX &lt;-<span class="st"> </span>valX
-fraction_of_pixels &lt;-<span class="st"> </span><span class="fl">0.25</span>
-
-<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(noiseX)[<span class="dv">1</span>]) {
-  Npix =<span class="st"> </span><span class="kw">prod</span>(<span class="kw">dim</span>(noiseX)[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])
-  Rpix =<span class="st"> </span><span class="kw">sample</span>(Npix, fraction_of_pixels <span class="op">*</span><span class="st"> </span>Npix) 
-  
-  R &lt;-<span class="st"> </span>noiseX[i,,,<span class="dv">1</span>]
-  G &lt;-<span class="st"> </span>noiseX[i,,,<span class="dv">2</span>]
-  B &lt;-<span class="st"> </span>noiseX[i,,,<span class="dv">3</span>]
-  R[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
-  G[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
-  B[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
-  
-  noiseX[i,,,<span class="dv">1</span>] =<span class="st"> </span>R
-  noiseX[i,,,<span class="dv">2</span>] =<span class="st"> </span>G
-  noiseX[i,,,<span class="dv">3</span>] =<span class="st"> </span>B
-}
-
-
-grid<span class="op">::</span><span class="kw">grid.newpage</span>()
-<span class="kw">grid.raster</span>(noiseX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
-<span class="kw">grid.raster</span>(cleanX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)</code></pre></div>
-<p>We can the train on the autoencoder to denoise the image.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">3</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>), <span class="dt">padding =</span> <span class="st">&#39;same&#39;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;sigmoid&quot;</span>)
-
-cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/modelAEND_rerun.h5&#39;</span>,<span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_mse&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
-
-model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)
-
-tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
-model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> noiseX, <span class="dt">y =</span> cleanX, <span class="dt">validation_split=</span><span class="fl">0.25</span>, <span class="dt">epochs =</span> <span class="dv">5</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
-<p>Fortunately I've already run this model for 50 epochs. We can therefore load it in and use to visualise the de-noising. The bottom image is the clean data (our gold standard), the second is the noisy image, and the third one is the de-noised version of that image.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/modelAEND.h5&#39;</span>)
-
-
-cleanvalX &lt;-<span class="st"> </span>trainX
-noisevalX &lt;-<span class="st"> </span>trainX
-fraction_of_pixels &lt;-<span class="st"> </span><span class="fl">0.25</span>
-
-<span class="co">#Generate 100 noisy cases for testing</span>
-<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {
-  Npix =<span class="st"> </span><span class="kw">prod</span>(<span class="kw">dim</span>(noisevalX)[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])
-  Rpix =<span class="st"> </span><span class="kw">sample</span>(Npix, fraction_of_pixels <span class="op">*</span><span class="st"> </span>Npix) 
-  
-  R &lt;-<span class="st"> </span>noisevalX[i,,,<span class="dv">1</span>]
-  G &lt;-<span class="st"> </span>noisevalX[i,,,<span class="dv">2</span>]
-  B &lt;-<span class="st"> </span>noisevalX[i,,,<span class="dv">3</span>]
-  R[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
-  G[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
-  B[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
-  
-  noisevalX[i,,,<span class="dv">1</span>] =<span class="st"> </span>R
-  noisevalX[i,,,<span class="dv">2</span>] =<span class="st"> </span>G
-  noisevalX[i,,,<span class="dv">3</span>] =<span class="st"> </span>B
-}
-
-predictAEX &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(noisevalX[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,,,])
-
-grid<span class="op">::</span><span class="kw">grid.newpage</span>()
-<span class="kw">grid.raster</span>(trainX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
-<span class="kw">grid.raster</span>(noisevalX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)
-<span class="kw">grid.raster</span>(predictAEX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.8</span>)</code></pre></div>
-<p>Excercsie 2.4: The network architecture should be fine for this task. However a noisy version of the input data will have to be generated (e.g., by setting a random set of pixels to zero) to be passed in to the AE. A clean version of the data should be retained and passed to the AE as the output.</p>
+<p>Excercsie 2.2: The network architecture should be fine for this task. However a noisy version of the input data will have to be generated (e.g., by setting a random set of pixels to zero) to be passed in to the AE. A clean version of the data should be retained and passed to the AE as the output.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/modelCNNTF.h5&#39;</span>)
 
 tf<span class="op">$</span>compat<span class="op">$</span>v1<span class="op">$</span><span class="kw">disable_eager_execution</span>()
@@ -376,10 +260,498 @@ model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">co
 
 tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
 model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> allTFX_train, <span class="dt">y =</span> allYtrain , <span class="dt">validation_data =</span> <span class="kw">list</span>(allTFX_test, allYtest), <span class="dt">epochs =</span> <span class="dv">300</span>, <span class="dt">batch_size=</span><span class="dv">1000</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
+<p>Excercise 2.3: read images direct from their folder.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Number of files in total around 5257, we will split roughly by</span>
+number_of_train_samples &lt;-<span class="st"> </span><span class="dv">4000</span>
+number_of_val_samples &lt;-<span class="st"> </span><span class="dv">1257</span>
+batch_size =<span class="st"> </span><span class="dv">100</span>
+
+steps_per_epoch =<span class="st"> </span><span class="kw">ceiling</span>(number_of_train_samples <span class="op">/</span><span class="st"> </span>batch_size)
+val_steps =<span class="st"> </span><span class="kw">ceiling</span>(number_of_val_samples <span class="op">/</span><span class="st"> </span>batch_size)
+
+datagen &lt;-<span class="st"> </span><span class="kw">image_data_generator</span>(<span class="dt">horizontal_flip =</span> <span class="ot">TRUE</span>, <span class="dt">validation_split =</span> <span class="fl">0.2</span>)
+
+test_generator =<span class="st"> </span><span class="kw">flow_images_from_directory</span>(<span class="st">&quot;data/RickandMorty/altdata/&quot;</span>, <span class="dt">target_size=</span><span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">160</span>), <span class="dt">batch_size =</span> batch_size, <span class="dt">class_mode=</span><span class="st">&#39;binary&#39;</span>,<span class="dt">shuffle=</span><span class="ot">FALSE</span>, <span class="dt">seed=</span><span class="dv">10</span>, <span class="dt">subset =</span> <span class="st">&#39;validation&#39;</span>, <span class="dt">color_mode =</span> <span class="st">&#39;rgb&#39;</span>,<span class="dt">generator =</span> datagen)
+
+train_generator =<span class="st"> </span><span class="kw">flow_images_from_directory</span>(<span class="st">&quot;data/RickandMorty/altdata/&quot;</span>, <span class="dt">target_size=</span><span class="kw">c</span>(<span class="dv">90</span>, <span class="dv">160</span>), <span class="dt">batch_size =</span> batch_size, <span class="dt">class_mode=</span><span class="st">&#39;binary&#39;</span>,<span class="dt">shuffle=</span><span class="ot">FALSE</span>, <span class="dt">seed=</span><span class="dv">10</span>, <span class="dt">subset =</span> <span class="st">&#39;training&#39;</span>, <span class="dt">color_mode =</span> <span class="st">&#39;rgb&#39;</span>,<span class="dt">generator =</span> datagen)
+
+model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_max_pooling_2d</span>(<span class="dt">pool_size=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_flatten</span>( ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units=</span><span class="dv">100</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_dropout</span>(<span class="dt">rate =</span> <span class="fl">0.3</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_dense</span>(<span class="dt">units=</span><span class="dv">1</span>, <span class="dt">activation =</span> <span class="st">&quot;sigmoid&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/modelCNNFlowfromfolder.h5&#39;</span>,<span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_binary_accuracy&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;binary_accuracy&quot;</span>)
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+  model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(train_generator, <span class="dt">steps_per_epoch=</span> steps_per_epoch, <span class="dt">validation_data =</span> test_generator, <span class="dt">validation_steps=</span> val_steps, <span class="dt">epochs =</span> <span class="dv">5</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
+<p>Excercise 2.4: The same sippet of code should be usable from the image analyses, with minor changes to &quot;image size&quot;. We first randomly set a certain fraction of pixels to 0.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cleanX &lt;-<span class="st"> </span>valX
+noiseX &lt;-<span class="st"> </span>valX
+fraction_of_pixels &lt;-<span class="st"> </span><span class="fl">0.25</span>
+
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(noiseX)[<span class="dv">1</span>]) {
+  Npix =<span class="st"> </span><span class="kw">prod</span>(<span class="kw">dim</span>(noiseX)[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])
+  Rpix =<span class="st"> </span><span class="kw">sample</span>(Npix, fraction_of_pixels <span class="op">*</span><span class="st"> </span>Npix) 
+  
+  R &lt;-<span class="st"> </span>noiseX[i,,,<span class="dv">1</span>]
+  G &lt;-<span class="st"> </span>noiseX[i,,,<span class="dv">2</span>]
+  B &lt;-<span class="st"> </span>noiseX[i,,,<span class="dv">3</span>]
+  R[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
+  G[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
+  B[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
+  
+  noiseX[i,,,<span class="dv">1</span>] =<span class="st"> </span>R
+  noiseX[i,,,<span class="dv">2</span>] =<span class="st"> </span>G
+  noiseX[i,,,<span class="dv">3</span>] =<span class="st"> </span>B
+}
+
+
+grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(noiseX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(cleanX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)</code></pre></div>
+<p>We can the train on the autoencoder to denoise the image.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">input_shape =</span> <span class="kw">list</span>(<span class="dv">90</span>,<span class="dv">160</span>,<span class="dv">3</span>), <span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">64</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d_transpose</span>(<span class="dt">filters =</span> <span class="dv">20</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_conv_2d</span>(<span class="dt">filters =</span> <span class="dv">3</span>, <span class="dt">kernel_size =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>), <span class="dt">padding =</span> <span class="st">&#39;same&#39;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layer_activation</span>(<span class="st">&quot;sigmoid&quot;</span>)
+
+cp_callback &lt;-<span class="st"> </span><span class="kw">callback_model_checkpoint</span>(<span class="dt">filepath =</span> <span class="st">&#39;data/RickandMorty/data/models/modelAEND_rerun.h5&#39;</span>,<span class="dt">save_weights_only =</span> <span class="ot">FALSE</span>, <span class="dt">mode =</span> <span class="st">&quot;auto&quot;</span>,  <span class="dt">monitor =</span> <span class="st">&quot;val_mse&quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)
+
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">compile</span>(<span class="dt">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>, <span class="dt">optimizer =</span> <span class="st">&quot;adam&quot;</span>, <span class="dt">metrics =</span> <span class="st">&quot;mse&quot;</span>)
+
+tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
+model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> noiseX, <span class="dt">y =</span> cleanX, <span class="dt">validation_split=</span><span class="fl">0.25</span>, <span class="dt">epochs =</span> <span class="dv">5</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
+<p>Fortunately I've already run this model for 50 epochs. We can therefore load it in and use to visualise the de-noising. The bottom image is the clean data (our gold standard), the second is the noisy image, and the third one is the de-noised version of that image.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model =<span class="st"> </span><span class="kw">load_model_hdf5</span>(<span class="st">&#39;data/RickandMorty/data/models/modelAEND.h5&#39;</span>)
+
+
+cleanvalX &lt;-<span class="st"> </span>trainX
+noisevalX &lt;-<span class="st"> </span>trainX
+fraction_of_pixels &lt;-<span class="st"> </span><span class="fl">0.25</span>
+
+<span class="co">#Generate 100 noisy cases for testing</span>
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {
+  Npix =<span class="st"> </span><span class="kw">prod</span>(<span class="kw">dim</span>(noisevalX)[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])
+  Rpix =<span class="st"> </span><span class="kw">sample</span>(Npix, fraction_of_pixels <span class="op">*</span><span class="st"> </span>Npix) 
+  
+  R &lt;-<span class="st"> </span>noisevalX[i,,,<span class="dv">1</span>]
+  G &lt;-<span class="st"> </span>noisevalX[i,,,<span class="dv">2</span>]
+  B &lt;-<span class="st"> </span>noisevalX[i,,,<span class="dv">3</span>]
+  R[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
+  G[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
+  B[Rpix] &lt;-<span class="st"> </span><span class="dv">0</span>
+  
+  noisevalX[i,,,<span class="dv">1</span>] =<span class="st"> </span>R
+  noisevalX[i,,,<span class="dv">2</span>] =<span class="st"> </span>G
+  noisevalX[i,,,<span class="dv">3</span>] =<span class="st"> </span>B
+}
+
+predictAEX &lt;-<span class="st"> </span>model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">predict</span>(noisevalX[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,,,])
+
+grid<span class="op">::</span><span class="kw">grid.newpage</span>()
+<span class="kw">grid.raster</span>(trainX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.2</span>)
+<span class="kw">grid.raster</span>(noisevalX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.5</span>)
+<span class="kw">grid.raster</span>(predictAEX[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">90</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">160</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">interpolate=</span><span class="ot">FALSE</span>, <span class="dt">width =</span> <span class="fl">0.3</span>, <span class="dt">x =</span> <span class="fl">0.5</span>, <span class="dt">y=</span><span class="fl">0.8</span>)</code></pre></div>
+<div id="gaussian-process-regression" class="section level3">
+<h3><span class="header-section-number">7.0.1</span> Gaussian process regression</h3>
+<p>In the previous section we briefly explored fitting multiple polynomials to our data. However, we still had to decide on the order of the polynomial beforehand. A far more powerful approach is Gaussian processes (GP) regression <a href="https://gaussianprocess.org/gpml/"><span class="citation">(Williams and Rasmussen <a href="#ref-Williams2006">2006</a>)</span></a>. Gaussian process regression represent a Bayesian nonparametric approach to regression capable of inferring nonlinear functions from a set of observations. Within a GP regression setting we assume the following model for the data:</p>
+<p><span class="math inline">\(y = f(\mathbf{X})\)</span></p>
+<p>where <span class="math inline">\(f(\cdot)\)</span> represents an unknown nonlinear function.</p>
+<p>Formally, Gaussian processes are defined as a <em>collections of random variables, any finite subset of which are jointly Gaussian distributed</em> <span class="citation">(Williams and Rasmussen <a href="#ref-Williams2006">2006</a>)</span>. The significance of this might not be immediately clear, and another way to think of GPs is as an infinite dimensional extension to the standard multivariate normal distribution. In the same way a Gaussian distribution is defined by its mean, <span class="math inline">\(\mathbf{\mu}\)</span>, and covaraiance matrix, <span class="math inline">\(\mathbf{K}\)</span>, a Gaussian processes is completely defined by its <em>mean function</em>, <span class="math inline">\(m(X)\)</span>, and <em>covariance function</em>, <span class="math inline">\(k(X,X^\prime)\)</span>, and we use the notation <span class="math inline">\(f(x) \sim \mathcal{GP}(m(x), k(x,x^\prime))\)</span> to denote that <span class="math inline">\(f(X)\)</span> is drawn from a Gaussian process prior.</p>
+<p>As it is an infinite dimensional object, dealing directly with the GP prior is not feasible. However, we can make good use of the properties of a Gaussian distributions to sidestep this. Notably, the integral of a Gaussian distribution is itself a Gaussian distribution, which means that if we had a two-dimensional Gaussian distribution (defined over an x-axis and y-axis), we could integrate out the effect of y-axis to give us a (Gaussian) distribution over the x-axis. Gaussian processes share this property, which means that if we are interested only in the distribution of the function at a set of locations, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{X}^*\)</span>, we can specify the distribution of the function over the entirity of the input domain (all of x), and analytically integrate out the effect at all other locations. This induces a natural prior distribution over the output variable that is, itself, Gaussian:</p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+\begin{pmatrix}\mathbf{y}^\top\\
+\mathbf{y^*}^\top
+\end{pmatrix} &amp; \sim &amp; N\left(\left[\begin{array}{c}
+\mathbf{0}\\
+\mathbf{0}\\
+\end{array}\right],\left[\begin{array}{ccc}
+K(\mathbf{x},\mathbf{x}) &amp; K(\mathbf{x},\mathbf{x}^*)\\
+K(\mathbf{x}^*,\mathbf{x}) &amp; K(\mathbf{x}^*,\mathbf{x}^*) \\
+\end{array}\right)\right]
+\end{eqnarray*} 
+\]</span></p>
+<p>Quite often we deal with noisy data where:</p>
+<p><span class="math inline">\(y = f(\mathbf{x}) + \varepsilon\)</span>,</p>
+<p>and <span class="math inline">\(\varepsilon\)</span> represents independent Gaussian noise. In this setting we are interested in inferring the function <span class="math inline">\(\mathbf{f}^*\)</span> at <span class="math inline">\(\mathbf{X}*\)</span> i.e., using the noise corrupted data to infer the underlying function, <span class="math inline">\(f(\cdot)\)</span>. To do so we note that <em>a priori</em> we have the following joint distribution:</p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+\begin{pmatrix}\mathbf{y}^\top\\
+\mathbf{f^*}^\top
+\end{pmatrix} &amp; \sim &amp; N\left(\left[\begin{array}{c}
+\mathbf{0}\\
+\mathbf{0}\\
+\end{array}\right],\left[\begin{array}{ccc}
+K(\mathbf{x},\mathbf{x})+\sigma_n^2 \mathbb{I} &amp; K(\mathbf{x},\mathbf{x}^*)\\
+K(\mathbf{x}^*,\mathbf{x}) &amp; K(\mathbf{x}^*,\mathbf{x}^*) \\
+\end{array}\right)\right]
+\end{eqnarray*} 
+\]</span></p>
+<div id="sampling-from-the-prior" class="section level4">
+<h4><span class="header-section-number">7.0.1.1</span> Sampling from the prior</h4>
+<p>In the examples below we start by sampling from a GP prior as a way of illustrating what it is that we're actualy doing. We first require a number of packages:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(MASS)
+<span class="kw">require</span>(plyr)
+<span class="kw">require</span>(reshape2)
+<span class="kw">require</span>(ggplot2)</code></pre></div>
+<p>Recall that the GP is completely defined by its <em>mean function</em> and <em>covariance function</em>. We can assume a zero-mean function without loss of generality. Until this point, we have not said much about what the covariance function is. In general, the covariance function encodes all information about the <em>type</em> of functions we're interested in: is it smooth? Periodic? Does it have more complex structure? Does it branching? A good starting point, and the most commonly used covariance function, is the squared exponential covariance function:</p>
+<p><span class="math inline">\(k(X,X^\prime) = \sigma^2 \exp\biggl{(}\frac{(X-X^\prime)^2}{2l^2}\biggr{)}\)</span>.</p>
+<p>This encodes for smooth functions (functions that are infinitely differentiable), and has two hyperparameters: a length-scale hyperparameter <span class="math inline">\(l\)</span>, which defines how fast the functions change over the input space (in our example this would <em>time</em>), and a process variance hyperparameter, <span class="math inline">\(\sigma\)</span>, which encodes the amplitude of the function (in our examples this represents roughly the amplitude of gene expression levels). In the snippet of code, below, we implement a squared exponential covariance function</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">covSE &lt;-<span class="st"> </span><span class="cf">function</span>(X1,X2,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>) {
+  K &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(X1)<span class="op">*</span><span class="kw">length</span>(X2)), <span class="dt">nrow=</span><span class="kw">length</span>(X1))
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(K)) {
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(K)) {
+      K[i,j] &lt;-<span class="st"> </span>sig<span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>(<span class="kw">abs</span>(X1[i]<span class="op">-</span>X2[j]))<span class="op">^</span><span class="dv">2</span> <span class="op">/</span>l<span class="op">^</span><span class="dv">2</span>)
+    }
+  }
+  <span class="kw">return</span>(K)
+}</code></pre></div>
+<p>To get an idea of what this means, we can generate samples from the GP prior at a set of defined positions along <span class="math inline">\(X\)</span>. Recall that due to the nature of GPs this is Gaussian distributed:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x.star &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="dt">len=</span><span class="dv">500</span>) ####Define a set of points at which to evaluate the functions
+sigma  &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x.star) ###Evaluate the covariance function at those locations, to give the covariance matrix.
+y1 &lt;-<span class="st"> </span><span class="kw">mvrnorm</span>(<span class="dv">1</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(x.star)), sigma)
+y2 &lt;-<span class="st"> </span><span class="kw">mvrnorm</span>(<span class="dv">1</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(x.star)), sigma)
+y3 &lt;-<span class="st"> </span><span class="kw">mvrnorm</span>(<span class="dv">1</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(x.star)), sigma)
+<span class="kw">plot</span>(y1,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="kw">min</span>(y1,y2,y3),<span class="kw">max</span>(y1,y2,y3)))
+<span class="kw">lines</span>(y2)
+<span class="kw">lines</span>(y3)</code></pre></div>
+<p>When we specify a GP, we are essentially encoding a distribution over a whole set of functions. Exactly how those functions behave depends upon the choice of covariance function and the hyperparameters. To get a feel for this, try changing the hyperparameters in the above code. What do the functions look like? A variety of other covariance functions exist, and can be found, with examples in the <a href="http://www.cs.toronto.edu/~duvenaud/cookbook/">Kernel Cookbook</a>.</p>
+<p>Exercise 9.4 (optional): Try implementing another covariance function from the <a href="http://www.cs.toronto.edu/~duvenaud/cookbook/">Kernel Cookbook</a> and generating samples from the GP prior. Since we have already seen that some of our genes are circadian, a useuful covariance function to try would be the periodic covariance function.</p>
+</div>
+<div id="inference-with-gps" class="section level4">
+<h4><span class="header-section-number">7.0.1.2</span> Inference with GPs</h4>
+<p>We can generate samples from the GP prior, but what about inference? In linear regression we aimed to infer the parameters, <span class="math inline">\(m\)</span> and <span class="math inline">\(a\)</span>. What is the GP doing during inference? Essentially, it's representing the (unknown) function in terms of the observed data and the hyperparameters. Another way to look at it is that we have specified a prior distribution (encoding for all functions of a particular kind) over the input space; during inference in the noise-free case, we then discard all functions that don't pass through those observations. During inference for noisy data we assign greater weight to those functions that pass close to our observed datapoints. Essentially we're using the data to pin down a subset of the prior functions that behave in the appropriate way.</p>
+<p>For the purpose of inference, we typically have a set of observations, <span class="math inline">\(\mathbf{X}\)</span>, and outputs <span class="math inline">\(\mathbf{y}\)</span>, and are interested in inferring the (unnoisy) values, <span class="math inline">\(\mathbf{f}^*\)</span>, at new set of test locations, <span class="math inline">\(\mathbf{X}^*\)</span>. We can infer a posterior distribution for <span class="math inline">\(\mathbf{f}^*\)</span> using Bayes' rule:</p>
+<p><span class="math inline">\(p(\mathbf{f}^* | \mathbf{X}, \mathbf{y}, \mathbf{X}^*) = \frac{p(\mathbf{y}, \mathbf{f}^* | \mathbf{X}, \mathbf{X}^*)}{p(\mathbf{y}|\mathbf{X})}.\)</span></p>
+<p>A key advantage of GPs is that the preditive distribution is analytically tractible and has the following Gaussian form:</p>
+<p><span class="math inline">\(\mathbf{f}^* | \mathbf{X}, \mathbf{y}, \mathbf{X}* \sim \mathcal{N}(\hat{f}^*,\hat{K}^*)\)</span></p>
+<p>where,</p>
+<p><span class="math inline">\(\hat{f}^* = K(\mathbf{X},\mathbf{X}^*)^\top(K(\mathbf{X},\mathbf{X})+\sigma^2\mathbb{I})^{-1} \mathbf{y}\)</span>,</p>
+<p><span class="math inline">\(\hat{K}^* = K(\mathbf{X}^*,\mathbf{X}^*)^{-1} - K(\mathbf{X},\mathbf{X}^*)^\top (K(\mathbf{X},\mathbf{X})+\sigma^2\mathbb{I})^{-1} K(\mathbf{X},\mathbf{X}^*)\)</span>.</p>
+<p>To demonstrate this, let's assume we have an unknown function we want to infer. In our example, for data generation, we will assume this to be <span class="math inline">\(y = \sin(X)\)</span> as an illustrative example of a nonlinear function (although we know this, the GP will only ever see samples from this function, never the function itself). We might have some observations from this function at a set of input positions <span class="math inline">\(X\)</span> e.g., one observation at <span class="math inline">\(x=-2\)</span>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>),
+                <span class="dt">y=</span><span class="kw">sin</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>)))</code></pre></div>
+<p>We can infer a posterior GP (and plot this against the true underlying function in red):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span>f<span class="op">$</span>x
+k.xx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x)
+k.xxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x.star)
+k.xsx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x)
+k.xsxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x.star)
+
+f.star.bar &lt;-<span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>f<span class="op">$</span>y  ###Mean
+cov.f.star &lt;-<span class="st"> </span>k.xsxs <span class="op">-</span><span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>k.xxs ###Var
+
+<span class="kw">plot</span>(x.star,<span class="kw">sin</span>(x.star),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>))
+<span class="kw">points</span>(f,<span class="dt">type=</span><span class="st">&#39;o&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">+</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">-</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)</code></pre></div>
+<p>We can see that the GP has pinned down functions that pass close to the datapoint. Of course, at this stage, the fit is not particularly good, but that's not surprising as we only had one observation. Crucially, we can see that the GP encodes the idea of <em>uncertainty</em>. Although the model fit is not particularly good, we can see exactly <em>where</em> it is no good.</p>
+<p>Exercise 9.5 (optional): Try plotting some sample function from the posterior GP. Hint: these will be Gaussian distributed with mean {f.star.bar} and covariance {cov.f.star}.</p>
+<p>Let's start by adding more observations. Here's what the posterior fit looks like if we include 4 observations (at <span class="math inline">\(x \in [-4,-2,0,1]\)</span>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>),
+                <span class="dt">y=</span><span class="kw">sin</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>)))
+x &lt;-<span class="st"> </span>f<span class="op">$</span>x
+k.xx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x)
+k.xxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x.star)
+k.xsx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x)
+k.xsxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x.star)
+
+f.star.bar &lt;-<span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>f<span class="op">$</span>y  ###Mean
+cov.f.star &lt;-<span class="st"> </span>k.xsxs <span class="op">-</span><span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>k.xxs ###Var
+
+<span class="kw">plot</span>(x.star,<span class="kw">sin</span>(x.star),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>))
+<span class="kw">points</span>(f,<span class="dt">type=</span><span class="st">&#39;o&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">+</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">-</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)</code></pre></div>
+<p>And with <span class="math inline">\(7\)</span> observations:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),
+                <span class="dt">y=</span><span class="kw">sin</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>)))
+x &lt;-<span class="st"> </span>f<span class="op">$</span>x
+k.xx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x)
+k.xxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x.star)
+k.xsx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x)
+k.xsxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x.star)
+
+f.star.bar &lt;-<span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>f<span class="op">$</span>y  ###Mean
+cov.f.star &lt;-<span class="st"> </span>k.xsxs <span class="op">-</span><span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>k.xxs ###Var
+
+<span class="kw">plot</span>(x.star,<span class="kw">sin</span>(x.star),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>))
+<span class="kw">points</span>(f,<span class="dt">type=</span><span class="st">&#39;o&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">+</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">-</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)</code></pre></div>
+<p>We can see that with <span class="math inline">\(7\)</span> observations the posterior GP has begun to resemble the true (nonlinear) function very well: the mean of the GP lies very close to the true function and, perhaps more importantly, we continue to have an treatment for the uncertainty.</p>
+</div>
+<div id="marginal-likelihood-and-optimisation-of-hyperparameters" class="section level4">
+<h4><span class="header-section-number">7.0.1.3</span> Marginal Likelihood and Optimisation of Hyperparameters</h4>
+<p>Another key aspect of GP regression is the ability to analytically evaluate the marginal likelihood, otherwise referred to as the &quot;model evidence&quot;. The marginal likelihood is the probability of generating the observed datasets under the specified prior. For a GP this would be the probability of seeing the observations <span class="math inline">\(\mathbf{X}\)</span> under a Gaussian distribtion, <span class="math inline">\(\mathcal{N}(\mathbf{0},K(\mathbf{X},\mathbf{X}))\)</span>. The log marginal likelihood for a noise-free model is:</p>
+<p><span class="math inline">\(\ln p(\mathbf{y}|\mathbf{X}) = -\frac{1}{2}\mathbf{y}^\top [K(\mathbf{X},\mathbf{X})+\sigma_n^2\mathbb{I}]^{-1} \mathbf{y} -\frac{1}{2} \ln |K(\mathbf{X},\mathbf{X})+\sigma_n^2\mathbb{I}| - \frac{n}{2}\ln 2\pi\)</span></p>
+<p>We calculate this in the snippet of code, below, hard-coding a small amount of Gaussian noise:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calcML &lt;-<span class="st"> </span><span class="cf">function</span>(f,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>) {
+  f2 &lt;-<span class="st"> </span><span class="kw">t</span>(f)
+  yt &lt;-<span class="st"> </span>f2[<span class="dv">2</span>,]
+  y  &lt;-<span class="st"> </span>f[,<span class="dv">2</span>]
+  K &lt;-<span class="st"> </span><span class="kw">covSE</span>(f[,<span class="dv">1</span>],f[,<span class="dv">1</span>],l,sig)
+  ML &lt;-<span class="st"> </span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>yt<span class="op">%*%</span><span class="kw">ginv</span>(K<span class="op">+</span><span class="fl">0.1</span><span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">diag</span>(<span class="kw">length</span>(y)))<span class="op">%*%</span>y <span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="kw">log</span>(<span class="kw">det</span>(K)) <span class="op">-</span>(<span class="kw">length</span>(f[,<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi);
+  <span class="kw">return</span>(ML)
+}</code></pre></div>
+<p>The ability to calculate the marginal likelihood gives us a way to automatically select the <em>hyperparameters</em>. We can increment hyperparameters over a range of values, and choose the values that yield the greatest marginal likelihood. In the example, below, we increment both the length-scale and process variance hyperparameter:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(plot3D)
+
+par &lt;-<span class="st"> </span><span class="kw">seq</span>(.<span class="dv">1</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="fl">0.1</span>)
+ML &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(par)<span class="op">^</span><span class="dv">2</span>), <span class="dt">nrow=</span><span class="kw">length</span>(par), <span class="dt">ncol=</span><span class="kw">length</span>(par))
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(par)) {
+  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(par)) {
+    ML[i,j] &lt;-<span class="st"> </span><span class="kw">calcML</span>(f,par[i],par[j])
+  }
+}
+<span class="kw">persp3D</span>(<span class="dt">z =</span> ML,<span class="dt">theta =</span> <span class="dv">120</span>)
+ind&lt;-<span class="kw">which</span>(ML<span class="op">==</span><span class="kw">max</span>(ML), <span class="dt">arr.ind=</span><span class="ot">TRUE</span>)
+<span class="kw">print</span>(<span class="kw">c</span>(<span class="st">&quot;length-scale&quot;</span>, par[ind[<span class="dv">1</span>]]))
+<span class="kw">print</span>(<span class="kw">c</span>(<span class="st">&quot;process variance&quot;</span>, par[ind[<span class="dv">2</span>]]))</code></pre></div>
+<p>Here we have performed a grid search to identify the optimal hyperparameters. In practice, the derivative of the marginal likelihood with respect to the hyperparameters is analytically tractable, allowing us to optimise using gradient search algorithms.</p>
+<p>Exercise 9.7: Now try fitting a Gaussian process to one of the gene expression profiles in the Botrytis dataset. Hint: You may need to normalise the time axis. Since this data also contains a high level of noise you will also need to use a covariance function/ML calculation that incorporates noise. The snippet of code, below, does this, with the noise now representing a <span class="math inline">\(3\)</span>rd hyperparameter.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">covSEn &lt;-<span class="st"> </span><span class="cf">function</span>(X1,X2,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>,<span class="dt">sigman=</span><span class="fl">0.1</span>) {
+  K &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(X1)<span class="op">*</span><span class="kw">length</span>(X2)), <span class="dt">nrow=</span><span class="kw">length</span>(X1))
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(K)) {
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(K)) {
+      
+      K[i,j] &lt;-<span class="st"> </span>sig<span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>(<span class="kw">abs</span>(X1[i]<span class="op">-</span>X2[j]))<span class="op">^</span><span class="dv">2</span> <span class="op">/</span>l<span class="op">^</span><span class="dv">2</span>)
+      
+      <span class="cf">if</span> (i<span class="op">==</span>j){
+      K[i,j] &lt;-<span class="st"> </span>K[i,j] <span class="op">+</span><span class="st"> </span>sigman<span class="op">^</span><span class="dv">2</span>
+      }
+      
+    }
+  }
+  <span class="kw">return</span>(K)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calcMLn &lt;-<span class="st"> </span><span class="cf">function</span>(f,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>,<span class="dt">sigman=</span><span class="fl">0.1</span>) {
+  f2 &lt;-<span class="st"> </span><span class="kw">t</span>(f)
+  yt &lt;-<span class="st"> </span>f2[<span class="dv">2</span>,]
+  y  &lt;-<span class="st"> </span>f[,<span class="dv">2</span>]
+  K &lt;-<span class="st"> </span><span class="kw">covSE</span>(f[,<span class="dv">1</span>],f[,<span class="dv">1</span>],l,sig)
+  ML &lt;-<span class="st"> </span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>yt<span class="op">%*%</span><span class="kw">ginv</span>(K<span class="op">+</span><span class="kw">diag</span>(<span class="kw">length</span>(y))<span class="op">*</span>sigman<span class="op">^</span><span class="dv">2</span>)<span class="op">%*%</span>y <span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="kw">log</span>(<span class="kw">det</span>(K<span class="op">+</span><span class="kw">diag</span>(<span class="kw">length</span>(y))<span class="op">*</span>sigman<span class="op">^</span><span class="dv">2</span>)) <span class="op">-</span>(<span class="kw">length</span>(f[,<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi);
+  <span class="kw">return</span>(ML)
+}</code></pre></div>
+</div>
+<div id="model-selection" class="section level4">
+<h4><span class="header-section-number">7.0.1.4</span> Model Selection</h4>
+<p>As well as being a useful criterion for selecting hyperparameters, the marginal likelihood can be used as a basis for selecting models. For example, we might be interested in comparing how well we fit the data using two different covariance functions: a squared exponential covariance function (model 1, <span class="math inline">\(M_1\)</span>) versus a periodic covariance function (model 2, <span class="math inline">\(M_2\)</span>). By taking the ratio of the marginal likelihoods we can calculate the <a href="https://en.wikipedia.org/wiki/Bayes_factor">Bayes' Factor</a> (BF) which allows us to determine which model is the best:</p>
+<p><span class="math inline">\(\mbox{BF} = \frac{ML(M_1)}{ML(M_2)}\)</span>.</p>
+<p>High values for the BF indicate strong evidence for <span class="math inline">\(M_1\)</span> over <span class="math inline">\(M_2\)</span>, whilst low values would indicate the contrary.</p>
+<p>Excercise 3.1: Using our previous example, <span class="math inline">\(y = sin(x)\)</span> try fitting a periodic covariance function. How well does it generalise e.g., how well does it fit <span class="math inline">\(f(\cdot)\)</span> far from the observation data? How does this compare to a squared-exponential?</p>
+<p>Example covariance functions implemented from the <a href="http://www.cs.toronto.edu/~duvenaud/cookbook/">Kernel Cookbook</a>. Here we implement a rational quadratic covariance function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">covRQ &lt;-<span class="st"> </span><span class="cf">function</span>(X1,X2,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>,<span class="dt">a=</span><span class="dv">2</span>) {
+  K &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(X1)<span class="op">*</span><span class="kw">length</span>(X2)), <span class="dt">nrow=</span><span class="kw">length</span>(X1))
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(K)) {
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(K)) {
+      K[i,j] &lt;-<span class="st"> </span>sig<span class="op">^</span><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="kw">abs</span>(X1[i]<span class="op">-</span>X2[j])<span class="op">^</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>a<span class="op">*</span>l<span class="op">^</span><span class="dv">2</span>))    )<span class="op">^</span>a 
+    }
+  }
+  <span class="kw">return</span>(K)
+}</code></pre></div>
+<p>Here we implement a periodic covariance function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">covPer &lt;-<span class="st"> </span><span class="cf">function</span>(X1,X2,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>,<span class="dt">p=</span><span class="dv">1</span>) {
+  K &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(X1)<span class="op">*</span><span class="kw">length</span>(X2)), <span class="dt">nrow=</span><span class="kw">length</span>(X1))
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(K)) {
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(K)) {
+      K[i,j] &lt;-<span class="st"> </span>sig<span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">exp</span>(<span class="kw">sin</span>(pi<span class="op">*</span><span class="kw">abs</span>(X1[i]<span class="op">-</span>X2[j])<span class="op">/</span>p)<span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span>l<span class="op">^</span><span class="dv">2</span>) 
+    }
+  }
+  <span class="kw">return</span>(K)
+}</code></pre></div>
+<p>We need to borrow the following snippets of code from the main text.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(MASS)
+<span class="kw">require</span>(plyr)
+<span class="kw">require</span>(reshape2)
+<span class="kw">require</span>(ggplot2)
+
+covSE &lt;-<span class="st"> </span><span class="cf">function</span>(X1,X2,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>) {
+  K &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(X1)<span class="op">*</span><span class="kw">length</span>(X2)), <span class="dt">nrow=</span><span class="kw">length</span>(X1))
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(K)) {
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(K)) {
+      K[i,j] &lt;-<span class="st"> </span>sig<span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>(<span class="kw">abs</span>(X1[i]<span class="op">-</span>X2[j]))<span class="op">^</span><span class="dv">2</span> <span class="op">/</span>l<span class="op">^</span><span class="dv">2</span>)
+    }
+  }
+  <span class="kw">return</span>(K)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x.star &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="dt">len=</span><span class="dv">500</span>)
+f &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),
+                <span class="dt">y=</span><span class="kw">sin</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>)))
+x &lt;-<span class="st"> </span>f<span class="op">$</span>x
+k.xx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x)
+k.xxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x.star)
+k.xsx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x)
+k.xsxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x.star)
+
+f.star.bar &lt;-<span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>f<span class="op">$</span>y  <span class="co">#Mean</span>
+cov.f.star &lt;-<span class="st"> </span>k.xsxs <span class="op">-</span><span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>k.xxs <span class="co">#Var</span>
+
+y1 &lt;-<span class="st"> </span><span class="kw">mvrnorm</span>(<span class="dv">1</span>, f.star.bar, cov.f.star)
+y2 &lt;-<span class="st"> </span><span class="kw">mvrnorm</span>(<span class="dv">1</span>, f.star.bar, cov.f.star)
+y3 &lt;-<span class="st"> </span><span class="kw">mvrnorm</span>(<span class="dv">1</span>, f.star.bar, cov.f.star)
+<span class="kw">plot</span>(x.star,<span class="kw">sin</span>(x.star),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>))
+<span class="kw">points</span>(f,<span class="dt">type =</span> <span class="st">&#39;p&#39;</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
+<span class="kw">lines</span>(x.star,y1,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
+<span class="kw">lines</span>(x.star,y2,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
+<span class="kw">lines</span>(x.star,y3,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calcML &lt;-<span class="st"> </span><span class="cf">function</span>(f,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>) {
+  f2 &lt;-<span class="st"> </span><span class="kw">t</span>(f)
+  yt &lt;-<span class="st"> </span>f2[<span class="dv">2</span>,]
+  y  &lt;-<span class="st"> </span>f[,<span class="dv">2</span>]
+  K &lt;-<span class="st"> </span><span class="kw">covSE</span>(f[,<span class="dv">1</span>],f[,<span class="dv">1</span>],l,sig)
+  ML &lt;-<span class="st"> </span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>yt<span class="op">%*%</span><span class="kw">ginv</span>(K<span class="op">+</span><span class="fl">0.1</span><span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">diag</span>(<span class="kw">length</span>(y)))<span class="op">%*%</span>y <span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="kw">log</span>(<span class="kw">det</span>(K)) <span class="op">-</span>(<span class="kw">length</span>(f[,<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi);
+  <span class="kw">return</span>(ML)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;plot3D&quot;)</span>
+<span class="kw">library</span>(plot3D)
+
+par &lt;-<span class="st"> </span><span class="kw">seq</span>(.<span class="dv">1</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="fl">0.1</span>)
+ML &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(par)<span class="op">^</span><span class="dv">2</span>), <span class="dt">nrow=</span><span class="kw">length</span>(par), <span class="dt">ncol=</span><span class="kw">length</span>(par))
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(par)) {
+  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(par)) {
+    ML[i,j] &lt;-<span class="st"> </span><span class="kw">calcML</span>(f,par[i],par[j])
+  }
+}
+
+ind&lt;-<span class="kw">which</span>(ML<span class="op">==</span><span class="kw">max</span>(ML), <span class="dt">arr.ind=</span><span class="ot">TRUE</span>)
+lmap&lt;-par[ind[<span class="dv">1</span>]]
+varmap&lt;-par[ind[<span class="dv">2</span>]]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x.star &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="dt">len=</span><span class="dv">500</span>)
+f &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>),
+                <span class="dt">y=</span><span class="kw">sin</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>)))
+x &lt;-<span class="st"> </span>f<span class="op">$</span>x
+k.xx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x,lmap,varmap)
+k.xxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x,x.star,lmap,varmap)
+k.xsx &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x,lmap,varmap)
+k.xsxs &lt;-<span class="st"> </span><span class="kw">covSE</span>(x.star,x.star,lmap,varmap)
+
+f.star.bar &lt;-<span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>f<span class="op">$</span>y  <span class="co">#Mean</span>
+cov.f.star &lt;-<span class="st"> </span>k.xsxs <span class="op">-</span><span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>k.xxs <span class="co">#Var</span>
+
+<span class="kw">plot</span>(x.star,<span class="kw">sin</span>(x.star),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>))
+<span class="kw">points</span>(f,<span class="dt">type=</span><span class="st">&#39;o&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">+</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">-</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)</code></pre></div>
+<p>Now try fitting a Gaussian process to one of the gene expression profiles in the Botrytis dataset.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">covSEn &lt;-<span class="st"> </span><span class="cf">function</span>(X1,X2,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>,<span class="dt">sigman=</span><span class="fl">0.1</span>) {
+  K &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(X1)<span class="op">*</span><span class="kw">length</span>(X2)), <span class="dt">nrow=</span><span class="kw">length</span>(X1))
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(K)) {
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(K)) {
+      
+      K[i,j] &lt;-<span class="st"> </span>sig<span class="op">^</span><span class="dv">2</span><span class="op">*</span><span class="kw">exp</span>(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>(<span class="kw">abs</span>(X1[i]<span class="op">-</span>X2[j]))<span class="op">^</span><span class="dv">2</span> <span class="op">/</span>l<span class="op">^</span><span class="dv">2</span>)
+      
+      <span class="cf">if</span> (i<span class="op">==</span>j){
+      K[i,j] &lt;-<span class="st"> </span>K[i,j] <span class="op">+</span><span class="st"> </span>sigman<span class="op">^</span><span class="dv">2</span>
+      }
+      
+    }
+  }
+  <span class="kw">return</span>(K)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">geneindex &lt;-<span class="st"> </span><span class="dv">36</span>
+lmap &lt;-<span class="st"> </span><span class="fl">0.1</span>
+varmap &lt;-<span class="st"> </span><span class="dv">5</span>
+x.star &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dt">len=</span><span class="dv">500</span>)
+f &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(D),<span class="dv">1</span>]<span class="op">/</span><span class="dv">48</span>, <span class="dt">y=</span>D[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(D),geneindex])
+x &lt;-<span class="st"> </span>f<span class="op">$</span>x
+k.xx &lt;-<span class="st"> </span><span class="kw">covSEn</span>(x,x,lmap,varmap,<span class="fl">0.2</span>)
+k.xxs &lt;-<span class="st"> </span><span class="kw">covSEn</span>(x,x.star,lmap,varmap,<span class="fl">0.2</span>)
+k.xsx &lt;-<span class="st"> </span><span class="kw">covSEn</span>(x.star,x,lmap,varmap,<span class="fl">0.2</span>)
+k.xsxs &lt;-<span class="st"> </span><span class="kw">covSEn</span>(x.star,x.star,lmap,varmap,<span class="fl">0.2</span>)
+
+f.star.bar &lt;-<span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>f<span class="op">$</span>y  <span class="co">#Mean</span>
+cov.f.star &lt;-<span class="st"> </span>k.xsxs <span class="op">-</span><span class="st"> </span>k.xsx<span class="op">%*%</span><span class="kw">solve</span>(k.xx)<span class="op">%*%</span>k.xxs <span class="co">#Var</span>
+
+<span class="kw">plot</span>(f,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>)
+<span class="kw">points</span>(f,<span class="dt">type=</span><span class="st">&#39;o&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar,<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">+</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)
+<span class="kw">lines</span>(x.star,f.star.bar<span class="op">-</span><span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(cov.f.star)),<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>,<span class="dt">pch=</span><span class="dv">22</span>, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calcMLn &lt;-<span class="st"> </span><span class="cf">function</span>(f,<span class="dt">l=</span><span class="dv">1</span>,<span class="dt">sig=</span><span class="dv">1</span>,<span class="dt">sigman=</span><span class="fl">0.1</span>) {
+  f2 &lt;-<span class="st"> </span><span class="kw">t</span>(f)
+  yt &lt;-<span class="st"> </span>f2[<span class="dv">2</span>,]
+  y  &lt;-<span class="st"> </span>f[,<span class="dv">2</span>]
+  K &lt;-<span class="st"> </span><span class="kw">covSE</span>(f[,<span class="dv">1</span>],f[,<span class="dv">1</span>],l,sig)
+  ML &lt;-<span class="st"> </span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>yt<span class="op">%*%</span><span class="kw">ginv</span>(K<span class="op">+</span><span class="kw">diag</span>(<span class="kw">length</span>(y))<span class="op">*</span>sigman<span class="op">^</span><span class="dv">2</span>)<span class="op">%*%</span>y <span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="kw">log</span>(<span class="kw">det</span>(K<span class="op">+</span><span class="kw">diag</span>(<span class="kw">length</span>(y))<span class="op">*</span>sigman<span class="op">^</span><span class="dv">2</span>)) <span class="op">-</span>(<span class="kw">length</span>(f[,<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi);
+  <span class="kw">return</span>(ML)
+}</code></pre></div>
+</div>
+<div id="scalability" class="section level4">
+<h4><span class="header-section-number">7.0.1.5</span> Scalability</h4>
+<p>Whilst GPs represent a powerful approach to nonlinear regression, they do have some limitations. GPs do not scale well with the number of observations, and standard GP approaches are not suitable when we have a very large datasets (thousands of observations). To overcome these limitations, approximate approaches to inference with GPs have been developed.</p>
+<p>Exercise 3.3: Write a function for determining differential expression for two genes. Hint: we are interested in comparing two models, and using Bayes' Factor to determine if the genes are differentially expressed.<br />
+#### Advanced application 1: differential expression of time series {#application-1}</p>
+<p>Differential expression analysis is concerned with identifying <em>if</em> two sets of data are significantly different from one another. For example, if we measured the expression level of a gene in two different conditions (control versus treatment), you could use an appropriate statistical test to determine whether the expression of that gene had been affected by the treatment. Most statistical tests used for this are not appropriate when dealing with time series data (illustrated in Figure <a href="solutions-to-chapter-5-neural-networks.html#fig:timeser">7.1</a>).</p>
+<div class="figure" style="text-align: center"><span id="fig:timeser"></span>
+<img src="images/TimeSeries.jpg" alt="Differential expression analysis for time series. Here we have two time series with very different behaviour (right). However, as a whole the mean and variance of the time series is identical (left) and the datasets are not differentially expressed using a t-test (p&lt;0.9901)" width="55%" />
+<p class="caption">
+Figure 7.1: Differential expression analysis for time series. Here we have two time series with very different behaviour (right). However, as a whole the mean and variance of the time series is identical (left) and the datasets are not differentially expressed using a t-test (p&lt;0.9901)
+</p>
+</div>
+<p>Gaussian processes regression represents a useful way of modelling time series, and can therefore be used as a basis for detecting differential expression in time series. To do so we write down two competing modes: (i) the two time series are differentially expressed, and are therefore best described by two independent GPs; (ii) the two time series are noisy observations from an identical underlying process, and are therefore best described by a single joint GP applied to the union of the data.</p>
+<p>Exercise 3.2 (optional): Write a function for determining differential expression for two genes. Hint: you will need to fit <span class="math inline">\(3\)</span> GPs: one to the mock/control, one to the infected dataset, and one to the union of mock/control and infected. You can use the Bayes' Factor to determine if the gene is differentially expressed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(D),<span class="dv">1</span>]<span class="op">/</span><span class="dv">48</span>, <span class="dt">y=</span>D[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(D),geneindex])
+par &lt;-<span class="st"> </span><span class="kw">seq</span>(.<span class="dv">1</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="fl">0.1</span>)
+ML &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(par)<span class="op">^</span><span class="dv">2</span>), <span class="dt">nrow=</span><span class="kw">length</span>(par), <span class="dt">ncol=</span><span class="kw">length</span>(par))
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(par)) {
+  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(par)) {
+    ML[i,j] &lt;-<span class="st"> </span><span class="kw">calcMLn</span>(f,par[i],par[j],<span class="fl">0.05</span>)
+  }
+}
+<span class="kw">persp3D</span>(<span class="dt">z =</span> ML,<span class="dt">theta =</span> <span class="dv">120</span>)
+ind&lt;-<span class="kw">which</span>(ML<span class="op">==</span><span class="kw">max</span>(ML), <span class="dt">arr.ind=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p>Now let's calculate the BF.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lmap &lt;-<span class="st"> </span>par[ind[<span class="dv">1</span>]]
+varmap &lt;-<span class="st"> </span>par[ind[<span class="dv">2</span>]]
+
+f1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">1</span>]<span class="op">/</span><span class="dv">48</span>, <span class="dt">y=</span>D[<span class="dv">1</span><span class="op">:</span><span class="dv">24</span>,geneindex])
+f2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(D),<span class="dv">1</span>]<span class="op">/</span><span class="dv">48</span>, <span class="dt">y=</span>D[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(D),geneindex])
+f3 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>D[,<span class="dv">1</span>]<span class="op">/</span><span class="dv">48</span>, <span class="dt">y=</span>D[,geneindex])
+
+MLs &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dt">nrow=</span><span class="dv">3</span>))
+MLs[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">calcMLn</span>(f1,lmap,varmap,<span class="fl">0.05</span>)
+MLs[<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">calcMLn</span>(f2,lmap,varmap,<span class="fl">0.05</span>)
+MLs[<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">calcMLn</span>(f3,lmap,varmap,<span class="fl">0.05</span>)
+
+BF &lt;-<span class="st"> </span>(MLs[<span class="dv">1</span>]<span class="op">+</span>MLs[<span class="dv">2</span>]) <span class="op">-</span>MLs[<span class="dv">3</span>]
+BF</code></pre></div>
+<p>So from the Bayes' Factor there's some slight evidence for model 1 (differential expression) over model 2 (non-differential expression).</p>
 
 <div id="refs" class="references">
 <div>
 <p>Angermueller, Tanel Pärnamaa, Christof, and Oliver Stegle. 2016. “Deep Learning for Computational Biology.” <em>Molecular Systems Biology</em> 12 (7): 878.</p>
+</div>
+<div>
+<p>Bergmann, Sophie, Christopher A Penfold, Erin Slatery, Dylan Siriwardena, Charis Drummer, Stephen Clark, Stanley E Strawbridge, et al. 2022. “Spatial Profiling of Early Primate Gastrulation in Utero.” <em>Nature</em> 609 (7925). Nature Publishing Group: 136–43.</p>
 </div>
 <div>
 <p>Chamier, Lucas von, Romain F Laine, Johanna Jukkala, Christoph Spahn, Daniel Krentzel, Elias Nehme, Martina Lerche, et al. 2021. “Democratising Deep Learning for Microscopy with Zerocostdl4mic.” <em>Nature Communications</em> 12 (1). Nature Publishing Group: 1–18.</p>
@@ -394,10 +766,22 @@ model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fi
 <p>Mohammad Lotfollahi, Fabian J. Theis, F. Alexander Wolf. 2019. “ScGen Predicts Single-Cell Perturbation Responses.” <em>Nat. Methods</em> 16 (8): 715–21.</p>
 </div>
 <div>
+<p>Penfold, Christopher A, and David L Wild. 2011. “How to Infer Gene Networks from Expression Profiles, Revisited.” <em>Interface Focus</em> 1 (6). The Royal Society: 857–70.</p>
+</div>
+<div>
+<p>Penfold, Christopher A, Iulia Gherman, Anastasiya Sybirna, and David L Wild. 2019. “Inferring Gene Regulatory Networks from Multiple Datasets.” <em>Gene Regulatory Networks</em>. Springer, 251–82.</p>
+</div>
+<div>
 <p>Prabhu, Vinay Uday, and Abeba Birhane. 2020. “Large Image Datasets: A Pyrrhic Win for Computer Vision?” <em>CoRR</em> abs/2006.16923. <a href="https://arxiv.org/abs/2006.16923" class="uri">https://arxiv.org/abs/2006.16923</a>.</p>
 </div>
 <div>
 <p>Rampášek, Ladislav, Daniel Hidru, Petr Smirnov, Benjamin Haibe-Kains, and Anna Goldenberg. 2019. “Dr. Vae: Improving Drug Response Prediction via Modeling of Drug Perturbation Effects.” <em>Bioinformatics</em> 35 (19). Oxford University Press: 3743–51.</p>
+</div>
+<div>
+<p>Stegle, Oliver, Katherine J Denby, Emma J Cooke, David L Wild, Zoubin Ghahramani, and Karsten M Borgwardt. 2010. “A Robust Bayesian Two-Sample Test for Detecting Intervals of Differential Gene Expression in Microarray Time Series.” <em>Journal of Computational Biology</em> 17 (3). Mary Ann Liebert, Inc. 140 Huguenot Street, 3rd Floor New Rochelle, NY 10801 USA: 355–67.</p>
+</div>
+<div>
+<p>Tang, Walfred WC, Aracely Castillo-Venzor, Wolfram H Gruhn, Toshihiro Kobayashi, Christopher A Penfold, Michael D Morgan, Dawei Sun, Naoko Irie, and M Azim Surani. 2022. “Sequential Enhancer State Remodelling Defines Human Germline Competence and Specification.” <em>Nature Cell Biology</em> 24 (4). Nature Publishing Group: 448–60.</p>
 </div>
 <div>
 <p>Williams, Christopher KI, and Carl Edward Rasmussen. 2006. <em>Gaussian Processes for Machine Learning</em>. Vol. 2. the MIT Press.</p>
@@ -414,6 +798,14 @@ model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fi
 <div>
 <p>Zhang, Shuangquan, Anjun Ma, Jing Zhao, Dong Xu, Qin Ma, and Yan Wang. 2022. “Assessing Deep Learning Methods in Cis-Regulatory Motif Finding Based on Genomic Sequencing Data.” <em>Briefings in Bioinformatics</em> 23 (1). Oxford University Press: bbab374.</p>
 </div>
+</div>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Williams2006">
+<p>Williams, Christopher KI, and Carl Edward Rasmussen. 2006. <em>Gaussian Processes for Machine Learning</em>. Vol. 2. the MIT Press.</p>
 </div>
 </div>
             </section>

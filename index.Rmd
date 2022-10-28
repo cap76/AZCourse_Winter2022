@@ -24,15 +24,16 @@ The term “Machine Learning” encompasses a broad range of approaches in data 
 
 Time | Data | Module
 --- | --- | ---
-14:00 – 15:00 | 20/05/22 | Linear regression / linear models
-15:00 – 16:30 | 20/05/22 | Logistic regression
-16:30 – 17:00 | 20/05/22 | Review and questions
-14:00 – 15:00 | 23/05/22 | Artificial Neural Networks
-15:00 – 16:30 | 23/05/22 | Convolutional neural nets and beyond
-16:30 – 17:00 | 23/05/22 | Review and questions
+14:00 – 15:00 | 07/11/23 | Introductory lecture (linear regression)
+14:00 – 15:00 | 08/11/23 | Linear regression / linear models 
+14:00 – 15:00 | 11/11/23 | Logistic regression
+14:00 – 15:00 | 14/11/23 | Intro lecture (neural networks)
+14:00 – 15:00 | 15/11/23 | Convolutional neural nets and beyond
+14:00 – 15:00 | 18/11/23 | D3: Interpreting NNs (ChIP motif case study)
+14:30 – 15:30 | 21/11/23 | Practical Q&A session
 
 ## Github
-The github reposotory for Classical approaches to Machine Learning containing code, datasets and lectures is availabile [here](https://github.com/cap76/AZCourse). The html textbook is found in docs/index.html. Individual chapters (files ending .Rmd) can be opened in RStudio as interactive markdown files.
+The github reposotory for Classical approaches to Machine Learning containing code, datasets and lectures is availabile [here](https://github.com/cap76/AZCourse_Winter2022). The html textbook is found in docs/index.html. Individual chapters (files ending .Rmd) can be opened in RStudio as interactive markdown files.
 
 ## License
 [GPL-3](https://www.gnu.org/licenses/gpl-3.0.en.html)

@@ -19,7 +19,7 @@ For the second half of this workbook we will make use of an R wrapper for keras 
 python3.9
 ```
 
-This will usually work if you have multiple versions installed, but sometimes names can be mixed up. For example, I installed Python3.9 and Python 3.6 on a Windows machine, and could call the latter with 
+This will usually work if you have multiple versions installed, but sometimes names can be mixed up. For example, I installed Python3.9 and Python 3.6 on a Windows machine, and could call the former with 
 
 ```{r, eval=FALSE}
 python3
@@ -31,7 +31,7 @@ but had to call:
 python
 ```
 
-to open Python3.6. The version of Python you have launched will usually be displayede on launch. Once you've identified how to launch the specific version of Python you want, the next step is to install tensorflow to that version. Sometimes when you have multuple installs it can be difficult to ensure the correct pip is called. To avoid this confusion, you can be explicit:
+to open Python3.6. The version of Python you have launched will usually be displayed on launch. Once you've identified how to launch the specific version of Python you want, the next step is to install tensorflow to that version. Sometimes when you have multiple installs it can be difficult to ensure the correct pip is called. To avoid this confusion, you can be explicit:
 
 ```{r, eval=FALSE}
 python3.9 -m pip install tensorflow
@@ -59,18 +59,36 @@ keras.__version__
 exit()
 ```
 
-Finally, we will open Rstudio, install reticulate, set the version of Python to use, and install the R backend to keras.
+Finally, we will open Rstudio, install reticulate, set the version of Python to use, and install the R backend to tensorflow (and keras depending on the verion you have installed).  A more complete installation for the R keras/tensorflow packages can be found [here](https://tensorflow.rstudio.com/install/).
 
 ```{r, eval=FALSE}
 install.packages("reticulate")
 library(reticulate)
 use_python("Python3.9")
+install.packages("tensorflow")
 #install.packages("keras")
 ```
 
+In some cases, particularly for Windows, you might have to resort to giving reticulate the full path name to the Python executable. You can find our where your Python executables are by typing in the terminal:
+
+```{r, eval=FALSE}
+where python
+```
+
+You should then get a full path to the various insalls and can use this in R, which will look something like:
+
+```{r, eval=FALSE}
+install.packages("reticulate")
+library(reticulate)
+use_python("C:/Program Files/Python39/python.exe")
+install.packages("tensorflow")
+#install.packages("keras")
+```
 At this stage you should now be ready to run Keras in R.
 
 More information about Python installations can be found at the links below.
+
+[Installing tensorflow/keras for R](https://tensorflow.rstudio.com/install/)
 
 [Installing Python Linux](http://docs.python-guide.org/en/latest/starting/install3/linux/)
 [Installing Python for Mac](http://docs.python-guide.org/en/latest/starting/install3/osx/)
@@ -78,3 +96,4 @@ More information about Python installations can be found at the links below.
 
 [Installing Tensorflow](https://www.tensorflow.org/install/)
 [Installing Keras](https://keras.io/#installation)
+
