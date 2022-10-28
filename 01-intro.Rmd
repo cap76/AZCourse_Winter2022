@@ -86,6 +86,16 @@ install.packages("tensorflow")
 ```
 At this stage you should now be ready to run Keras in R.
 
+# Course materials
+
+The course materials can be viewed online [here](https://cap76.github.io/intro-machine-learning-2021/). A complete copy of the course (with all datasets, lecture slides, and compiled materials) can be accessed via GitHub [here]([here](https://github.com/cap76/AZCourse_Winter2022). By default, Git is installed on linux and macOS. To clone a copy on macOS use terminal navigate to the directory you want to use and type:
+
+```{r, eval=FALSE}
+git pull https://github.com/cap76/AZCourse_Winter2022.git
+```
+
+For Windows machines you may have to [set up Git](https://www.computerhope.com/issues/ch001927.htm). Alternatively, I have uploaded a copy of the complete folder on GoogleDrive.
+
 More information about Python installations can be found at the links below.
 
 [Installing tensorflow/keras for R](https://tensorflow.rstudio.com/install/)

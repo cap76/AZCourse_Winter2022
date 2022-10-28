@@ -1289,18 +1289,18 @@ More complex learning algorithms can easily be built using Keras via the model c
 
 ###Autoencoders
 
-In previous sections we have used CNNs to build a *Rick*/*not Rick* classifier. In doing so we are halfway towards other interesting neural network architectures, including autoencoders. 
+In previous sections we have used CNNs to build a *Rick*/*not Rick* classifier. In doing so we are halfway towards other interesting neural network architectures, including [autoencoders](https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368). 
 
 One type of autoencoder consists of a stack of convolution/max pooling layers which served to condense the original image down into a reduced dimensional (encoded) representation, with a stack of *upsampled* layers used to decode the encoded layer (Figure \@ref(fig:AE)). Within such a network the input and output data are an identical image: we are therefore training a network that can both compresses the original high resolution data and subsequently interpret that compressed representation to recreate the original as closely as possible. A slight deviation of this principle would be to use noisy versions of the image as input, with clean versions as the output. In these cases the autoencoder becomes a denoiser (Figure \@ref(fig:AE2)). Similar methods can be used for generating higher resolution versions of an image (or from noise).
 
 <div class="figure" style="text-align: center">
-<img src="images/AE.png" alt="Example of an autoencoder (https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368)" width="50%" />
-<p class="caption">(\#fig:AE)Example of an autoencoder (https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368)</p>
+<img src="images/AE.png" alt="Example of an autoencoder" width="50%" />
+<p class="caption">(\#fig:AE)Example of an autoencoder</p>
 </div>
 
 <div class="figure" style="text-align: center">
-<img src="images/AE2.png" alt="Example of an autoencoder (https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368)" width="50%" />
-<p class="caption">(\#fig:AE2)Example of an autoencoder (https://towardsdatascience.com/generating-images-with-autoencoders-77fd3a8dd368)</p>
+<img src="images/AE2.png" alt="Example of an autoencoder " width="50%" />
+<p class="caption">(\#fig:AE2)Example of an autoencoder </p>
 </div>
 
 In the example below we implement a simple Autoencoder, constructed by stacking a number of convolution layers with a stak of deconvolution layers (foregoing the max pooling layers). Note that in, in R, each pixel is represented as a number between 1 and 0. A suitable final activation function is therefore one that scales between 0 and 1 e.g., a sigmoid function. Nevertheless, we are not doing logistic regrssion, so we will choose to monitor the mse. Note that this snippet of code will take a good few hours to run $50$ epochs.
@@ -1425,4 +1425,4 @@ Useful examples can also be found in the [keras documentation](https://keras.io)
 =======
 ## Exercises
 
-Solutions to exercises can be found in appendix \@ref(solutions-logistic-regression).
+Solutions to exercises can be found in appendix \@ref(solutions-nnet).

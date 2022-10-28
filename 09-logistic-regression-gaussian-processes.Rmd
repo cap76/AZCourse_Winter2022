@@ -758,7 +758,7 @@ Whilst in these examples we have not used a rigorous treatment of the data, they
 A variety of examples using {caret} to perform regression and classification have been implemented 
 [here](https://github.com/tobigithub/caret-machine-learning).
 
-For those that want to start their own reading on nonlinear regression, a good stating point is Rasmussen and William's book on [Gaussian processes](http://www.gaussianprocess.org/gpml/chapters/RW.pdf). Be warned, it will contain a lot more maths than this course. We also have an introductory section in this work book. A brief primer on Gaussian Processes can also be found at the end of appendix \@ref(solutions-logistic-regression).
+For those that want to start their own reading on nonlinear regression, a good stating point is Rasmussen and William's book on [Gaussian processes](http://www.gaussianprocess.org/gpml/chapters/RW.pdf). Be warned, it will contain a lot more maths than this course. We also have an introductory section in this work book. A brief primer on Gaussian Processes can also be found in appendix \@ref(gaussian-process-regression).
 
 =======
 ## Exercises

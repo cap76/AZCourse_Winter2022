@@ -43,7 +43,7 @@ Excercise 1.1: Here we simply specify two three models: the first a regression r
 Excercise 1.2: We have time series, we are interested in inferring the regultors of a particular gene. We can therefore regress the time seris of the gene of interest  (at time point $2$ through $T$) against combinations of putative regulators at the previous time point  (at time point $1$ through $T-1$), and use the an appropriate metric to select the optimal combinations. We can do this in parallel for all genes to arrive at a network. For further details see e.g., [[@penfold2011infer]](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3262295/) and [[@penfold2019inferring]](https://pubmed.ncbi.nlm.nih.gov/30547404/)
 
 
-# Solutions to Chapter 5 - Neural Networks
+# Solutions to Chapter 5 - Neural Networks {#solutions-nnet}
 
 Excersie 2.1: We can simply update the input dimension and output dimensions:
 
@@ -307,7 +307,7 @@ grid.raster(predictAEX[1,1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.
 ```
 
 
-### Gaussian process regression {#gaussian-process-regression}
+# Gaussian process regression {#gaussian-process-regression}
 
 In the previous section we briefly explored fitting multiple polynomials to our data. However, we still had to decide on the order of the polynomial beforehand. A far more powerful approach is Gaussian processes (GP) regression [[@Williams2006]](https://gaussianprocess.org/gpml/). Gaussian process regression represent a Bayesian nonparametric approach to regression capable of inferring nonlinear functions from a set of observations. Within a GP regression setting we assume the following model for the data:
 

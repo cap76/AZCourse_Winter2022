@@ -33,7 +33,7 @@ Time | Data | Module
 14:30 – 15:30 | 21/11/23 | Practical Q&A session
 
 ## Github
-The github reposotory for Classical approaches to Machine Learning containing code, datasets and lectures is availabile [here](https://github.com/cap76/AZCourse_Winter2022). The html textbook is found in docs/index.html. Individual chapters (files ending .Rmd) can be opened in RStudio as interactive markdown files.
+The github reposotory for Classical approaches to Machine Learning containing code, datasets and lectures is availabile [here](https://github.com/cap76/AZCourse_Winter2022). The html textbook is found in docs/index.html. Individual chapters (files ending .Rmd) can be opened in RStudio as interactive markdown files. The course material can be viewed online [here](https://cap76.github.io/intro-machine-learning-2021/).
 
 ## License
 [GPL-3](https://www.gnu.org/licenses/gpl-3.0.en.html)
