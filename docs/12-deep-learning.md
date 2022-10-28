@@ -119,7 +119,7 @@ That's it. Simple! Our model is now complete; we have specified a multi-layered 
 summary(model)
 ```
 
-In total, this model contans $12,441$ parameters, many more parameters than we're used to for other machine learning models. However, in terms of size and number of parameters, this is a tiny model: some of the bigger models out there have already surpassed [$500$ billion parameters]{https://www.microsoft.com/en-us/research/blog/using-deepspeed-and-megatron-to-train-megatron-turing-nlg-530b-the-worlds-largest-and-most-powerful-generative-language-model/}.
+In total, this model contans $12,441$ parameters, many more parameters than we're used to for other machine learning models. However, in terms of size and number of parameters, this is a tiny model: some of the bigger models out there have already surpassed [$500$ billion parameters](https://www.microsoft.com/en-us/research/blog/using-deepspeed-and-megatron-to-train-megatron-turing-nlg-530b-the-worlds-largest-and-most-powerful-generative-language-model/).
 
 Before we use our model to perform inference, we must first compile it. In this case we need to specify three things:
 
@@ -159,7 +159,7 @@ model %>% fit(x = trainingX, y = trainingY, validation_data = list(testingX, tes
 
 Alternatively to above, rather than specify the training and validation data sets manually, we could use validation_split to specify the fraction of data to be used as the validation set. This can be useful when dealing with larger datasets. Generally in this section we have very small datasets and can load all the input and output data into memory, but may not be possible if dealing with images or large genomic data. Instead we could specify validation_split along with flow_from_directory to read small batches directly from a directory.
 
-We can see that the mean square error rapidly decreases (from approx. 16 at epoch 3 to around 0.8 towards the end). Precicesly how the objective funciton is optimised is based on back propogation (you can read more on this [here]{https://towardsdatascience.com/understanding-backpropagation-algorithm-7bb3aa2f95fd}, [here]{https://towardsdatascience.com/hyper-parameter-tuning-techniques-in-deep-learning-4dad592c63c8}, and [here]{https://medium.com/spidernitt/breaking-down-neural-networks-an-intuitive-approach-to-backpropagation-3b2ff958794c}). As always, let's take a look at the actual results, rather than rely on summary metrics. To make predictions using the model we can use the {predict} function:
+We can see that the mean square error rapidly decreases (from approx. 16 at epoch 3 to around 0.8 towards the end). Precicesly how the objective funciton is optimised is based on back propogation (you can read more on this [here](https://towardsdatascience.com/understanding-backpropagation-algorithm-7bb3aa2f95fd), [here](https://towardsdatascience.com/hyper-parameter-tuning-techniques-in-deep-learning-4dad592c63c8), and [here](https://medium.com/spidernitt/breaking-down-neural-networks-an-intuitive-approach-to-backpropagation-3b2ff958794c)). As always, let's take a look at the actual results, rather than rely on summary metrics. To make predictions using the model we can use the {predict} function:
 
 
 ```r
@@ -202,7 +202,7 @@ geom_line(color='red',size = 1, data = data.frame(x=xstar,y=sqrt(xstar)), aes(x=
 
 <img src="12-deep-learning_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
-We can try varying a few other aspects of the network to get an idea of how NNs behave. For example, first try increasing the training set size. Try adding or removing layers, and varying layer widths. Another thing thing that can be varied is the final layer activation. The [keras manual]{https://keras.io/api/layers/activations/} should provide a useful resource to explore what options are available.  
+We can try varying a few other aspects of the network to get an idea of how NNs behave. For example, first try increasing the training set size. Try adding or removing layers, and varying layer widths. Another thing thing that can be varied is the final layer activation. The [keras manual](https://keras.io/api/layers/activations/) should provide a useful resource to explore what options are available.  
 
 In the snippet of code below we use a comparatively large dataset, with the input data generated in the region $[0,80]$ and $[120,200]$. By ensuring there is no input data generated in the range $(80,120)$ it is much easier to see if the moodel is extrapolating over locations with no data. 
 
