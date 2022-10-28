@@ -426,7 +426,7 @@ Excerise 1.1: Think about how regression models can be used as a means for testi
 Excercise 1.2: Given a set of time series, like our Arabidopsis dataset, think about how regression can be used to infer regulatory networks.
 
 
-### Logistic regression {#logistic-regression1}
+## Logistic regression {#logistic-regression1}
 
 The type of linear regression models we've been using up to this point deal with real-valued observation data, $\mathbf{y}$, and are therefore not appropriate for classification. To deal with cases where $\mathbf{y}$ is a binary outcome, we instead have to think of different *models*, use different *objective functions* to optimise, and use different *metrics* to choose between competing models. Fortunately, however, much of the framework used for regression remains the same. 
 
@@ -589,7 +589,7 @@ ggplot(data.frame(x=seq(4,165,1),y=aucscore2[4:165]), aes(x = x, y = y)) + geom_
 ```
 Here we indicate by a vertical line the index corresponding to the basal model (i.e, AT2G21380 only) and can see there are several combinatorial models that allow us to more accurately predict infection status.  
 
-## Using regression approaches to infer 3D gene expression patterns in marmoset embryos
+## Regression for spatial transcriptomics
 
 In our recent paper [[@bergmann2022spatial]](https://www.nature.com/articles/s41586-022-04953-1) we combined laser capture microdissection (LCM) with RNA-sequencing and immunofluorescent staining to generate 3D transcriptional reconstructions of early post-implantation marmoset embryos. Here, adjacent sections were used to build a 3D model of the embryo (see \@ref(fig:embryo)). The 3D position of each LCM within this reconstructed embryo was retained, allowing an interpolation of expression patterns across the embryo using regression (albeit a nonlinear form of rgression). Raw sequencing data is available from ArrayExpress under accession numbers E-MTAB-9367 and E-MTAB-9349.
 

@@ -118,10 +118,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.1" data-path="logistic-regression.html"><a href="logistic-regression.html#regression"><i class="fa fa-check"></i><b>3.1</b> Regression</a><ul>
 <li class="chapter" data-level="3.1.1" data-path="logistic-regression.html"><a href="logistic-regression.html#linear-regression"><i class="fa fa-check"></i><b>3.1.1</b> Linear regression</a></li>
 <li class="chapter" data-level="3.1.2" data-path="logistic-regression.html"><a href="logistic-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>3.1.2</b> Polynomial regression</a></li>
-<li class="chapter" data-level="3.1.3" data-path="logistic-regression.html"><a href="logistic-regression.html#logistic-regression1"><i class="fa fa-check"></i><b>3.1.3</b> Logistic regression</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="logistic-regression.html"><a href="logistic-regression.html#using-regression-approaches-to-infer-3d-gene-expression-patterns-in-marmoset-embryos"><i class="fa fa-check"></i><b>3.2</b> Using regression approaches to infer 3D gene expression patterns in marmoset embryos</a></li>
-<li class="chapter" data-level="3.3" data-path="logistic-regression.html"><a href="logistic-regression.html#resources"><i class="fa fa-check"></i><b>3.3</b> Resources</a></li>
+<li class="chapter" data-level="3.2" data-path="logistic-regression.html"><a href="logistic-regression.html#logistic-regression1"><i class="fa fa-check"></i><b>3.2</b> Logistic regression</a></li>
+<li class="chapter" data-level="3.3" data-path="logistic-regression.html"><a href="logistic-regression.html#regression-for-spatial-transcriptomics"><i class="fa fa-check"></i><b>3.3</b> Regression for spatial transcriptomics</a></li>
+<li class="chapter" data-level="3.4" data-path="logistic-regression.html"><a href="logistic-regression.html#resources"><i class="fa fa-check"></i><b>3.4</b> Resources</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="mlnn.html"><a href="mlnn.html"><i class="fa fa-check"></i><b>4</b> Deep Learning</a><ul>
 <li class="chapter" data-level="4.1" data-path="mlnn.html"><a href="mlnn.html#multilayer-neural-networks"><i class="fa fa-check"></i><b>4.1</b> Multilayer Neural Networks</a><ul>
@@ -132,8 +132,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.2" data-path="mlnn.html"><a href="mlnn.html#convolutional-neural-networks"><i class="fa fa-check"></i><b>4.2</b> Convolutional neural networks</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="mlnn.html"><a href="mlnn.html#checking-the-models"><i class="fa fa-check"></i><b>4.2.1</b> Checking the models</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="mlnn.html"><a href="mlnn.html#multiclass-prediction"><i class="fa fa-check"></i><b>4.3</b> Multiclass prediction</a></li>
-<li class="chapter" data-level="4.4" data-path="mlnn.html"><a href="mlnn.html#categorical-data"><i class="fa fa-check"></i><b>4.4</b> Categorical data</a><ul>
+<li class="chapter" data-level="4.3" data-path="mlnn.html"><a href="mlnn.html#multiclass-cnn"><i class="fa fa-check"></i><b>4.3</b> Multiclass CNN</a></li>
+<li class="chapter" data-level="4.4" data-path="mlnn.html"><a href="mlnn.html#categorical-cnn"><i class="fa fa-check"></i><b>4.4</b> Categorical CNN</a><ul>
 <li class="chapter" data-level="4.4.1" data-path="mlnn.html"><a href="mlnn.html#intepreting-cnn"><i class="fa fa-check"></i><b>4.4.1</b> Intepreting CNN</a></li>
 <li class="chapter" data-level="4.4.2" data-path="mlnn.html"><a href="mlnn.html#class-activation"><i class="fa fa-check"></i><b>4.4.2</b> Class activation</a></li>
 </ul></li>
@@ -560,8 +560,8 @@ FP &lt;-<span class="st"> </span><span class="kw">which</span>(predictvalY<span 
 <p>Whilst visualising the data is often helpful, in this case it's not entirely clear why the network is failing in some of these cases. An alternative way to look at what's going wrong is a look at which pixels are contributing the most to the classifier, as we highligted in the lecture. We will return to this shortly.</p>
 </div>
 </div>
-<div id="multiclass-prediction" class="section level2">
-<h2><span class="header-section-number">4.3</span> Multiclass prediction</h2>
+<div id="multiclass-cnn" class="section level2">
+<h2><span class="header-section-number">4.3</span> Multiclass CNN</h2>
 <p>In the previous section we dealt with predicting a Rick (0) or a not Rick (1). This is because we framed our goal as a simple binary question: an image either has a Rick in or it doesn't. Given the nature of the data, there are other possible questions we might be interested in: for example, does the image contain another character, such as Morty? A given image could both a Rick and a Morty, one or the other, or neither. We cold therefore frame our interst as two binary questions: &quot;does the image contain a Rick?&quot; and &quot;does the image contain a Morty?&quot; requiring two output nodes. I have already processed the invidual images into seperate folders, one folder containing only Rick, one containing only Morty, one containing both in the same image, and one containing neither. These can be read in:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files1 &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/RickandMorty/data/ThreeClassModel/AllRickImages/&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;jpg&quot;</span>) <span class="co">#These contain Rick but not Morty</span>
 files2 &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="st">&quot;data/RickandMorty/data/ThreeClassModel/AllMortyImages/&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;jpg&quot;</span>) <span class="co">#These contai Morty but not Rick</span>
@@ -626,8 +626,8 @@ model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">co
 tensorflow<span class="op">::</span><span class="kw">set_random_seed</span>(<span class="dv">42</span>)
 model <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">fit</span>(<span class="dt">x =</span> trainX, <span class="dt">y =</span> trainY, <span class="dt">validation_data =</span> <span class="kw">list</span>(valX, valY), <span class="dt">epochs =</span> <span class="dv">5</span>, <span class="dt">batch_size=</span><span class="dv">100</span>, <span class="dt">verbose =</span> <span class="dv">2</span>, <span class="dt">callbacks =</span> <span class="kw">list</span>(cp_callback))</code></pre></div>
 </div>
-<div id="categorical-data" class="section level2">
-<h2><span class="header-section-number">4.4</span> Categorical data</h2>
+<div id="categorical-cnn" class="section level2">
+<h2><span class="header-section-number">4.4</span> Categorical CNN</h2>
 <p>In the previous example we were using a binary classification since we were only concerned if an the image contained a Rick or not (or by extension if a Morty or not). A more general case is categorical classification (of which binary is a special case) where we have <span class="math inline">\(P\)</span> mutually exclusive classes, and wish to infer which one of those <span class="math inline">\(P\)</span>-classes is in a particular image. In this case we might want to infer Rick, Morty, or neither, so a three class system. Note that since we are framing this as exclusive question, we shoudn't really use any data with both Rick and Morty in.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allX  &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim=</span><span class="kw">c</span>(<span class="kw">length</span>(files1)<span class="op">+</span><span class="kw">length</span>(files2)<span class="op">+</span><span class="kw">length</span>(files4),<span class="kw">dim</span>(im)[<span class="dv">1</span>],<span class="kw">dim</span>(im)[<span class="dv">2</span>],<span class="kw">dim</span>(im)[<span class="dv">3</span>]))
 

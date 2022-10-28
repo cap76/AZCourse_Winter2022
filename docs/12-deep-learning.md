@@ -671,7 +671,7 @@ grid.raster(valX[FP[4],1:90,1:160,1:3], interpolate=FALSE, width = 0.3, x = 0.5,
 
 Whilst visualising the data is often helpful, in this case it's not entirely clear why the network is failing in some of these cases. An alternative way to look at what's going wrong is a look at which pixels are contributing the most to the classifier, as we highligted in the lecture. We will return to this shortly.
 
-## Multiclass prediction
+## Multiclass CNN
 
 In the previous section we dealt with predicting a Rick (0) or a not Rick (1). This is because we framed our goal as a simple binary question: an image either has a Rick in or it doesn't. Given the nature of the data, there are other possible questions we might be interested in: for example, does the image contain another character, such as Morty? A given image could both a Rick and a Morty, one or the other, or neither. We cold therefore frame our interst as two binary questions: "does the image contain a Rick?" and  "does the image contain a Morty?" requiring two output nodes. I have already processed the invidual images into seperate folders, one folder containing only Rick, one containing only Morty, one containing both in the same image, and one containing neither. These can be read in:
 
@@ -756,7 +756,7 @@ tensorflow::set_random_seed(42)
 model %>% fit(x = trainX, y = trainY, validation_data = list(valX, valY), epochs = 5, batch_size=100, verbose = 2, callbacks = list(cp_callback))
 ```
 
-## Categorical data
+## Categorical CNN
 
 In the previous example we were using a binary classification since we were only concerned if an the image contained a Rick or not (or by extension if a Morty or not). A more general case is categorical classification (of which binary is a special case) where we have $P$ mutually exclusive classes, and wish to infer which one of those $P$-classes is in a particular image. In this case we might want to infer Rick, Morty, or neither, so a three class system. Note that since we are framing this as exclusive question, we shoudn't really use any data with both Rick and Morty in.
 
