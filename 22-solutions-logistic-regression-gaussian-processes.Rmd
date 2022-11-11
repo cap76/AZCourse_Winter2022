@@ -40,7 +40,107 @@ lrfit11 <- train( as.formula(f) , data=data.frame(x=D[1:24,1],y=D[1:24,geneindex
 
 Excercise 1.1: Here we simply specify two three models: the first a regression run on the union of the data represents the case of no DE; the second is two independent models, one for each time series. In cases where there is no DE, two independenet models will not be necessary to describe the data compared to independent ones, and the mean square error will be similar. See also [[@stegle2010robust]](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3198888/).
 
+So the first thing we need to do is load the data, and split into training and test set. Let's do this for the same gene we've been looking at recently, AT2G2889.
+
+```{r, eval=FALSE, echo=T}
+D <- read.csv(file = "data/Arabidopsis/Arabidopsis_Botrytis_pred_transpose_3.csv", header = TRUE, sep = ",", row.names=1)
+
+genenames <- colnames(D)
+geneindex <- which(genenames=="AT2G28890")
+classindex <- which(genenames=="Class")
+
+xtrain <- D[-which(D$Time %in% c(24,26,28,30) ),1]
+ytrain <- D[-which(D$Time %in% c(24,26,28,30) ),geneindex]
+classtrain <- D[-which(D$Time %in% c(24,26,28,30) ), classindex]
+
+xtest <- D[which(D$Time %in% c(24,26,28,30) ),1]
+ytest <- D[which(D$Time %in% c(24,26,28,30) ),geneindex]
+classtest <- D[which(D$Time %in% c(24,26,28,30) ), classindex]
+
+```
+
+So we now have the data (for both infection and mock combined), with the class label stored as the classtrain/classtest variable. We now need to try out 3 diffent models: a model for the combined control/infection datasets, which would essentiall assumes the data is not differential and can be described by the same function; one model each for the two treatmens. For simplicity we will choose to use a polynomial of degree 4 (we saw this was probably optimal in earlier on). In practice, we would look to optimise these parameters of the model as well.
+
+```{r, eval=FALSE, echo=T}
+lrfit1 <- train(y~poly(x,degree=4), data=data.frame(x=xtrain,y=ytrain), method = "lm")
+
+lrfit2 <- train(y~poly(x,degree=4), data=data.frame(x=xtrain[which(classtrain==0)],y=ytrain[which(classtrain==0)]), method = "lm")
+lrfit3 <- train(y~poly(x,degree=4), data=data.frame(x=xtrain[which(classtrain==1)],y=ytrain[which(classtrain==1)]), method = "lm")
+
+#Now we evaluate the errors on the held out data
+predictedValues <- predict(lrfit1,newdata = data.frame(x=xtest) )
+predictedValues2 <- predict(lrfit2, newdata = data.frame(x=xtest[which(classtest==0)]))
+predictedValues3 <- predict(lrfit3, newdata = data.frame(x=xtest[which(classtest==1)]))
+
+SSE <- as.data.frame( matrix(NA, nrow = 1, ncol = 2) ) #rep(NULL, c(10,2))
+SSE[1] <- sum( ( (predictedValues- ytest )^2 ) )
+
+SSE[2] <- sum( ( (predictedValues2- ytest[which(classtest==0)] )^2 ) ) +
+           sum( ( (predictedValues3- ytest[which(classtest==1)] )^2 ) )
+
+ggplot(data=data.frame(x=c(1,2),y=t(SSE) ), aes(x=x, y=y)) + geom_bar(stat="identity", fill="steelblue") + theme_bw()
+
+newX <- seq(0,48,by=0.5)
+
+predictedValues<-predict(lrfit1,newdata = data.frame(x=newX) )
+predictedValues2 <- predict(lrfit2, newdata = data.frame(x=newX))
+predictedValues3 <- predict(lrfit3, newdata = data.frame(x=newX))
+
+ggplot(D, aes(x = Time, y = AT2G28890, colour = factor(Class))) + geom_point(size=2.5) + scale_color_manual(values=c("red", "blue")) +
+geom_line(color='black',data = data.frame(x=newX,y=predictedValues), aes(x=x, y=y)) +
+geom_line(color='red',data = data.frame(x=newX,y=predictedValues2), aes(x=x, y=y)) +
+geom_line(color='blue',data = data.frame(x=newX,y=predictedValues3), aes(x=x, y=y)) + theme_bw()
+
+
+```
+
+So in this case, we can see the sum squared error is much higher for the joint model than the (combined) sum squared error for the two individual ones, suggesting some evidece in favour of the differetial expression model. In practice, the two individual models have extra flexibility so we would need to account for this in some way, but this is a solid foundation for picking up differentially expressed time series. 
+
 Excercise 1.2: We have time series, we are interested in inferring the regultors of a particular gene. We can therefore regress the time seris of the gene of interest  (at time point $2$ through $T$) against combinations of putative regulators at the previous time point  (at time point $1$ through $T-1$), and use the an appropriate metric to select the optimal combinations. We can do this in parallel for all genes to arrive at a network. For further details see e.g., [[@penfold2011infer]](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3262295/) and [[@penfold2019inferring]](https://pubmed.ncbi.nlm.nih.gov/30547404/)
+
+Again we will stick with our gene of interest. For network inference we might assume a model that looks something like this:
+
+$y_i (t) = f(\mathbf{y}(t-1),\mathcal{Pa})$.
+
+That is, the gene expression of the a gene of interest, $i$ at time $t$ depends on the expression of its regulators $\mathcal{Pa}$, at $t-1$. There are a number of approaches we could take here, several of which from this as regression. Specifically, we can compile a new input/output set in which the $\mathbf{x}$ is the expression of the regulators at time $t_1,t_2,\ldots,t_{N-1}$, and the new $\mathbf{y}$ is the expression a t$t_2,t_3,\ldots,t_{N}$. We then simply regress one against the other. Specifically, if our dataset was big enough, our input $\mathbf{x}$ could be a matrix of all genes, at those time points, in which case we can then use the parameters of the linear model to intepret what genes were most influential and take these as the putative regulators. Alteratively, as we will do below, we could frame this as a hypothesis, and model say, the behaviour of gene $i$ if the regulators were some set $A$ versus if they were another set $B$. In the example below, I show how to compare the hypothesis that our gene of interest is regulated by genes $8,9,10$ versus if they were regulated by $13,14,15$.
+
+```{r, eval=FALSE, echo=T}
+D <- read.csv(file = "data/Arabidopsis/Arabidopsis_Botrytis_pred_transpose_3.csv", header = TRUE, sep = ",", row.names=1)
+
+genenames <- colnames(D)
+geneindex <- which(genenames=="AT2G28890")
+classindex <- which(genenames=="Class")
+
+ytrain <- D[c(1:23,25:47,49:71),geneindex]
+xtrain1 <- D[c(2:24,26:48,50:72),c(8,9,10)]
+xtrain2 <- D[c(2:24,26:48,50:72),c(13,14,15)]
+
+
+ytest <- D[c(73:95),geneindex]
+xtest1 <- D[c(74:96),c(8,9,10)]
+xtest2 <- D[c(74:96),c(13,14,15)]
+
+lrfit1 <- train(y~., data=data.frame(y=ytrain,x=xtrain1), method = "lm")
+lrfit2 <- train(y~., data=data.frame(y=ytrain,x=xtrain2), method = "lm")
+
+#1:24
+#25:48
+#49:72
+#73:96
+
+predictedValues1 <- predict(lrfit1, newdata = data.frame(x=xtest1) )
+predictedValues2 <- predict(lrfit2, newdata = data.frame(x=xtest2) )
+
+RMSE <- as.data.frame( matrix(NA, nrow = 1, ncol = 2) ) #rep(NULL, c(10,2))
+
+RMSE[1,1] <- sqrt( mean( (predictedValues1-ytest)^2 ) )
+RMSE[1,2] <- sqrt( mean( (predictedValues2-ytest)^2 ) )
+
+ggplot(data=data.frame(x=c(1,2),y=t(RMSE) ), aes(x=x, y=y)) + geom_bar(stat="identity", fill="steelblue") + theme_bw()
+
+```
+
+So in this case there would be slightly more evidence in favour of model 1. Since this is embarassingly parallel, we could do this systematically to test all possible combinations of three genes regulating $i$ (we would have to limit the possible indegree i.e., number of regulators so we don't encounter a factorial scaling problem), and simultaeously do something simliar for all genes that are not $i$ to identify a network.
 
 
 # Solutions to Chapter 5 - Neural Networks {#solutions-nnet}
